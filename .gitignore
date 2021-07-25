@@ -1,0 +1,6 @@
+#  環境変数を含むファイル
+.db.env
+.rails.env
+
+# log関係
+nginx/log/*
