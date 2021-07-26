@@ -9,9 +9,6 @@ RUN apt -y upgrade
 RUN curl -sL RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
     apt install nodejs
 
-# 公式では以下のコマンドを推奨しているが、Node.jsのバージョンが低くてBootstrapが使えない
-# RUN apt-get update -qq && apt-get install -y nodejs
-
 # Yarnをインストール
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
@@ -40,17 +37,16 @@ RUN rails webpacker:install
 COPY config $APP_HOME/config
 
 # マウントできるように公開
-VOLUME $APP_HOME/public
-VOLUME $APP_HOME/tmp
+VOLUME $APP_HOME
 
-# pipのインストール
-COPY requirements.txt $APP_HOME/requirements.txt
-RUN apt install python3-distutils
-RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-RUN python3 get-pip.py
+# pip3のインストール
+RUN apt install python3-pip -y
 
 # pythonのスクレイピング用のパッケージをインストールする
-RUN pip install -r requirements.txt
+COPY requirements.txt $APP_HOME/requirements.txt
+RUN pip3 install -r requirements.txt
 
-# コンテナ起動時にRailsサーバを起動
-CMD ["rails", "server"]
+# socketファイルのパーミッションを変更
+CMD ["chmod", "777", "/backend/tmp/sockets/puma.sock"]
+# コンテナが停止しない様にbashを対話モードで起動
+CMD sh -c "/bin/bash"
