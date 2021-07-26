@@ -3,9 +3,10 @@ services:
 
   frontend:
     build: react
+    container_name: 2021-gi-iku-ten_frontend
     volumes:
       - ./react:/usr/src/app
-    command: sh -c "cd react-app && yarn start"
+    command: sh -c "cd react-app && yarn install && yarn start"
     ports:
       - "3000:3000"
     tty: true
@@ -19,6 +20,7 @@ services:
 
   backend:
     build: rails
+    container_name: 2021-gi-iku-ten_backend
     env_file:
       - ./.rails.env
     environment:
@@ -37,6 +39,7 @@ services:
 
   db:
     build: mysql
+    container_name: 2021-gi-iku-ten_db
     env_file:
       - ./.db.env
     tty: true
@@ -48,6 +51,7 @@ services:
   
   web:
     build: nginx
+    container_name: 2021-gi-iku-ten_web
     ports:
       - 80:80
       - 8000:8000
