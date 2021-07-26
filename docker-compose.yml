@@ -1,5 +1,6 @@
 version: '3'
 services:
+
   frontend:
     build: react
     volumes:
@@ -10,6 +11,12 @@ services:
     tty: true
     environment:
       - CHOKIDAR_USEPOLLING=true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 200M
+
   backend:
     build: rails
     env_file:
@@ -18,10 +25,22 @@ services:
       TZ: Asia/Tokyo
     depends_on:
       - db
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 250M
+
   db:
     build: mysql
     env_file:
       - ./.db.env
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 350M
+  
   web:
     build: nginx
     ports:
@@ -37,3 +56,9 @@ services:
     depends_on:
       - frontend
       - backend
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 100M
+  
