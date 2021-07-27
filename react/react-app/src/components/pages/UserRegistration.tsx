@@ -3,8 +3,10 @@ import { Box, Button, calc, Center, Divider, Flex, Heading, Stack, Text, useToas
 import { FaTwitter } from 'react-icons/fa'
 
 import { LabelInput } from "../molecules/LabelInput";
+import { useSelector } from "react-redux";
 
 export const UserRegistration: VFC = () => {
+
   const toast = useToast  ();
   const toaster = () =>
     toast({
