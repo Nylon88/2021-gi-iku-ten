@@ -6,8 +6,7 @@ services:
     container_name: 2021-gi-iku-ten_frontend
     volumes:
       - ./react:/usr/src/app
-    command: sh -c "/bin/bash"
-    command: sh -c "cd react-app && yarn install"
+    command: sh -c "cd react-app && yarn install && /bin/bash"
     ports:
       - "3000:3000"
     tty: true
