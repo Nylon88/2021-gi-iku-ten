@@ -1,23 +1,6 @@
 version: '3'
 services:
 
-  frontend:
-    build: react
-    container_name: 2021-gi-iku-ten_frontend
-    volumes:
-      - ./react:/usr/src/app
-    command: sh -c "cd react-app && yarn install && /bin/bash"
-    ports:
-      - "3000:3000"
-    tty: true
-    environment:
-      - CHOKIDAR_USEPOLLING=true
-    deploy:
-      resources:
-        limits:
-          cpus: '0.2'
-          memory: 300M
-
   backend:
     build: rails
     container_name: 2021-gi-iku-ten_backend
