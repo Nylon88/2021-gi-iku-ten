@@ -44,7 +44,6 @@ services:
       - ./nginx/log:/var/log/nginx
       - pumasocket:/backend/tmp/sockets
     depends_on:
-      - frontend
       - backend
     tty: true
     deploy:
