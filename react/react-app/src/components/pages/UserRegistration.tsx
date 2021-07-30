@@ -1,21 +1,29 @@
-import { VFC } from "react";
-import { Box, Button, calc, Center, Divider, Flex, Heading, Stack, Text, useToast} from "@chakra-ui/react";
+import { VFC, useState } from "react";
+import { Box, Button, Center, Divider, Flex, Heading, Stack, Text} from "@chakra-ui/react";
 import { FaTwitter } from 'react-icons/fa'
+import { useDispatch } from "react-redux";
 
 import { LabelInput } from "../molecules/LabelInput";
-import { useSelector } from "react-redux";
+import { signIn } from "../../redux/users/Operations";
+import { useMessage } from "../../hooks/useMessage";
 
 export const UserRegistration: VFC = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConf, setPasswordConf] = useState("");
 
-  const toast = useToast  ();
-  const toaster = () =>
-    toast({
-      title: "正常にログインできました",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-      position: "top"
-    })
+  const dispatch = useDispatch();
+  const { showMessage } = useMessage();
+
+  const onClickRegistration = () => {
+    if (password === passwordConf) {
+      dispatch(signIn({username: username, email: email, password: password}))
+      showMessage({title: "正常にログインできました", status: "success"})
+    } else {
+      showMessage({title: "パスワードとパスワード（確認用）が異なります", status: "error"})
+    }
+  }
 
   return (
     <form>
@@ -26,17 +34,17 @@ export const UserRegistration: VFC = () => {
           </Center>
           <Box mx="10">
             <Stack>
-              <LabelInput label="ユーザー名" />
-              <LabelInput label="メールアドレス" />
-              <LabelInput label="パスワード" />
-              <LabelInput label="パスワード（確認用）" />
+              <LabelInput label="ユーザー名" state={username} setState={setUsername} />
+              <LabelInput label="メールアドレス" state={email} setState={setEmail} />
+              <LabelInput label="パスワード" state={password} setState={setPassword} />
+              <LabelInput label="パスワード（確認用）" state={passwordConf} setState={setPasswordConf} />
             </Stack>
             <Button
               mt="5"
               bg="#406B15"
               color="white"
               borderRadius="0"
-              onClick={toaster}
+              onClick={onClickRegistration}
               _hover={{opacity: 0.8}}
               isFullWidth
             >登録</Button>
