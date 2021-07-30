@@ -1,9 +1,14 @@
 import { memo, VFC } from "react";
 import { Button, Flex, Image } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+
+import { Selector } from "../../../redux/users/ActionType";
+import { getUserName, getUserState } from "../../../redux/users/selectors";
 
 export const Header:VFC = memo(() => {
-  // あとでReduxでログイン状態を判定
-  const LoginState = false;
+  const selector = useSelector((state: Selector) => state);
+  const userName = getUserName(selector)
+  const LoginState = getUserState(selector)
 
   return (
     <Flex mx={32} my={3} align="flex-end" justify="space-between">
@@ -14,7 +19,7 @@ export const Header:VFC = memo(() => {
         _hover={{cursor: "pointer"}}
       />
       {LoginState ? (
-        <h1>test</h1>
+        <h1>{userName}</h1>
       ) : (
         <Button mb={3} bg="#406B15" color="white" borderRadius="0" _hover={{opacity: 0.8}}>ログイン</Button>
       )}
