@@ -17,7 +17,7 @@ export const signIn = (signInData: Omit<Users, "isSignedIn" | "id">) => {
         email,
         password
       }))
-      dispatch(push("/test"))
+      dispatch(push("/"))
     }
   }
 }
