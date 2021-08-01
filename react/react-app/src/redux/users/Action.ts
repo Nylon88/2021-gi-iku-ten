@@ -1,9 +1,9 @@
 import { Users } from "./ActionType";
 
-export const SIGN_IN = "SIGN_IN";
-export const signInAction = (userState: Omit<Users, "isSignedIn">) => {
+export const SIGN_UP = "SIGN_UP";
+export const signUpAction = (userState: Omit<Users, "isSignedIn">) => {
   return {
-    type: "SIGN_IN",
+    type: "SIGN_UP",
     payload: {
       isSignedIn: true,
       id: userState.id,
