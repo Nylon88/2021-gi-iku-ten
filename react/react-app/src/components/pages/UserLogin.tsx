@@ -1,11 +1,14 @@
 import { Box, Button, Center, Divider, Flex, Heading, Stack, Text } from "@chakra-ui/react"
 import { memo, useState, VFC } from "react"
 import { FaTwitter } from "react-icons/fa"
+import { useMessage } from "../../hooks/useMessage"
 import { LabelInput } from "../molecules/LabelInput"
 
 export const UserLogin: VFC = memo(() => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { showMessage } = useMessage();
 
   return (
     <form>
@@ -25,6 +28,7 @@ export const UserLogin: VFC = memo(() => {
               color="white"
               borderRadius="0"
               _hover={{opacity: 0.8}}
+              onClick={() => showMessage({title: "正常にログインできました", status: "success"})}
               isFullWidth
             >ログイン</Button>
             <Flex my="2">
