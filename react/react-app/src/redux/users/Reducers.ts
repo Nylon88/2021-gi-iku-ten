@@ -4,7 +4,7 @@ import { Action } from "./ActionType"
 
 export const UsersReducer = (state = initialState.users, action: Action) => {
   switch (action.type) {
-    case Actions.SIGN_IN:
+    case Actions.SIGN_UP:
       return {
         ...state,
         ...action.payload

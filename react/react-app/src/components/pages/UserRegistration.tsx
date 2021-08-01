@@ -4,7 +4,7 @@ import { FaTwitter } from 'react-icons/fa'
 import { useDispatch } from "react-redux";
 
 import { LabelInput } from "../molecules/LabelInput";
-import { signIn } from "../../redux/users/Operations";
+import { signUp } from "../../redux/users/Operations";
 import { useMessage } from "../../hooks/useMessage";
 
 export const UserRegistration: VFC = () => {
@@ -18,7 +18,7 @@ export const UserRegistration: VFC = () => {
 
   const onClickRegistration = () => {
     if (password === passwordConf) {
-      dispatch(signIn({username: username, email: email, password: password}))
+      dispatch(signUp({username: username, email: email, password: password}))
       showMessage({title: "正常にログインできました", status: "success"})
     } else {
       showMessage({title: "パスワードとパスワード（確認用）が異なります", status: "error"})
