@@ -25,9 +25,6 @@ services:
     container_name: 2021-gi-iku-ten_db
     env_file:
       - ./.db.env
-    volumes:
-      - ./mysql/Data:/var/lib/mysql
-    command: bash -c 'usermod -o -u $LINUX_MYSQL_UID mysql; groupmod -o -g $LINUX_MYSQL_GID mysql; chown -R mysql:root /var/run/mysqld/ /var/log/mysql/ /var/lib/mysql/; /entrypoint.sh mysqld --user=mysql --console'
     tty: true
     deploy:
       resources:
