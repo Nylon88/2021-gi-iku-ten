@@ -2,7 +2,7 @@ import { Box, Button, Center, Divider, Flex, Heading, Stack, Text } from "@chakr
 import { memo, useState, VFC } from "react"
 import { FaTwitter } from "react-icons/fa"
 import { useMessage } from "../../hooks/useMessage"
-import { LabelInput } from "../molecules/LabelInput"
+
 
 export const UserLogin: VFC = memo(() => {
   const [email, setEmail] = useState("");
@@ -19,8 +19,8 @@ export const UserLogin: VFC = memo(() => {
           </Center>
           <Box mx="10">
             <Stack>
-              <LabelInput label="メールアドレス" state={email} setState={setEmail} />
-              <LabelInput label="パスワード" state={password} setState={setPassword} />
+              {/* <LabelInput label="メールアドレス" state={email} setState={setEmail} />
+              <LabelInput label="パスワード" state={password} setState={setPassword} /> */}
             </Stack>
             <Button
               mt="5"
