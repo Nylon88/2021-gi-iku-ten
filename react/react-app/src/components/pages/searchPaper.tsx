@@ -1,5 +1,6 @@
 import { Box, Center, Divider, Flex, Link, Text } from "@chakra-ui/react";
 import { memo, VFC } from "react";
+import { FaRegBookmark, FaTwitter } from "react-icons/fa";
 
 import { SearchCondition } from "../molecules/searchCondition";
 import { SearchInput } from "../molecules/searchInput";
@@ -34,9 +35,24 @@ export const searchPaper: VFC = memo(() => {
                   モノやカネの取引記録を確実に保管し, 信頼のおける取引を効率的かつ迅速に,<br />
                   国境を越えて実現することが可能となる. また, 政府もデータベースにある国民の個人情報を …
                 </Text>
-                <Text fontSize="xs" mt={1} color="#406B15">
-                  論文太郎, 論文花子, 他3人・2015年・NIRAオピニオンペーパー
-                </Text>
+                <Flex align="center">
+                  <Text fontSize="xs" mt={1} color="#406B15">
+                    論文太郎, 論文花子, 他3人・2015年・NIRAオピニオンペーパー
+                  </Text>
+                  <Text fontSize="xs" mt={1} mx={3}>
+                    <Flex align="center">
+                      <Flex align="center" mx={1}>
+                        <FaTwitter color="#1D9BF0" />
+                        <Text ml={0.5}>Tweetする</Text>
+                      </Flex>
+                      <Flex align="center" mx={1}>
+                        <FaRegBookmark />
+                        <Text ml={0.5}>Pick数: 15</Text>
+                      </Flex>
+                      <Text mx={1}>引用数: 10</Text>
+                    </Flex>
+                  </Text>
+                </Flex>
                 <Divider my="4"/>
               </Box>
             ))}
