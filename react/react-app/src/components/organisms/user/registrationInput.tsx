@@ -1,9 +1,36 @@
-import { Button, FormControl, FormLabel, Input, Stack } from "@chakra-ui/react";
-import { VFC } from "react";
+import { Box, Button, FormControl, FormLabel, Input, Stack, Text } from "@chakra-ui/react";
+import { push } from "connected-react-router";
+import { memo, VFC } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
-export const RegistrationInput: VFC = () => {
+import { useMessage } from "../../../hooks/useMessage";
+import { signUpAction } from "../../../redux/users/Action";
+
+type IFormInput = {
+  userName: string;
+  email: string;
+  password: string;
+  passwordConf: string;
+}
+
+export const RegistrationInput: VFC = memo(() => {
+  const { formState: { errors }, register, handleSubmit } = useForm<IFormInput>();
+  const { showMessage } = useMessage();
+　const dispatch = useDispatch();
+
+  const onSubmit = (data: IFormInput) => {
+    if (data.password === data.passwordConf) {
+      dispatch(signUpAction({id: 1, username: data.userName, email: data.email, password: data.password}));
+      dispatch(push("/"));
+      showMessage({title: "正常に登録できました。", status: "success"});
+    } else {
+      showMessage({title: "パスワードとパスワード（確認用）が異なります。", status: "error"});
+    }
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Stack>
         <FormControl isRequired>
           <FormLabel>ユーザー名</FormLabel>
@@ -11,8 +38,11 @@ export const RegistrationInput: VFC = () => {
             placeholder={"ユーザー名を入力してください"}
             size="lg"
             borderRadius="0"
-            name="userName"
+            {...register("userName", {
+              required: true
+            })}
           />
+          {errors.userName ? <Text fontSize="xs" color="red.500">※ユーザー名は必須です。</Text> : <Box h="1rem"></Box>}
         </FormControl>
         <FormControl isRequired>
           <FormLabel>メールアドレス</FormLabel>
@@ -20,8 +50,19 @@ export const RegistrationInput: VFC = () => {
             placeholder={"メールアドレスを入力してください"}
             size="lg"
             borderRadius="0"
-            name="email"
+            {...register("email", {
+              required: "メールアドレスは必須です。",
+              pattern: {
+                value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: "メールアドレス形式で入力してください。",
+              },
+            })}
           />
+          {
+            errors.email && errors.email.type === "required" ?
+            <Text fontSize="xs" color="red.500">※メールアドレスは必須です。</Text> : errors.email && errors.email.message === "メールアドレス形式で入力してください。" ?
+            <Text fontSize="xs" color="red.500">※メールアドレス形式で入力してください。</Text> :<Box h="1rem"></Box>
+          }
         </FormControl>
         <FormControl isRequired>
           <FormLabel>パスワード</FormLabel>
@@ -29,8 +70,11 @@ export const RegistrationInput: VFC = () => {
             placeholder={"パスワードを入力してください"}
             size="lg"
             borderRadius="0"
-            name="password"
+            {...register("password", {
+              required: true
+            })}
           />
+          {errors.password ? <Text fontSize="xs" color="red.500">※パスワードは必須です。</Text> : <Box h="1rem"></Box>}
         </FormControl>
         <FormControl isRequired>
           <FormLabel>パスワード（確認用）</FormLabel>
@@ -38,18 +82,22 @@ export const RegistrationInput: VFC = () => {
             placeholder={"パスワード（確認用）を入力してください"}
             size="lg"
             borderRadius="0"
-            name="passwordConf"
+            {...register("passwordConf", {
+              required: true
+            })}
           />
+          {errors.passwordConf ? <Text fontSize="xs" color="red.500">※パスワード（確認用）は必須です。</Text> : <Box h="1rem"></Box>}
         </FormControl>
       </Stack>
       <Button
-        mt="5"
+        mt="3"
         bg="#406B15"
         color="white"
+        type="submit"
         borderRadius="0"
         _hover={{opacity: 0.8}}
         isFullWidth
       >登録</Button>
     </form>
   )
-}
+})
