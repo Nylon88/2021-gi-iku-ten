@@ -1,4 +1,4 @@
-import { Box, Center, Divider, Flex, Link, Text } from "@chakra-ui/react";
+import { Box, Center, Divider, Flex, Link, LinkBox, LinkOverlay, Text } from "@chakra-ui/react";
 import { memo, VFC } from "react";
 import { FaRegBookmark, FaTwitter } from "react-icons/fa";
 
@@ -41,14 +41,18 @@ export const searchPaper: VFC = memo(() => {
                   </Text>
                   <Text fontSize="xs" mt={1} mx={3}>
                     <Flex align="center">
-                      <Flex align="center" mx={1}>
-                        <FaTwitter color="#1D9BF0" />
-                        <Text ml={0.5}>Tweetする</Text>
-                      </Flex>
-                      <Flex align="center" mx={1}>
-                        <FaRegBookmark />
-                        <Text ml={0.5}>Pick数: 15</Text>
-                      </Flex>
+                      <LinkBox>
+                        <Flex align="center" mx={1}>
+                          <FaTwitter color="#1D9BF0" />
+                          <LinkOverlay href="#" ml={0.5} _hover={{textDecoration: "underline"}}>Tweetする</LinkOverlay>
+                        </Flex>
+                      </LinkBox>
+                      <LinkBox>
+                        <Flex align="center" mx={1}>
+                          <FaRegBookmark />
+                          <LinkOverlay href="#" ml={0.5} _hover={{textDecoration: "underline"}}>Pick数: 10</LinkOverlay>
+                        </Flex>
+                      </LinkBox>
                       <Text mx={1}>引用数: 10</Text>
                     </Flex>
                   </Text>
