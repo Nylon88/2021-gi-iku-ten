@@ -1,14 +1,10 @@
-import { Box, Button, Center, Divider, Flex, Heading, Stack, Text } from "@chakra-ui/react"
+import { Box, Button, Center, Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import { memo, VFC } from "react"
 import { FaTwitter } from "react-icons/fa"
-import { useMessage } from "../../hooks/useMessage"
 import { LoginInput } from "../organisms/user/loginInput"
 
 
 export const UserLogin: VFC = memo(() => {
-
-  const { showMessage } = useMessage();
-
   return (
     <form>
       <Flex align="center" justify="center" h="calc(100vh - 134.109px)">
