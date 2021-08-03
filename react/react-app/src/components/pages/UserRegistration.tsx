@@ -1,8 +1,8 @@
 import { VFC } from "react";
-import { Box, Button, Center, Divider, Flex, Heading, Text} from "@chakra-ui/react";
-import { FaTwitter } from 'react-icons/fa'
+import { Box, Center, Divider, Flex, Heading, Text} from "@chakra-ui/react";
 
 import { RegistrationInput } from "../organisms/user/registrationInput";
+import { TwitterButton } from "../atoms/twitterButton";
 
 export const UserRegistration: VFC = () =>{
   return (
@@ -20,13 +20,7 @@ export const UserRegistration: VFC = () =>{
           </Flex>
         </Box>
         <Flex justify="center">
-          <Button
-            mx="4"
-            colorScheme="twitter"
-            borderRadius="0"
-            size="sm"
-            leftIcon={<FaTwitter />}
-          >Sign Up with Twitter</Button>
+          <TwitterButton />
         </Flex>
       </Box>
     </Flex>
