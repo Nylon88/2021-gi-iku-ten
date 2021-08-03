@@ -1,6 +1,6 @@
 import { Box, Center, Divider, Flex, Link, LinkBox, LinkOverlay, Text } from "@chakra-ui/react";
 import { memo, VFC } from "react";
-import { FaRegBookmark, FaTwitter } from "react-icons/fa";
+import { FaRegBookmark } from "react-icons/fa";
 
 import { SearchCondition } from "../molecules/searchCondition";
 import { SearchInput } from "../molecules/searchInput";
@@ -25,7 +25,7 @@ export const searchPaper: VFC = memo(() => {
                   fontSize="lg"
                   fontWeight="bold"
                   color="#0055AA"
-                  href="https://www.jstage.jst.go.jp/article/niraopinion/26/0/26_26/_article/-char/ja/" 
+                  href="https://www.jstage.jst.go.jp/article/niraopinion/26/0/26_26/_article/-char/ja/"
                   isExternal
                 >
                   ブロックチェーンは社会をどう変えるか
@@ -42,18 +42,20 @@ export const searchPaper: VFC = memo(() => {
                   <Text fontSize="xs" mt={1} mx={3}>
                     <Flex align="center">
                       <LinkBox>
-                        <Flex align="center" mx={1}>
-                          <FaTwitter color="#1D9BF0" />
-                          <LinkOverlay href="#" ml={0.5} _hover={{textDecoration: "underline"}}>Tweetする</LinkOverlay>
-                        </Flex>
-                      </LinkBox>
-                      <LinkBox>
-                        <Flex align="center" mx={1}>
+                        <Flex align="center">
                           <FaRegBookmark />
                           <LinkOverlay href="#" ml={0.5} _hover={{textDecoration: "underline"}}>Pick数: 10</LinkOverlay>
                         </Flex>
                       </LinkBox>
-                      <Text mx={1}>引用数: 10</Text>
+                      <Text mx={2}>引用数: 10</Text>
+                      <Link
+                        href="//twitter.com/share"
+                        className="twitter-share-button"
+                        data-text="ブロックチェーンは社会をどう変えるか"
+                        data-hashtags="PaperPicks"
+                        data-url="https://www.jstage.jst.go.jp/article/niraopinion/26/0/26_26/_article/-char/ja/"
+                        data-lang="ja"
+                      >ツイート</Link>
                     </Flex>
                   </Text>
                 </Flex>
