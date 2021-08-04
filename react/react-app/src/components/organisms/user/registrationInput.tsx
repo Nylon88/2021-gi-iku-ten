@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
-import auth from "../../../firebase";
 import { useMessage } from "../../../hooks/useMessage";
 import { signUp } from "../../../redux/users/Operations";
 
@@ -26,9 +25,6 @@ export const RegistrationInput: VFC = memo(() => {
   const onSubmit = async (data: IFormInput) => {
     if (data.password === data.passwordConf) {
       try {
-        // Firebaseにユーザーを作成する
-        await auth.createUserWithEmailAndPassword(data.email, data.password);
-        // sendSignInLinkToEmail() を利用すると、メールアドレス認証のためのメールを送信することも可能
         dispatch(signUp({username: data.userName, email: data.email, password: data.password}));
         showMessage({title: "正常に登録できました。", status: "success"});
 

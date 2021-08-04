@@ -1,5 +1,6 @@
 import { push } from "connected-react-router";
 import { Dispatch } from "redux";
+import auth from "../../firebase";
 
 import { signInAction, signUpAction } from "./Action";
 import { Users } from "./ActionType";
@@ -11,6 +12,8 @@ export const signUp = (signUpData: Omit<Users, "isSignedIn" | "id">) => {
     const { username, email, password } = signUpData;
 
     if (!isSignedIn) {
+      // firebaseにユーザーを作成する
+      await auth.createUserWithEmailAndPassword(email, password);
       dispatch(signUpAction({
         id: 1,
         username,
