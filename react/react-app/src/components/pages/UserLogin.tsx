@@ -8,21 +8,19 @@ import { LoginInput } from "../organisms/user/loginInput"
 
 export const UserLogin: VFC = memo(() => {
   return (
-    <form>
-      <Flex align="center" justify="center" h="calc(100vh - 134.109px)">
-        <Box w="600px" border="1px" borderColor="gray.200" p="4">
-          <Center>
-            <Heading as="h1" size="lg" my="4">ログイン</Heading>
-          </Center>
-          <Box mx="10">
-            <LoginInput />
-            <DivideLineSocialButton />
-          </Box>
-          <Flex justify="center">
-            <TwitterButton />
-          </Flex>
+    <Flex align="center" justify="center" h="calc(100vh - 134.109px)">
+      <Box w="600px" border="1px" borderColor="gray.200" p="4">
+        <Center>
+          <Heading as="h1" size="lg" my="4">ログイン</Heading>
+        </Center>
+        <Box mx="10">
+          <LoginInput />
+          <DivideLineSocialButton />
         </Box>
-      </Flex>
-    </form>
+        <Flex justify="center">
+          <TwitterButton />
+        </Flex>
+      </Box>
+    </Flex>
   )
 })
