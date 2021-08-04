@@ -17,16 +17,12 @@ export const LoginInput: VFC = memo(() => {
   const [showPassword, setShowPassword] = useState(false);
 
   const { formState: { errors }, register, handleSubmit } = useForm<IFormInput>();
+  const dispatch = useDispatch();
   const { showMessage } = useMessage();
-　const dispatch = useDispatch();
 
   const onSubmit = (data: IFormInput) => {
-    try {
-      dispatch(signIn({username: "username", email: data.email, password: data.password}))
-      showMessage({title: "正常にログインできました。", status: "success"});
-    } catch (error) {
-      alert(error.message)
-    }
+    const { email, password } = data;
+    dispatch(signIn({email, password, showMessage}))
   }
 
   return (

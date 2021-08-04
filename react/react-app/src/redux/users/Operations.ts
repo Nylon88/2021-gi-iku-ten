@@ -4,7 +4,7 @@ import auth from "../../firebase";
 import { useMessage } from "../../hooks/useMessage";
 
 import { signInAction, signUpAction } from "./Action";
-import { Users } from "./ActionType";
+import { SignInAndUp, Users } from "./ActionType";
 
 
 export const signUp = (signUpData: Omit<Users, "isSignedIn" | "id">) => {
@@ -32,22 +32,38 @@ export const signUp = (signUpData: Omit<Users, "isSignedIn" | "id">) => {
   }
 }
 
-export const signIn = (signInData: Omit<Users, "isSignedIn" | "id">) => {
+export const signIn = (signInData: Omit<SignInAndUp, "username">) => {
   return async (dispatch: Dispatch<any>, getState: any) => {
     const state = getState();
     const isSignedIn = state.users.isSignedIn;
-    const { username, email, password } = signInData;
+    const { email, password, showMessage } = signInData;
 
     if (!isSignedIn) {
       // firebaseでログイン
       await auth.signInWithEmailAndPassword(email, password)
-      dispatch(signInAction({
-        id: 1,
-        username,
-        email,
-        password
-      }))
-      dispatch(push("/"))
+        .then(() => {
+          // storeにユーザー情報を保存
+          dispatch(signInAction({
+            id: 1,
+            username: "username",
+            email,
+            password
+          }))
+          // ルートパスに移動
+          dispatch(push("/"))
+          // メッセージの表示
+          showMessage({title: "正常にログインできました。", status: "success"});
+        }
+      ).catch((error) => {
+        // エラーメッセージの表示
+        if (error.code === "auth/user-not-found") {
+          showMessage({title: "ユーザーが見つかりません。", status: "error"})
+        } else if (error.code === "auth/wrong-password") {
+          showMessage({title: "パスワードが間違っています。", status: "error"})
+        } else {
+          showMessage({title: "不明なエラーです。", status: "error"})
+        }
+      })
     }
   }
 }
