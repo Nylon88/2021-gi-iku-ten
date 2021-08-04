@@ -71,8 +71,8 @@ export const LoginInput: VFC = memo(() => {
               onClick={() => setShowPassword(!showPassword)}
               children={showPassword ? <FaEye /> : <FaEyeSlash />}
             />
-            {errors.password ? <Text fontSize="xs" color="red.500">※パスワードは必須です。</Text> : <Box h="1rem"></Box>}
           </InputGroup>
+          {errors.password ? <Text fontSize="xs" color="red.500">※パスワードは必須です。</Text> : <Box h="1rem"></Box>}
         </FormControl>
       </Stack>
       <Button
