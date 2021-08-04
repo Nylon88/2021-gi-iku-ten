@@ -1,6 +1,8 @@
-import { Box, Button, FormControl, FormLabel, Input, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react";
+import { useState } from "react";
 import { memo, VFC } from "react";
 import { useForm } from "react-hook-form";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import auth from "../../../firebase";
 
@@ -13,6 +15,8 @@ type IFormInput = {
 }
 
 export const LoginInput: VFC = memo(() => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const { formState: { errors }, register, handleSubmit } = useForm<IFormInput>();
   const { showMessage } = useMessage();
 　const dispatch = useDispatch();
@@ -52,15 +56,23 @@ export const LoginInput: VFC = memo(() => {
         </FormControl>
         <FormControl isRequired>
           <FormLabel>パスワード</FormLabel>
-          <Input
-            placeholder={"パスワードを入力してください"}
-            size="lg"
-            borderRadius="0"
-            {...register("password", {
-              required: true
-            })}
-          />
-          {errors.password ? <Text fontSize="xs" color="red.500">※パスワードは必須です。</Text> : <Box h="1rem"></Box>}
+          <InputGroup>
+            <Input
+              placeholder={"パスワードを入力してください"}
+              size="lg"
+              type={showPassword ? "text" : "password"}
+              borderRadius="0"
+              {...register("password", {
+                required: true
+              })}
+            />
+            <InputRightElement
+              my={1}
+              onClick={() => setShowPassword(!showPassword)}
+              children={showPassword ? <FaEye /> : <FaEyeSlash />}
+            />
+            {errors.password ? <Text fontSize="xs" color="red.500">※パスワードは必須です。</Text> : <Box h="1rem"></Box>}
+          </InputGroup>
         </FormControl>
       </Stack>
       <Button
