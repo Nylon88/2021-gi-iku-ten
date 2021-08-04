@@ -14,6 +14,19 @@ export const signUpAction = (userState: Omit<Users, "isSignedIn">) => {
   }
 };
 
+export const SIGN_IN = "SIGN_IN";
+export const signInAction = (userState: Omit<Users, "isSignedIn">) => {
+  return {
+    type: "SIGN_UP",
+    payload: {
+      isSignedIn: true,
+      id: userState.id,
+      username: userState.username,
+      email: userState.email,
+      password: userState.password
+    }
+  }
+};
 
 export const SIGN_OUT = "SIGN_OUT";
 export const signOutAction = () => {
