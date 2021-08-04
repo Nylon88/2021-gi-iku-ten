@@ -22,7 +22,7 @@ export const RegistrationInput: VFC = memo(() => {
   const { showMessage } = useMessage();
   const dispatch = useDispatch();
 
-  const onSubmit = async (data: IFormInput) => {
+  const onSubmit = (data: IFormInput) => {
     if (data.password === data.passwordConf) {
       try {
         dispatch(signUp({username: data.userName, email: data.email, password: data.password}));
