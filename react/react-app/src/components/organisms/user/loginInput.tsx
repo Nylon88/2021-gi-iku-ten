@@ -1,10 +1,11 @@
 import { Box, Button, FormControl, FormLabel, Input, Stack, Text } from "@chakra-ui/react";
-import { push } from "connected-react-router";
 import { memo, VFC } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import auth from "../../../firebase";
 
 import { useMessage } from "../../../hooks/useMessage";
+import { signIn } from "../../../redux/users/Operations";
 
 type IFormInput = {
   email: string;
@@ -16,10 +17,14 @@ export const LoginInput: VFC = memo(() => {
   const { showMessage } = useMessage();
 　const dispatch = useDispatch();
 
-  const onSubmit = (data: IFormInput) => {
-    console.log(data)
-    dispatch(push("/"));
-    showMessage({title: "正常にログインできました。", status: "success"});
+  const onSubmit = async (data: IFormInput) => {
+    try {
+      await auth.signInWithEmailAndPassword(data.email, data.password)
+      dispatch(signIn({username: "username", email: data.email, password: data.password}))
+      showMessage({title: "正常にログインできました。", status: "success"});
+    } catch (error) {
+      alert(error.message)
+    }
   }
 
   return (
@@ -66,7 +71,7 @@ export const LoginInput: VFC = memo(() => {
         borderRadius="0"
         _hover={{opacity: 0.8}}
         isFullWidth
-      >登録</Button>
+      >ログイン</Button>
     </form>
   )
 })
