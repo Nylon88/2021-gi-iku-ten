@@ -4,7 +4,6 @@ import { memo, VFC } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import auth from "../../../firebase";
 
 import { useMessage } from "../../../hooks/useMessage";
 import { signIn } from "../../../redux/users/Operations";
@@ -21,9 +20,8 @@ export const LoginInput: VFC = memo(() => {
   const { showMessage } = useMessage();
 　const dispatch = useDispatch();
 
-  const onSubmit = async (data: IFormInput) => {
+  const onSubmit = (data: IFormInput) => {
     try {
-      await auth.signInWithEmailAndPassword(data.email, data.password)
       dispatch(signIn({username: "username", email: data.email, password: data.password}))
       showMessage({title: "正常にログインできました。", status: "success"});
     } catch (error) {

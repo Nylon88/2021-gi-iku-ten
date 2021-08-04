@@ -39,6 +39,8 @@ export const signIn = (signInData: Omit<Users, "isSignedIn" | "id">) => {
     const { username, email, password } = signInData;
 
     if (!isSignedIn) {
+      // firebaseでログイン
+      await auth.signInWithEmailAndPassword(email, password)
       dispatch(signInAction({
         id: 1,
         username,
