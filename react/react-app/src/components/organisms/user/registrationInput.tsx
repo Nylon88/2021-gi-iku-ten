@@ -1,5 +1,4 @@
 import { Box, Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, Stack, Text } from "@chakra-ui/react";
-import { push } from "connected-react-router";
 import { memo, useState, VFC } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -7,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 import auth from "../../../firebase";
 import { useMessage } from "../../../hooks/useMessage";
-import { signUpAction } from "../../../redux/users/Action";
+import { signUp } from "../../../redux/users/Operations";
 
 type IFormInput = {
   userName: string;
@@ -30,8 +29,7 @@ export const RegistrationInput: VFC = memo(() => {
         // Firebaseにユーザーを作成する
         await auth.createUserWithEmailAndPassword(data.email, data.password);
         // sendSignInLinkToEmail() を利用すると、メールアドレス認証のためのメールを送信することも可能
-        dispatch(signUpAction({id: 1, username: data.userName, email: data.email, password: data.password}));
-        dispatch(push("/"));
+        dispatch(signUp({username: data.userName, email: data.email, password: data.password}));
         showMessage({title: "正常に登録できました。", status: "success"});
 
       } catch (error) {
