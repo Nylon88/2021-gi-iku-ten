@@ -15,10 +15,8 @@ export const UserRegistration: VFC = () =>{
         <Box mx="10">
           <RegistrationInput />
           <DivideLineSocialButton />
-        </Box>
-        <Flex justify="center">
           <TwitterButton />
-        </Flex>
+        </Box>
       </Box>
     </Flex>
   )

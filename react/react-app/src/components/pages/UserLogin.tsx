@@ -16,10 +16,8 @@ export const UserLogin: VFC = memo(() => {
         <Box mx="10">
           <LoginInput />
           <DivideLineSocialButton />
-        </Box>
-        <Flex justify="center">
           <TwitterButton />
-        </Flex>
+        </Box>
       </Box>
     </Flex>
   )
