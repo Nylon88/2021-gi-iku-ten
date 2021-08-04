@@ -28,7 +28,7 @@ COPY Gemfile.lock $APP_HOME/Gemfile.lock
 RUN bundle install
 
 # Railsアプリを作成（既存のアプリをマウントする場合は不要）
-RUN rails new . -d mysql --skip-bundle || bundle update
+RUN rails new . --api -d mysql --skip-bundle || bundle update
 
 # Webpackerをインストール
 RUN rails webpacker:install
