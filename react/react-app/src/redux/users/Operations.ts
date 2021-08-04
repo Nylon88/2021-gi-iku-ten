@@ -1,6 +1,7 @@
 import { push } from "connected-react-router";
 import { Dispatch } from "redux";
 import auth from "../../firebase";
+import { useMessage } from "../../hooks/useMessage";
 
 import { signInAction, signUpAction } from "./Action";
 import { Users } from "./ActionType";
@@ -10,6 +11,7 @@ export const signUp = (signUpData: Omit<Users, "isSignedIn" | "id">) => {
     const state = getState();
     const isSignedIn = state.users.isSignedIn;
     const { username, email, password } = signUpData;
+    const { showMessage } = useMessage();
 
     if (!isSignedIn) {
       // firebaseにユーザーを作成する
@@ -21,6 +23,8 @@ export const signUp = (signUpData: Omit<Users, "isSignedIn" | "id">) => {
         password
       }))
       dispatch(push("/"))
+      // メッセージの表示
+      showMessage({title: "正常に登録できました。", status: "success"});
     }
   }
 }

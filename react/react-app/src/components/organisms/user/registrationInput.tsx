@@ -26,8 +26,6 @@ export const RegistrationInput: VFC = memo(() => {
     if (data.password === data.passwordConf) {
       try {
         dispatch(signUp({username: data.userName, email: data.email, password: data.password}));
-        showMessage({title: "正常に登録できました。", status: "success"});
-
       } catch (error) {
         // ユーザー作成が失敗するとその内容をアラート表示
         alert(error.message);
