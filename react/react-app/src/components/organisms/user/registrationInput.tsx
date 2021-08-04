@@ -23,13 +23,9 @@ export const RegistrationInput: VFC = memo(() => {
   const dispatch = useDispatch();
 
   const onSubmit = (data: IFormInput) => {
-    if (data.password === data.passwordConf) {
-      try {
-        dispatch(signUp({username: data.userName, email: data.email, password: data.password}));
-      } catch (error) {
-        // ユーザー作成が失敗するとその内容をアラート表示
-        alert(error.message);
-      }
+    const { userName, email, password, passwordConf } = data;
+    if (password === passwordConf) {
+      dispatch(signUp({username: userName, email, password, showMessage}));
     } else {
       showMessage({title: "パスワードとパスワード（確認用）が異なります。", status: "error"});
     }
