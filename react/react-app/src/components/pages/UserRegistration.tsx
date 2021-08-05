@@ -1,70 +1,25 @@
-import { VFC, useState } from "react";
-import { Box, Button, Center, Divider, Flex, Heading, Stack, Text} from "@chakra-ui/react";
-import { FaTwitter } from 'react-icons/fa'
-import { useDispatch } from "react-redux";
+import { VFC } from "react";
+import { Box, Center, Flex, Heading } from "@chakra-ui/react";
 
-import { LabelInput } from "../molecules/LabelInput";
-import { signUp } from "../../redux/users/Operations";
-import { useMessage } from "../../hooks/useMessage";
+import { RegistrationInput } from "../organisms/user/registrationInput";
+import { TwitterButton } from "../atoms/twitterButton";
+import { DivideLineSocialButton } from "../atoms/divideLineSocialButton";
+import { GoogleButton } from "../atoms/googleButton";
 
-export const UserRegistration: VFC = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConf, setPasswordConf] = useState("");
-
-  const dispatch = useDispatch();
-  const { showMessage } = useMessage();
-
-  const onClickRegistration = () => {
-    if (password === passwordConf) {
-      dispatch(signUp({username: username, email: email, password: password}))
-      showMessage({title: "正常にログインできました", status: "success"})
-    } else {
-      showMessage({title: "パスワードとパスワード（確認用）が異なります", status: "error"})
-    }
-  }
-
+export const UserRegistration: VFC = () =>{
   return (
-    <form>
-      <Flex align="center" justify="center" h="calc(100vh - 134.109px)">
-        <Box w="600px" border="1px" borderColor="gray.200" p="4">
-          <Center>
-            <Heading as="h1" size="lg" my="4">新規登録</Heading>
-          </Center>
-          <Box mx="10">
-            <Stack>
-              <LabelInput label="ユーザー名" state={username} setState={setUsername} />
-              <LabelInput label="メールアドレス" state={email} setState={setEmail} />
-              <LabelInput label="パスワード" state={password} setState={setPassword} />
-              <LabelInput label="パスワード（確認用）" state={passwordConf} setState={setPasswordConf} />
-            </Stack>
-            <Button
-              mt="5"
-              bg="#406B15"
-              color="white"
-              borderRadius="0"
-              onClick={onClickRegistration}
-              _hover={{opacity: 0.8}}
-              isFullWidth
-            >登録</Button>
-            <Flex my="2">
-              <Divider my="4" />
-              <Text mx="4" my="1">or</Text>
-              <Divider my ="4" />
-            </Flex>
-          </Box>
-          <Flex justify="center">
-            <Button
-              mx="4"
-              colorScheme="twitter"
-              borderRadius="0"
-              size="sm"
-              leftIcon={<FaTwitter />}
-            >Sign Up with Twitter</Button>
-          </Flex>
+    <Flex align="center" justify="center" h="calc(100vh - 134.109px)">
+      <Box w="600px" border="1px" borderColor="gray.200" p="4">
+        <Center>
+          <Heading as="h1" size="lg" my="4">新規登録</Heading>
+        </Center>
+        <Box mx="10">
+          <RegistrationInput />
+          <DivideLineSocialButton />
+          <TwitterButton />
+          <GoogleButton />
         </Box>
-      </Flex>
-    </form>
+      </Box>
+    </Flex>
   )
 }

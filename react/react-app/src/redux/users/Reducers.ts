@@ -9,6 +9,11 @@ export const UsersReducer = (state = initialState.users, action: Action) => {
         ...state,
         ...action.payload
       }
+    case Actions.SIGN_IN:
+      return {
+        ...state,
+        ...action.payload
+      }
       case Actions.SIGN_OUT:
         return {
           ...state,
