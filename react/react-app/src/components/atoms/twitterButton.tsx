@@ -5,11 +5,12 @@ import { FaTwitter } from "react-icons/fa"
 export const TwitterButton = memo(() => {
   return (
     <Button
-      mx="4"
+      my={2}
       colorScheme="twitter"
       borderRadius="0"
-      size="sm"
+      isFullWidth
       leftIcon={<FaTwitter />}
+      shadow="base"
     >Sign Up with Twitter</Button>
   )
 })

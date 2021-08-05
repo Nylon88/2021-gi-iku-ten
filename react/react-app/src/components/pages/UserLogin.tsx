@@ -2,6 +2,7 @@ import { Box, Center, Flex, Heading } from "@chakra-ui/react"
 import { memo, VFC } from "react"
 
 import { DivideLineSocialButton } from "../atoms/divideLineSocialButton"
+import { GoogleButton } from "../atoms/googleButton"
 import { TwitterButton } from "../atoms/twitterButton"
 import { LoginInput } from "../organisms/user/loginInput"
 
@@ -16,10 +17,9 @@ export const UserLogin: VFC = memo(() => {
         <Box mx="10">
           <LoginInput />
           <DivideLineSocialButton />
-        </Box>
-        <Flex justify="center">
           <TwitterButton />
-        </Flex>
+          <GoogleButton />
+        </Box>
       </Box>
     </Flex>
   )

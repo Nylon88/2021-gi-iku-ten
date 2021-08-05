@@ -1,8 +1,10 @@
 import { VFC } from "react";
-import { Box, Center, Divider, Flex, Heading, Text} from "@chakra-ui/react";
+import { Box, Center, Flex, Heading } from "@chakra-ui/react";
 
 import { RegistrationInput } from "../organisms/user/registrationInput";
 import { TwitterButton } from "../atoms/twitterButton";
+import { DivideLineSocialButton } from "../atoms/divideLineSocialButton";
+import { GoogleButton } from "../atoms/googleButton";
 
 export const UserRegistration: VFC = () =>{
   return (
@@ -13,15 +15,10 @@ export const UserRegistration: VFC = () =>{
         </Center>
         <Box mx="10">
           <RegistrationInput />
-          <Flex my="2">
-            <Divider my="4" />
-            <Text mx="4" my="1">or</Text>
-            <Divider my ="4" />
-          </Flex>
-        </Box>
-        <Flex justify="center">
+          <DivideLineSocialButton />
           <TwitterButton />
-        </Flex>
+          <GoogleButton />
+        </Box>
       </Box>
     </Flex>
   )
