@@ -2,17 +2,7 @@
 FROM ruby:2.6.5
 
 # aptリポジトリの更新とアップグレード
-RUN apt update
-RUN apt -y upgrade
-
-# Node.jsをインストール
-RUN curl -sL RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
-    apt install nodejs
-
-# Yarnをインストール
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    apt update && apt install yarn
+RUN apt update && apt -y upgrade
 
 # 環境変数を設定
 ENV APP_HOME /backend
@@ -21,29 +11,20 @@ ENV APP_HOME /backend
 WORKDIR $APP_HOME
 
 # ホストのGemfileなどをコンテナへコピー
-COPY Gemfile $APP_HOME/Gemfile
-COPY Gemfile.lock $APP_HOME/Gemfile.lock
+COPY ./backend/Gemfile $APP_HOME/Gemfile
+COPY ./backend/Gemfile.lock $APP_HOME/Gemfile.lock
 
 # BundlerでGemをインストール
 RUN bundle install
 
-# Railsアプリを作成（既存のアプリをマウントする場合は不要）
-RUN rails new . --api -d mysql --skip-bundle || bundle update
-
-# Webpackerをインストール
-RUN rails webpacker:install
-
 # 設定ファイル書き換え（既存のアプリをマウントする場合は不要）
-COPY config $APP_HOME/config
-
-# マウントできるように公開
-VOLUME $APP_HOME
+# COPY config $APP_HOME/config
 
 # pip3のインストール
 RUN apt install python3-pip -y
 
-# pythonのスクレイピング用のパッケージをインストールする
-COPY requirements.txt $APP_HOME/requirements.txt
+# # pythonのスクレイピング用のパッケージをインストールする
+COPY ./backend/requirements.txt $APP_HOME/requirements.txt
 RUN pip3 install -r requirements.txt
 
 # socketファイルのパーミッションを変更

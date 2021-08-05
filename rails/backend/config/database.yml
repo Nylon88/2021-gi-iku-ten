@@ -4,6 +4,7 @@ default: &default
   pool: <%= ENV.fetch('RAILS_MAX_THREADS') { 5 } %>
   username: <%= ENV.fetch('APP_DATABASE_USER') %>
   password: <%= ENV.fetch('APP_DATABASE_PASSWORD') %>
+  # 同ネットワーク上のmysqlは名前解決によって接続することが出来る。
   host: <%= ENV.fetch('APP_DATABASE_HOST') %>
 
 development:

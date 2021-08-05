@@ -12,19 +12,24 @@ services:
       - db
     tty: true
     volumes:
+      - ./rails/backend:/backend
       # pumaソケットファイルディレクトリを共有
-      - pumasocket:/backend/tmp/sockets 
+      - pumasocket:/backend/tmp/sockets
+    # command: bundle install
     deploy:
       resources:
         limits:
           cpus: '0.2'
-          memory: 350M
+          memory: 400M
 
   db:
     build: mysql
     container_name: 2021-gi-iku-ten_db
     env_file:
       - ./.db.env
+    # データの永続化
+    volumes:
+      - mysql_data:/var/lib/mysql
     tty: true
     deploy:
       resources:
@@ -54,3 +59,4 @@ services:
 
 volumes:
   pumasocket: # 共通ボリュームを作成  
+  mysql_data:
