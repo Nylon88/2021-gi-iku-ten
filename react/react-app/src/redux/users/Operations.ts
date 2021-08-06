@@ -36,7 +36,8 @@ export const signUp = (signUpData: SignInAndUp) => {
               // メッセージの表示
               showMessage({title: "正常に登録できました。", status: "success"});
             }
-          ).catch(() => {
+          ).catch(async () => {
+            await auth.currentUser?.delete();
             showMessage({title: "ユーザーの保存に失敗しました。もう一度お試しください。", status: "error"})
           })
         }
