@@ -1,7 +1,8 @@
 import { push } from "connected-react-router";
 import { Dispatch } from "redux";
-import auth from "../../firebase";
+import axios from "axios";
 
+import auth from "../../firebase";
 import { signInAction, signOutAction, signUpAction } from "./Action";
 import { SignInAndUp } from "./ActionType";
 
@@ -11,22 +12,33 @@ export const signUp = (signUpData: SignInAndUp) => {
     const state = getState();
     const isSignedIn = state.users.isSignedIn;
     const { username, email, password, showMessage } = signUpData;
+    const postData = {
+      username,
+      email,
+      password
+    }
 
     if (!isSignedIn) {
       // firebaseにユーザーを作成する
       await auth.createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          // storeにユーザー情報を保存
-          dispatch(signUpAction({
-            id: 1,
-            username,
-            email,
-            password
-          }))
-          // ルートパスに移動
-          dispatch(push("/"))
-          // メッセージの表示
-          showMessage({title: "正常に登録できました。", status: "success"});
+        .then(async () => {
+          await axios.post("http://localhost:8000/v1/users", postData)
+            .then(res => {
+              // storeにユーザー情報を保存
+              dispatch(signUpAction({
+                id: res.data.id,
+                username: res.data.username,
+                email: res.data.email,
+                password: res.data.password
+              }))
+              // ルートパスに移動
+              dispatch(push("/"))
+              // メッセージの表示
+              showMessage({title: "正常に登録できました。", status: "success"});
+            }
+          ).catch(() => {
+            showMessage({title: "ユーザーの保存に失敗しました。もう一度お試しください。", status: "error"})
+          })
         }
         ).catch((error) => {
           // エラーメッセージの表示
