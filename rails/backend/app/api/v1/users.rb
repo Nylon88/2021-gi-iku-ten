@@ -21,8 +21,8 @@ module V1
         requires :email, type: String
         requires :password, type: String
       end
-      get '/' do
-        @user = User.find_by(email: email)
+      post '/login' do
+        @user = User.find_by(email: params[:email])
         if @user
           present @user, with: V1::Entities::UserEntity
         else
