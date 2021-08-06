@@ -2,7 +2,7 @@ import { push } from "connected-react-router";
 import { Dispatch } from "redux";
 import auth from "../../firebase";
 
-import { signInAction, signUpAction } from "./Action";
+import { signInAction, signOutAction, signUpAction } from "./Action";
 import { SignInAndUp } from "./ActionType";
 
 
@@ -74,6 +74,33 @@ export const signIn = (signInData: Omit<SignInAndUp, "username">) => {
           showMessage({title: "不明なエラーです。もう一度お試しください。", status: "error"})
         }
       })
+    }
+  }
+}
+
+export const signOut = (signOutData: Pick<SignInAndUp, "showMessage">) => {
+  return (dispatch: Dispatch<any>, getState: any) => {
+    const state = getState();
+    const isSignedIn = state.users.isSignedIn;
+    const { showMessage } = signOutData;
+
+    if (isSignedIn) {
+      // firebaseログアウト
+      auth.signOut()
+      .then(() => {
+        // signOutActionの呼び出し
+        dispatch(signOutAction());
+        // sign_inパスに移動
+        dispatch(push("/sign_in"));
+        // メッセージの表示
+        showMessage({title: "正常にログアウトされました。", status: "success"});
+      }).catch(() => {
+        // エラーメッセージの表示
+        showMessage({title: "不明なエラーです。もう一度お試しください。", status: "error"});
+      })
+    } else {
+      // エラーメッセージの表示
+      showMessage({title: "ログインしてください。", status: "error"});
     }
   }
 }
