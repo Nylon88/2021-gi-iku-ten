@@ -5,6 +5,8 @@ import { push } from "connected-react-router";
 
 import { Selector } from "../../../redux/users/ActionType";
 import { getUserName, getUserState } from "../../../redux/users/selectors";
+import { signOut } from "../../../redux/users/Operations";
+import { useMessage } from "../../../hooks/useMessage";
 
 export const Header:VFC = memo(() => {
   const selector = useSelector((state: Selector) => state);
@@ -12,6 +14,7 @@ export const Header:VFC = memo(() => {
   const LoginState = getUserState(selector)
 
   const dispatch = useDispatch();
+  const { showMessage } = useMessage();
 
   return (
     <Flex mx={32} my={3} align="flex-end">
@@ -23,7 +26,12 @@ export const Header:VFC = memo(() => {
       />
       <Spacer />
       {LoginState ? (
-        <h1>{userName}</h1>
+        <>
+          <Button
+            onClick={() => dispatch(signOut({showMessage}))}
+          >ログアウト</Button>
+          <h1>{userName}</h1>
+        </>
       ) : (
         <>
           <Button
