@@ -59,22 +59,32 @@ export const signIn = (signInData: Omit<SignInAndUp, "username">) => {
     const state = getState();
     const isSignedIn = state.users.isSignedIn;
     const { email, password, showMessage } = signInData;
+    const getData = {
+      email,
+      password
+    }
 
     if (!isSignedIn) {
       // firebaseでログイン
       await auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
-          // storeにユーザー情報を保存
-          dispatch(signInAction({
-            id: 1,
-            username: "username",
-            email,
-            password
-          }))
-          // ルートパスに移動
-          dispatch(push("/"))
-          // メッセージの表示
-          showMessage({title: "正常にログインできました。", status: "success"});
+        .then(async () => {
+          await axios.post(`http://localhost:8000/v1/users/login`, getData)
+            .then(res => {
+              // storeにユーザー情報を保存
+              dispatch(signInAction({
+                id: res.data.id,
+                username: res.data.username,
+                email: res.data.email,
+                password: res.data.password
+              }))
+              // ルートパスに移動
+              dispatch(push("/"))
+              // メッセージの表示
+              showMessage({title: "正常にログインできました。", status: "success"});
+            }
+          ).catch(() => {
+            showMessage({title: "不明なエラーです。もう一度お試しください。", status: "error"})
+          })
         }
       ).catch((error) => {
         // エラーメッセージの表示
