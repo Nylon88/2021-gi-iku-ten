@@ -15,6 +15,20 @@ module V1
           present @user.errors.full_messages
         end
       end
+
+      desc 'ログイン時のレスポンス'
+      params do
+        requires :email, type: String
+        requires :password, type: String
+      end
+      get '/' do
+        @user = User.find_by(email: email)
+        if @user
+          present @user, with: V1::Entities::UserEntity
+        else
+          present @user.errors.full_messages
+        end
+      end
     end
   end
 end
