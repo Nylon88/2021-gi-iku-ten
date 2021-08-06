@@ -1,5 +1,5 @@
 import { memo, VFC } from "react";
-import { Button, Flex, Image, Spacer } from "@chakra-ui/react";
+import { Button, Flex, Image, Link, Spacer } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
 
@@ -18,12 +18,14 @@ export const Header:VFC = memo(() => {
 
   return (
     <Flex mx={32} my={3} align="flex-end">
-      <Image
-        src={`${process.env.PUBLIC_URL}/PaperPicks.png`}
-        alt="PaperPicks Logo"
-        htmlWidth="400"
-        _hover={{cursor: "pointer"}}
-      />
+      <Link onClick={() => dispatch(push("/"))}>
+        <Image
+          src={`${process.env.PUBLIC_URL}/PaperPicks.png`}
+          alt="PaperPicks Logo"
+          htmlWidth="400"
+          _hover={{cursor: "pointer"}}
+        />
+      </Link>
       <Spacer />
       {LoginState ? (
         <>
