@@ -2,7 +2,7 @@ import { LocationState } from 'history'
 
 export type Users = {
   isSignedIn: boolean;
-  id: number;
+  id: string;
   username: string;
   email: string;
   password: string;
