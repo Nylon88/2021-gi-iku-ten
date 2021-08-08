@@ -58,42 +58,36 @@ export const signIn = (signInData: Omit<SignInAndUp, "username">) => {
     const state = getState();
     const isSignedIn = state.users.isSignedIn;
     const { email, password, showMessage } = signInData;
-    const getData = {
-      email,
-      password
-    }
+    const user = auth.currentUser;
 
     if (!isSignedIn) {
       // firebaseでログイン
       await auth.signInWithEmailAndPassword(email, password)
-        .then(async () => {
-          await axios.post(`http://localhost:8000/v1/users/login`, getData)
-            .then(res => {
-              // storeにユーザー情報を保存
-              dispatch(signInAction({
-                id: res.data.id,
-                username: res.data.username,
-                email
-              }))
-              // ルートパスに移動
-              dispatch(push("/"))
-              // メッセージの表示
-              showMessage({title: "正常にログインできました。", status: "success"});
-            }
-          ).catch(() => {
+        .then(() => {
+          // ログインユーザー情報を取得
+          user?.providerData.forEach((profile) => {
+          // storeにユーザー情報を保存
+            dispatch(signInAction({
+              id: profile.uid,
+              username: profile.displayName,
+              email
+            }))
+          });
+          // ルートパスに移動
+          dispatch(push("/"))
+          // メッセージの表示
+          showMessage({title: "正常にログインできました。", status: "success"});
+        }).catch((error) => {
+          // エラーメッセージの表示
+          if (error.code === "auth/user-not-found") {
+            showMessage({title: "ユーザーが見つかりません。", status: "error"})
+          } else if (error.code === "auth/wrong-password") {
+            showMessage({title: "パスワードが間違っています。", status: "error"})
+          } else {
             showMessage({title: "不明なエラーです。もう一度お試しください。", status: "error"})
-          })
+          }
         }
-      ).catch((error) => {
-        // エラーメッセージの表示
-        if (error.code === "auth/user-not-found") {
-          showMessage({title: "ユーザーが見つかりません。", status: "error"})
-        } else if (error.code === "auth/wrong-password") {
-          showMessage({title: "パスワードが間違っています。", status: "error"})
-        } else {
-          showMessage({title: "不明なエラーです。もう一度お試しください。", status: "error"})
-        }
-      })
+      )
     }
   }
 }

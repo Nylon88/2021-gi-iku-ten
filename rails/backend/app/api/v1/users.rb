@@ -8,20 +8,6 @@ module V1
       post '/' do
         @user = User.create(username: params[:username])
       end
-
-      desc 'ログイン時のレスポンス'
-      params do
-        requires :email, type: String
-        requires :password, type: String
-      end
-      post '/login' do
-        @user = User.find_by(email: params[:email])
-        if @user
-          present @user, with: V1::Entities::UserEntity
-        else
-          present @user.errors.full_messages
-        end
-      end
     end
   end
 end
