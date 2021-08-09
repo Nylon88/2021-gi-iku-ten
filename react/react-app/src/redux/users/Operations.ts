@@ -12,27 +12,32 @@ export const signUp = (signUpData: SignInAndUp) => {
     const state = getState();
     const isSignedIn = state.users.isSignedIn;
     const { username, email, password, showMessage } = signUpData;
-    const user = auth.currentUser;
 
     if (!isSignedIn) {
       // firebaseにユーザーを作成する
       await auth.createUserWithEmailAndPassword(email, password)
-        .then(async () => {
+        .then(async (result) => {
           await axios.post("http://localhost:8000/v1/users", {username})
-            .then(() => {
-              // ログインユーザー情報を取得
-              user?.providerData.forEach((profile) => {
-                // storeにユーザー情報を保存
-                dispatch(signUpAction({
-                  id: profile?.uid,
-                  username: profile?.displayName,
-                  email: profile.email
-                }))
-              })
-              // ルートパスに移動
-              dispatch(push("/"))
-              // メッセージの表示
-              showMessage({title: "正常に登録できました。", status: "success"});
+            .then(async () => {
+              await result.user.updateProfile({displayName: username})
+                .then(() => {
+                  // ログインユーザー情報を取得
+                  result.user?.providerData.forEach((profile) => {
+                    // storeにユーザー情報を保存
+                    dispatch(signUpAction({
+                      id: profile?.uid,
+                      username: profile?.displayName,
+                      email: profile.email
+                    }))
+                  })
+                  // ルートパスに移動
+                  dispatch(push("/"))
+                  // メッセージの表示
+                  showMessage({title: "正常に登録できました。", status: "success"});
+                }).catch(() => {
+                  showMessage({title: "不明なエラーです。もう一度お試しください。", status: "error"});
+                }
+              )
             }
           ).catch(async () => {
             await auth.currentUser?.delete();
@@ -58,14 +63,13 @@ export const signIn = (signInData: Omit<SignInAndUp, "username">) => {
     const state = getState();
     const isSignedIn = state.users.isSignedIn;
     const { email, password, showMessage } = signInData;
-    const user = auth.currentUser;
 
     if (!isSignedIn) {
       // firebaseでログイン
       await auth.signInWithEmailAndPassword(email, password)
-        .then(() => {
+        .then((result) => {
           // ログインユーザー情報を取得
-          user?.providerData.forEach((profile) => {
+          result.user.providerData.forEach((profile) => {
           // storeにユーザー情報を保存
             dispatch(signInAction({
               id: profile.uid,
