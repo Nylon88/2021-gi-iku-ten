@@ -5,5 +5,9 @@ export const initialState = {
     username: "",
     email: "",
     password: ""
+  },
+  searchPapers: {
+    word: "",
+    result: []
   }
 }
