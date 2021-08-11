@@ -6,6 +6,17 @@ import argparse
 from argparse import ArgumentError
 
 
+# ログ取得
+import logging
+logger = logging.getLogger(__name__)
+# ログレベル設定
+logger.setLevel(logging.INFO)
+##ハンドラ取得
+# get_handler = logging.FileHandler('app/python-script/logs/paper.log')
+get_handler = logging.FileHandler('./logs/paper.log')
+logger.addHandler(get_handler)
+
+
 def get_search_results_df(keyword: str,number:int):
     """
     Description：
@@ -90,6 +101,7 @@ def extra_argments():
 if __name__ == "__main__":
     # ファイル引数を受け取る
     keyword, number = extra_argments()
+    logger.info(f'keyword:{keyword} | number:{number}')
 
     # google schalorでスクレイピングを実行 -> jsonで返す
     search_results_jsoned_df = get_search_results_df(keyword,number)

@@ -7,6 +7,15 @@ RUN apt update && apt -y upgrade
 # 環境変数を設定
 ENV APP_HOME /backend
 
+# Debianを日本語対応可化
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get install -y locales
+RUN echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen ja_JP.UTF-8 && \
+    dpkg-reconfigure locales && \
+    /usr/sbin/update-locale LANG=ja_JP.UTF-8
+ENV LC_ALL ja_JP.UTF-8
+
 # ディレクトリの作成と移動
 WORKDIR $APP_HOME
 
