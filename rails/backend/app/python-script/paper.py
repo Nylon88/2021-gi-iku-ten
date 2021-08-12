@@ -1,10 +1,11 @@
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
+
 import re
 import argparse
 from argparse import ArgumentError
-
+from itertools import zip_longest
 
 from utils.log_file_by_level import logger
 
@@ -42,7 +43,8 @@ def get_search_results_df(keyword: str,number:int):
         tags5 = soup.find_all("div", {"class": "gs_or_ggsm"})   # 発行元
 
         rank = 1
-        for tag1, tag2, tag3, tag4, tags5 in zip(tags1, tags2, tags3, tags4, tags5):
+        # for tag1, tag2, tag3, tag4, tags5 in zip(tags1, tags2, tags3, tags4, tags5):
+        for tag1, tag2, tag3, tag4, tag5 in zip_longest(tags1, tags2, tags3, tags4, tags5, fillvalue='なし'):
             # タイトル
             title = tag1.text.replace("[HTML]","")
             # URL
@@ -52,13 +54,22 @@ def get_search_results_df(keyword: str,number:int):
             writer = re.sub(r'\d', '', writer)
             # 発行された年
             year = tag2.text
-            year = re.sub(r'\D', '', year)
+            year = re.sub(r'\D', '', year)            
             # 引用された数
-            citations = tag3.replace("引用元","")
-            # 概要の抽出
-            abstract = tag4.text
+            citations = tag3.replace("引用元","")            
+            # 概要の抽出            
+            if tag4 is None:
+                abstract = "なし"
+            else:
+                abstract = tag4.text
             # 発行元
-            publisher = tags5.text.replace("[PDF]","").replace(" ","")
+            if tag5 is None:
+                publisher = "なし"
+            elif isinstance(tag5, str):
+                publisher = tag5.replace("[PDF]","").replace(" ","")
+            else:
+                publisher = tag5.text.replace("[PDF]","").replace(" ","")
+
             # 列を構成
             se = pd.Series([rank, title, abstract, writer, year, publisher, citations, url], columns)
             df = df.append(se, columns)
