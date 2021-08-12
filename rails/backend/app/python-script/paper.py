@@ -6,15 +6,7 @@ import argparse
 from argparse import ArgumentError
 
 
-# ログ取得
-import logging
-logger = logging.getLogger(__name__)
-# ログレベル設定
-logger.setLevel(logging.INFO)
-##ハンドラ取得
-# get_handler = logging.FileHandler('app/python-script/logs/paper.log')
-get_handler = logging.FileHandler('./logs/paper.log')
-logger.addHandler(get_handler)
+from utils.log_file_by_level import logger
 
 
 def get_search_results_df(keyword: str,number:int):
@@ -38,43 +30,43 @@ def get_search_results_df(keyword: str,number:int):
 
 
     """
+    try:
+        columns = ["rank", "title", "abstract", "writer", "year", "publisher", "citations", "url"]
+        df = pd.DataFrame(columns=columns) #表の作成
+        html_doc = requests.get("https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=" + str(number) + "&q=" + keyword).text
+        soup = BeautifulSoup(html_doc, "html.parser") # BeautifulSoupの初期化
+        tags1 = soup.find_all("h3", {"class": "gs_rt"})  # title&url
+        tags2 = soup.find_all("div", {"class": "gs_a"})  # writer&year
+        tags3 = soup.find_all(text=re.compile("引用元"))  # citation
+        tags4 = soup.find_all("div", {"class": "gs_rs"})   # 簡単なアブストラクト
+        tags5 = soup.find_all("div", {"class": "gs_or_ggsm"})   # 発行元
 
-    columns = ["rank", "title", "abstract", "writer", "year", "publisher", "citations", "url"]
-    df = pd.DataFrame(columns=columns) #表の作成
-    html_doc = requests.get("https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=" + str(number) + "&q=" + keyword).text
-    soup = BeautifulSoup(html_doc, "html.parser") # BeautifulSoupの初期化
-    tags1 = soup.find_all("h3", {"class": "gs_rt"})  # title&url
-    tags2 = soup.find_all("div", {"class": "gs_a"})  # writer&year
-    tags3 = soup.find_all(text=re.compile("引用元"))  # citation
-    tags4 = soup.find_all("div", {"class": "gs_rs"})   # 簡単なアブストラクト
-    tags5 = soup.find_all("div", {"class": "gs_or_ggsm"})   # 発行元
-
-    print(f'tags5-text:{tags5[0].text.replace("[PDF]","").replace(" ","")}')
-
-    rank = 1
-    for tag1, tag2, tag3, tag4, tags5 in zip(tags1, tags2, tags3, tags4, tags5):
-        # タイトル
-        title = tag1.text.replace("[HTML]","")
-        # URL
-        url = tag1.select("a")[0].get("href")
-        # 著者
-        writer = tag2.text
-        writer = re.sub(r'\d', '', writer)
-        # 発行された年
-        year = tag2.text
-        year = re.sub(r'\D', '', year)
-        # 引用された数
-        citations = tag3.replace("引用元","")
-        # 概要の抽出
-        abstract = tag4.text
-        # 発行元
-        publisher = tags5.text.replace("[PDF]","").replace(" ","")
-        # 列を構成
-        se = pd.Series([rank, title, abstract, writer, year, publisher, citations, url], columns)
-        df = df.append(se, columns)
-        rank += 1
-    
-    jsoned_df = df2json(df) 
+        rank = 1
+        for tag1, tag2, tag3, tag4, tags5 in zip(tags1, tags2, tags3, tags4, tags5):
+            # タイトル
+            title = tag1.text.replace("[HTML]","")
+            # URL
+            url = tag1.select("a")[0].get("href")
+            # 著者
+            writer = tag2.text
+            writer = re.sub(r'\d', '', writer)
+            # 発行された年
+            year = tag2.text
+            year = re.sub(r'\D', '', year)
+            # 引用された数
+            citations = tag3.replace("引用元","")
+            # 概要の抽出
+            abstract = tag4.text
+            # 発行元
+            publisher = tags5.text.replace("[PDF]","").replace(" ","")
+            # 列を構成
+            se = pd.Series([rank, title, abstract, writer, year, publisher, citations, url], columns)
+            df = df.append(se, columns)
+            rank += 1
+        
+        jsoned_df = df2json(df)
+    except Exception as e:
+        logger.error(f'in function:<get_search_results_df> : {e}')
 
     return jsoned_df
 
@@ -86,14 +78,20 @@ def df2json(df_data):
 
 # 実行ファイル指定後の引数を取得する。
 def extra_argments():
-    parser = argparse.ArgumentParser()
+    try:
+        parser = argparse.ArgumentParser()
 
-    parser.add_argument('-k', '--keyword')
-    parser.add_argument('-n', '--number')
-    args = parser.parse_args()
+        parser.add_argument('-k', '--keyword')
+        parser.add_argument('-n', '--number')
+        args = parser.parse_args()
 
-    if (not args.keyword) or (not args.number):
-        raise ArgumentError(None, '要素がありません')
+        if (not args.keyword) or (not args.number):
+            raise ArgumentError(None, '要素がありません')
+        
+        logger.info(f'in function:<extra_argments> keyword:{args.keyword} | number:{args.number}')
+    
+    except Exception as e:
+        logger.error(f'in function:<extra_argments> : {e}')
 
     return args.keyword, args.number
 
@@ -101,7 +99,6 @@ def extra_argments():
 if __name__ == "__main__":
     # ファイル引数を受け取る
     keyword, number = extra_argments()
-    logger.info(f'keyword:{keyword} | number:{number}')
 
     # google schalorでスクレイピングを実行 -> jsonで返す
     search_results_jsoned_df = get_search_results_df(keyword,number)
