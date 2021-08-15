@@ -1,17 +1,12 @@
-import { Box, Center, Divider, Flex, Link, LinkBox, LinkOverlay, Text } from "@chakra-ui/react";
+import { Box, Center, Flex } from "@chakra-ui/react";
 import { memo, VFC } from "react";
-import { FaRegBookmark } from "react-icons/fa";
-import { useSelector } from "react-redux";
 
-import { Selector } from "../../redux/search/ActionType";
-import { searchResultSelector } from "../../redux/search/selectors";
 import { SearchCondition } from "../molecules/searchCondition";
 import { SearchInput } from "../molecules/searchInput";
+import { Result } from "../organisms/search/result";
 
 export const searchPaper: VFC = memo(() => {
   const thisYear = new Date().getFullYear()
-  const selector = useSelector((state: Selector) => state);
-  const resultData = searchResultSelector(selector);
 
   return (
     <Center mt={16}>
@@ -23,49 +18,7 @@ export const searchPaper: VFC = memo(() => {
             <SearchCondition title="引用数" maxW={14} defaultV={0} min={0} />
             <SearchCondition title="Pick数" maxW={14} defaultV={0} min={0} />
           </Box>
-          <Box w="80%">
-            {resultData.map((res, i) => (
-              <Box key={i}>
-                <Link
-                  fontSize="lg"
-                  fontWeight="bold"
-                  color="#0055AA"
-                  href={res.url}
-                  isExternal
-                >
-                  {res.title}
-                </Link>
-                <Text fontSize="sm" mt="2" mw="100%">
-                  {res.abstract}
-                </Text>
-                <Flex align="center">
-                  <Text fontSize="xs" mt={1} color="#406B15">
-                    {res.writer}
-                  </Text>
-                  <Text fontSize="xs" mt={1} mx={3}>
-                    <Flex align="center">
-                      <LinkBox>
-                        <Flex align="center">
-                          <FaRegBookmark />
-                          <LinkOverlay href="#" ml={0.5} _hover={{textDecoration: "underline"}}>Pick数: 10</LinkOverlay>
-                        </Flex>
-                      </LinkBox>
-                      <Text mx={2}>引用数: {res.citations}</Text>
-                      <Link
-                        href="//twitter.com/share"
-                        className="twitter-share-button"
-                        data-text={res.title}
-                        data-hashtags="PaperPicks"
-                        data-url={res.url}
-                        data-lang="ja"
-                      >ツイート</Link>
-                    </Flex>
-                  </Text>
-                </Flex>
-                <Divider my="4"/>
-              </Box>
-            ))}
-          </Box>
+          <Result />
         </Flex>
       </Box>
     </Center>
