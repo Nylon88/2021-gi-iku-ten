@@ -3,22 +3,24 @@ import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
+import { useMessage } from "../../hooks/useMessage";
 import { searchPapers } from "../../redux/search/Operations";
 
 
 export const SearchInput: VFC = memo(() => {
   const [word, setWord] = useState('')
   const dispatch = useDispatch();
+  const { showMessage } = useMessage();
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => setWord(e.target.value)
 
   useEffect(() => {
     const searchPaper = () => {
-      dispatch(searchPapers({word}));
+      dispatch(searchPapers({word, showMessage}));
     }
     let debouncer = setTimeout(() => {
       searchPaper();
-    }, 3000);
+    }, 1000);
     return () => {
       clearTimeout(debouncer);
     }
@@ -30,8 +32,6 @@ export const SearchInput: VFC = memo(() => {
         children={<FaSearch color="#EAEAEA"/>}
       />
       <Input
-        w="60%"
-        minW="880px"
         borderRadius="0"
         vale={word}
         onChange={handleChangeInput}

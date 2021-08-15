@@ -1,15 +1,25 @@
 import { Dispatch } from "redux"
-import { searchPaper } from "./ActionType"
 import axios from 'axios';
+import { searchPaperAction } from "./Action";
+import { Message } from "./ActionType";
 
-export const searchPapers = (props: Omit<searchPaper, "result">) => {
+type Props = {
+  word: string,
+  showMessage: (props: Message) => void
+}
+
+export const searchPapers = (props: Props) => {
   return async (dispatch: Dispatch<any>) => {
-    const { word } = props;
+    const { word, showMessage } = props;
     await axios.post('http://localhost:8000/v1/search', {word})
       .then((result) => {
-        console.log(result)
+        dispatch(searchPaperAction({
+          word,
+          result: result.data
+        }))
       }).catch((error) => {
-        console.log(error)
+        // 要日本語対応
+        showMessage({title: error.message, status: "error"})
       })
   }
 }
