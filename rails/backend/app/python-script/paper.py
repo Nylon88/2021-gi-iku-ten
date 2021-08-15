@@ -1,3 +1,4 @@
+import logging
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
@@ -34,7 +35,13 @@ def get_search_results_df(keyword: str,number:int):
     try:
         columns = ["rank", "title", "abstract", "writer", "year", "publisher", "citations", "url"]
         df = pd.DataFrame(columns=columns) #表の作成
-        html_doc = requests.get("https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=" + str(number) + "&q=" + keyword).text
+        response = requests.get("https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=" + str(number) + "&q=" + keyword)
+        
+        # status codeをログファイルに出力
+        response_statu_code = response.status_code
+        logger.debug(f'in function:<get_search_results_df> / Status Code:{response_statu_code}')
+        
+        html_doc = response.text
         soup = BeautifulSoup(html_doc, "html.parser") # BeautifulSoupの初期化
         tags1 = soup.find_all("h3", {"class": "gs_rt"})  # title&url
         tags2 = soup.find_all("div", {"class": "gs_a"})  # writer&year
