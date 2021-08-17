@@ -1,5 +1,5 @@
 import {Input, InputGroup, InputLeftElement, InputRightElement} from "@chakra-ui/react"
-import { ChangeEvent, memo, useEffect, useState, VFC } from "react";
+import { ChangeEvent, memo, useState, VFC } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
@@ -14,22 +14,16 @@ export const SearchInput: VFC = memo(() => {
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => setWord(e.target.value)
 
-  useEffect(() => {
-    const searchPaper = () => {
-      dispatch(searchPapers({word, showMessage}));
-    }
-    let debouncer = setTimeout(() => {
-      searchPaper();
-    }, 1000);
-    return () => {
-      clearTimeout(debouncer);
-    }
-  }, [word])
+  const handleClickSearch = () => {
+    dispatch(searchPapers({word, showMessage}));
+  }
+
 
   return (
     <InputGroup>
       <InputLeftElement
         children={<FaSearch color="#EAEAEA"/>}
+        onClick={handleClickSearch}
       />
       <Input
         borderRadius="0"
