@@ -16,7 +16,6 @@ export const searchPaper: VFC = memo(() => {
           <Box w="20%" mr={16}>
             <SearchCondition title="期間" maxW={20} defaultV={thisYear - 10} min={1900} max={thisYear}/>
             <SearchCondition title="引用数" maxW={14} defaultV={0} min={0} />
-            <SearchCondition title="Pick数" maxW={14} defaultV={0} min={0} />
           </Box>
           <Result />
         </Flex>
