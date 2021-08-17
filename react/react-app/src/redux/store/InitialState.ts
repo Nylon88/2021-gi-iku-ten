@@ -9,5 +9,8 @@ export const initialState = {
   searchPapers: {
     word: "",
     result: []
+  },
+  boolean: {
+    boolean: true
   }
 }

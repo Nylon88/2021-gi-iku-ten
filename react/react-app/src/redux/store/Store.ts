@@ -9,13 +9,15 @@ import { History } from "history"
 
 import { UsersReducer } from "../users/Reducers"
 import { SearchPaperReducer } from "../search/Reducers"
+import { BooleanReducer } from "../boolean/Reducers"
 
 export default function createStore(history: History) {
   return reduxCreateStore(
     combineReducers({
       router: connectRouter(history),
       users: UsersReducer,
-      search: SearchPaperReducer
+      search: SearchPaperReducer,
+      boolean: BooleanReducer
     }),
     applyMiddleware(
       routerMiddleware(history),
