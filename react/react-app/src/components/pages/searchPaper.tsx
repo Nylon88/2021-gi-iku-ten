@@ -17,7 +17,7 @@ export const searchPaper: VFC = memo(() => {
   return (
     <Center mt={16}>
       <Box w="60%" maxW="880px">
-        <SearchInput period={period} />
+        <SearchInput period={period} bool={periodBool} />
         <Flex mt={8}>
           <Box w="20%" mr={16}>
             <SearchCondition
