@@ -2,8 +2,8 @@ import { Box, Center, Flex, useBoolean } from "@chakra-ui/react";
 import { useState } from "react";
 import { memo, VFC } from "react";
 
-import { SearchCondition } from "../molecules/searchCondition";
 import { SearchInput } from "../molecules/searchInput";
+import { Condition } from "../organisms/search/condition";
 import { Result } from "../organisms/search/result";
 
 export const searchPaper: VFC = memo(() => {
@@ -19,24 +19,13 @@ export const searchPaper: VFC = memo(() => {
       <Box w="60%" maxW="880px">
         <SearchInput period={period} bool={periodBool} />
         <Flex mt={8}>
-          <Box w="20%" mr={16}>
-            <SearchCondition
-              title="期間"
-              maxW={20}
-              value={period}
-              min={1900}
-              max={thisYear}
-              bool={periodBool}
-              setBool={setPeriodBool}
-              onChange={handlePeriod}
-            />
-            <SearchCondition
-              title="引用数"
-              maxW={14}
-              defaultValue={"0"}
-              min={0}
-            />
-          </Box>
+          <Condition
+            period={period}
+            thisYear={thisYear}
+            periodBool={periodBool}
+            setPeriodBool={setPeriodBool}
+            handlePeriod={handlePeriod}
+          />
           <Result />
         </Flex>
       </Box>
