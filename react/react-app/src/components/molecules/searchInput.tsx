@@ -1,5 +1,5 @@
 import {Input, InputGroup, InputLeftElement, InputRightElement} from "@chakra-ui/react"
-import { ChangeEvent, memo, useState, VFC } from "react";
+import { ChangeEvent, KeyboardEvent, memo, useState, VFC } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
@@ -27,6 +27,12 @@ export const SearchInput: VFC<Props> = memo((props) => {
     }
   }
 
+  const handleKeyPressSearch = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleClickSearch()
+    }
+  }
+
   const handleDeleteWord = () => {
     setWord('')
   }
@@ -41,6 +47,7 @@ export const SearchInput: VFC<Props> = memo((props) => {
         borderRadius="0"
         value={word}
         onChange={handleChangeInput}
+        onKeyPress={(e) => handleKeyPressSearch(e)}
       />
       {
         word ? (
