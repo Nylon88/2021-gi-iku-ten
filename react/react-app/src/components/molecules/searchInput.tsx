@@ -27,6 +27,9 @@ export const SearchInput: VFC<Props> = memo((props) => {
     }
   }
 
+  const handleDeleteWord = () => {
+    setWord('')
+  }
 
   return (
     <InputGroup>
@@ -36,12 +39,17 @@ export const SearchInput: VFC<Props> = memo((props) => {
       />
       <Input
         borderRadius="0"
-        vale={word}
+        value={word}
         onChange={handleChangeInput}
       />
-      <InputRightElement
-        children={<FaTimes color="#EAEAEA" />}
-      />
+      {
+        word ? (
+          <InputRightElement
+            children={<FaTimes color="#EAEAEA" />}
+            onClick={handleDeleteWord}
+          />
+        ) : null
+      }
     </InputGroup>
   )
 })
