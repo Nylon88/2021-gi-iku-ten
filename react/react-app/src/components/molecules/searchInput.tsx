@@ -27,7 +27,6 @@ export const SearchInput: VFC<Props> = memo((props) => {
     }
   }
 
-
   return (
     <InputGroup>
       <InputLeftElement
