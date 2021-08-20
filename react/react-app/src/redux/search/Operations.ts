@@ -6,14 +6,15 @@ import { skeleton } from "../boolean/Operations";
 
 type Props = {
   word: string,
+  period: string | null,
   showMessage: (props: Message) => void
 }
 
 export const searchPapers = (props: Props) => {
   return async (dispatch: Dispatch<any>) => {
-    const { word, showMessage } = props;
+    const { word, period, showMessage } = props;
     dispatch(skeleton());
-    await axios.post('http://localhost:8000/v1/search', {word})
+    await axios.post('http://localhost:8000/v1/search', {word, period})
       .then((result) => {
         dispatch(skeleton());
         dispatch(searchPaperAction({
