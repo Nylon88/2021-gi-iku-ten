@@ -6,8 +6,12 @@ import { useDispatch } from "react-redux";
 import { useMessage } from "../../hooks/useMessage";
 import { searchPapers } from "../../redux/search/Operations";
 
+type Props = {
+  period: string
+}
 
-export const SearchInput: VFC = memo(() => {
+export const SearchInput: VFC<Props> = memo((props) => {
+  const { period } = props;
   const [word, setWord] = useState('')
   const dispatch = useDispatch();
   const { showMessage } = useMessage();
@@ -15,7 +19,7 @@ export const SearchInput: VFC = memo(() => {
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => setWord(e.target.value)
 
   const handleClickSearch = () => {
-    dispatch(searchPapers({word, showMessage}));
+    dispatch(searchPapers({word, period, showMessage}));
   }
 
 
