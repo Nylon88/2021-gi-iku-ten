@@ -22,7 +22,7 @@ export const Header:VFC = memo(() => {
         <Image
           src={`${process.env.PUBLIC_URL}/PaperPicks.png`}
           alt="PaperPicks Logo"
-          htmlWidth="400"
+          htmlWidth="250"
           _hover={{cursor: "pointer"}}
         />
       </Link>
