@@ -7,8 +7,9 @@ import { Selector } from "../../../redux/users/ActionType";
 import { getUserName, getUserState } from "../../../redux/users/selectors";
 import { signOut } from "../../../redux/users/Operations";
 import { useMessage } from "../../../hooks/useMessage";
+import { SearchInput } from "../../molecules/searchInput";
 
-export const Header:VFC = memo(() => {
+export const Sidebar:VFC = memo(() => {
   const selector = useSelector((state: Selector) => state);
   const userName = getUserName(selector)
   const LoginState = getUserState(selector)
