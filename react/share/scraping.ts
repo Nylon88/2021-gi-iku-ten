@@ -3,21 +3,22 @@
 */
 
 import puppeteer from 'puppeteer'
+import path from "path"
 
 
-// 論文情報格納用のインターフェース
-interface paperInfoList {
-    title: string,
-    url: string,
-    writer: string,
-    issueYear: string,
-    citation: string,
-    // abstract: string,
-    // publisher: string,
-}
+// // 論文情報格納用のインターフェース
+// interface paperInfoList {
+//     title: string,
+//     href_url: string,
+//     writer: string,
+//     issueYear: string,
+//     citation: string,
+//     // abstract: string,
+//     // publisher: string,
+// }
 
 
-const crowller = async (num:number, keyword:string, year:number):Promise<[paperInfoList[]]> => {
+const crowller = async (num:number, keyword:string, year:number):Promise<[{ [key: string]: string; }]> => {
     /*
         スクレイピングを行う関数
 
@@ -47,95 +48,112 @@ const crowller = async (num:number, keyword:string, year:number):Promise<[paperI
     });
     const page = await browser.newPage();
 
-     // 各リクエストのレスポンスを検知
-    page.on('response', response => {
-        console.log(response.status(), response.url()) // 全リクエストのステータスコードとURLをlog
-        if (300 > response.status() && 200 <= response.status()) return;
-        console.warn('status error', response.status(), response.url()) // ステータスコード200番台以外をlog
-        });
+    //  // 各リクエストのレスポンスを検知
+    // page.on('response', response => {
+    //     console.log(response.status(), response.url()) // 全リクエストのステータスコードとURLをlog
+    //     if (300 > response.status() && 200 <= response.status()) return;
+    //     console.warn('status error', response.status(), response.url()) // ステータスコード200番台以外をlog
+    //     });
 
-    await page.goto(url);
+    // 実際にアクセスするサイト
+    // await page.goto(url);
+    // テスト環境
+    console.log("HTMLを読み込みます");
+    // await page.goto(`file:${path.join(__dirname, '/test_html/test_schalor_src.html')}`);
+    await page.goto(`file:${path.join(__dirname, '/test_html/test_schalor_src.html')}`);
+    console.log("HTMLを読みました");
 
     // 取得したHTMLをダイジェストする
-    var page_objects = await page.$$('.gs_ri');
+    const page_objects = await page.$$('.gs_ri');
     console.log(`論文の数${page_objects.length}`);
 
     // fullPageのオプションを指定すると、フルページでスクリーンショットが撮れる
-    await page.screenshot({path: 'example.png', fullPage: true});
+    // await page.screenshot({path: 'example.png', fullPage: true});
 
 
     // 各論文の情報を抽出
-    var paperArry:[paperInfoList[]] = [[]];
+    let paperInfoLists: { [key: string]: string };
+    
+    let paperArray:[{ [key: string]: string; }] = [{}];
     console.log("*****************************************************************************************************")
     // 論文の数分回す
-    for (var page_object of page_objects) {
+    let i:number = 1;
+    for (const page_object of page_objects) {
+        console.log(`${i}回目`);
 
-        //インターフェース継承
-        var paperInfoLists:paperInfoList[] = []
+        // //インターフェース継承
+        // const paperInfoLists:paperInfoList[] = []
 
         // 「タイトル」と「URl」を抽出
-        var title_object = await page_object.$('.gs_rt');
+        const title_object = await page_object.$('.gs_rt');
         // 「タイトル」
-        var title:string = await (await (title_object)!.getProperty('textContent'))!.toString().slice(9);
+        const title_row:string = await (await (title_object)!.getProperty('textContent'))!.jsonValue();
+        const title:string = title_row.trim().replace(/\s{2,}/g, "");
         console.log(`title -> ${title}`);
         // 「URL」
-        var url_object = await (title_object)!.$('a');
-        var href_url:string = await (await (url_object)!.getProperty('href'))!.toString().slice(9);
+        const url_object = await (title_object)!.$('a');
+        const href_url_row:string = await (await (url_object)!.getProperty('href'))!.jsonValue();
+        const href_url:string = href_url_row.trim();
         console.log(`aタグurl -> ${href_url}`)
 
-
         // 「著者」と「発行年」を抽出
-        var writer_issueYear_object = await page_object.$('.gs_a');
-        var writer_issueYear:string = (await (writer_issueYear_object)!.getProperty('textContent'))!.toString();
-        var writer_issueYear_StrList:string[] = (writer_issueYear)!.split(/ /);
+        const writer_issueYear_object = await page_object.$('.gs_a');
+        const writer_issueYear_row:string = await (await (writer_issueYear_object)!.getProperty('textContent'))!.jsonValue();
+        const writer_issueYear = writer_issueYear_row.trim();
+        const writer_issueYear_StrList:string[] = (writer_issueYear)!.split(/ /);
         // 「発行年」
-        var issueYear:string = writer_issueYear_StrList.slice(-3)[0];
+        const issueYear:string = writer_issueYear_StrList.slice(-3)[0].trim();
         console.log(`issueYear -> ${issueYear}`);
         // 「著者」
-        var writer:string = writer_issueYear_StrList.slice(0)[0];
+        const writer:string = writer_issueYear_StrList.slice(0)[0].trim();
         console.log(`write -> ${writer}`);
 
-        // // 「概要」を抽出
-        // const ele = await page.$(".gs_rs");
-        // var abstract:string
-        // if (ele) {
-        //     var abstract_any = await page.evaluate(elm => elm.textContent, ele);
-        //     abstract = abstract_any;
-        // } else {
-        //     var abstract = "概要がありません";
-        // }
-        // console.log(`abstract -> ${abstract}`);
+        // 「概要」を抽出
+        const ele = await page.$(".gs_rs");
+        let abstract:string
+        if (ele) {
+            const abstract_any = await page.evaluate(elm => elm.textContent, ele);
+            abstract = abstract_any.trim().replace(/\s{2,}/g, "").slice(4, -10);
+        } else {
+            abstract = "概要がありません";
+        }
+        console.log(`abstract -> ${abstract}`);
 
         // 「引用数」を抽出
-        var citation_object = await page_object.$('.gs_fl');
-        var citation_str:string = (await (citation_object)!.getProperty('textContent'))!.toString();
-        var citationStrList:string[] = (citation_str)!.split(/ /);
-        var citation:string = citationStrList[3]
+        const citation_object = await page_object.$('.gs_fl');
+        const citation_str_row:string = await (await (citation_object)!.getProperty('textContent'))!.jsonValue();
+        const citation_str:string = citation_str_row.trim()
+        const citationStrList:string[] = (citation_str)!.split(/ /);
+        const citation:string = citationStrList[1]
         console.log(`citation -> ${citation}`);
 
         // // 「発行元」を抽出　※ない可能異性もある為その処理もいれるべし
-        // var publisher_object = await page_object.$('.gs_ggsd');
-        // var publisher = await (publisher_object)!.getProperty('textContent');
+        // const publisher_object = await page_object.$('.gs_ggsd');
+        // const publisher = await (publisher_object)!.getProperty('textContent');
         // console.log(`publisher -> ${publisher}`);
 
+        paperInfoLists = {
+            title: title,
+            url: url,
+            writer: writer,
+            issueYear: issueYear,
+            citation: citation,
+            abstract: abstract,
+            // publisher: Array<string>,
+        }
 
-        // 論文情報を格納する。
-        paperInfoLists.push({
-            title,
-            url,
-            writer,
-            issueYear,
-            citation,
-        })
         // 全ての論文を管理する配列に格納する
-        paperArry.push(paperInfoLists);
-        
+        paperArray.push(paperInfoLists);
+
+        i ++;
         console.log("*****************************************************************************************************")
     }
 
     browser.close();
 
-    return paperArry
+    // 先頭の空のオブジェクトを削除してから返す
+    paperArray.splice(0, 1);
+    return paperArray
 };
 
 
@@ -145,11 +163,21 @@ const main = async () => {
     const num:number = 3;
     const keyword:string = "block chain";
     const year:number = 2021;
-    // var html_data:string = await crowller(num, keyword, year);
-    var paperArry:[paperInfoList[]] = await crowller(num, keyword, year);
+    // const html_data:string = await crowller(num, keyword, year);
+    const paperArray = await crowller(num, keyword, year);
+
+    console.log(`paperArray -> ${paperArray}`);
     
-    return paperArry
+    return paperArray
 }
 
 // 実行
 main();
+
+
+
+// やる事
+// ➀　constをconst,letにする  →　〇
+// ⓶　ハッシュに置き換え
+// ⓷　残りの論文情報の取得
+ 

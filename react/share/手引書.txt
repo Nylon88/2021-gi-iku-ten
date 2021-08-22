@@ -4,11 +4,11 @@ npm install puppeteer --save
 
 ※現在取得予定の以下の情報が取得出来ていない
 ・概要
-・発行元
 
 <戻り値について>
-現在5つの情報を一つの論文情報にして配列にする。
-論文の数だけそれらの配列をさらに格納し、配列内配列として返している。
+現在6つの情報を一つの論文情報にして配列にする。
+論文の数だけそれらの配列をさらに格納し、配列内ハッシュとして返している。
 
 (ex)
-[[論文1,info1,info2,info3,info4], [論文2,info1,info2,info3,info4], [論文3,info1,info2,info3,info4], ...]
+~論文二個の情報を返すときの例：この時「[object Object]=paperInfoLists」として論文一個分の情報が入っている。
+[object Object],[object Object]
