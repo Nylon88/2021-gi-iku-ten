@@ -3,7 +3,7 @@ import { memo, VFC } from "react"
 
 export const Page404: VFC = memo(() => {
   return (
-    <Flex align="center" justify="center" h="calc(100vh - 134.109px)">
+    <Flex w="80%" align="center" justify="center">
       <Text fontWeight="bold">お探しのページは存在しません。</Text>
     </Flex>
   )
