@@ -1,4 +1,4 @@
-import {Input, InputGroup, InputLeftElement, InputRightElement} from "@chakra-ui/react"
+import { Flex, Input, InputGroup, InputLeftElement, InputRightElement } from "@chakra-ui/react"
 import { ChangeEvent, KeyboardEvent, memo, useState, VFC } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -38,25 +38,27 @@ export const SearchInput: VFC<Props> = memo((props) => {
   }
 
   return (
-    <InputGroup>
-      <InputLeftElement
-        children={<FaSearch color="#EAEAEA"/>}
-        onClick={handleClickSearch}
-      />
-      <Input
-        borderRadius="0"
-        value={word}
-        onChange={handleChangeInput}
-        onKeyPress={(e) => handleKeyPressSearch(e)}
-      />
-      {
-        word ? (
-          <InputRightElement
-            children={<FaTimes color="#EAEAEA" />}
-            onClick={handleDeleteWord}
-          />
-        ) : null
-      }
-    </InputGroup>
+    <Flex justify="center" mt="12">
+      <InputGroup w="60%" maxW="880px">
+        <InputLeftElement
+          children={<FaSearch color="#EAEAEA"/>}
+          onClick={handleClickSearch}
+        />
+        <Input
+          borderRadius="0"
+          value={word}
+          onChange={handleChangeInput}
+          onKeyPress={(e) => handleKeyPressSearch(e)}
+        />
+        {
+          word ? (
+            <InputRightElement
+              children={<FaTimes color="#EAEAEA" />}
+              onClick={handleDeleteWord}
+            />
+          ) : null
+        }
+      </InputGroup>
+    </Flex>
   )
 })

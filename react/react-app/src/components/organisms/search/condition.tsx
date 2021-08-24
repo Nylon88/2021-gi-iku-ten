@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Divider, Text } from "@chakra-ui/react";
 import { memo, VFC } from "react";
 
 import { SearchCondition } from "../../molecules/searchCondition";
@@ -18,23 +18,27 @@ type Props = {
 export const Condition: VFC<Props> = memo((props) => {
   const { period, thisYear, periodBool, setPeriodBool, handlePeriod } = props;
   return (
-    <Box w="20%" mr={16}>
-      <SearchCondition
-        title="期間"
-        maxW={20}
-        value={period}
-        min={1900}
-        max={thisYear}
-        bool={periodBool}
-        setBool={setPeriodBool}
-        onChange={handlePeriod}
-      />
-      <SearchCondition
-        title="引用数"
-        maxW={14}
-        defaultValue={"0"}
-        min={0}
-      />
+    <Box w="12%" h="100%" bg="gray.100">
+      <Box ml="5" my="10">
+        <Text fontSize="md">検索条件</Text>
+        <SearchCondition
+          title="期間"
+          maxW={16}
+          value={period}
+          min={1900}
+          max={thisYear}
+          bool={periodBool}
+          setBool={setPeriodBool}
+          onChange={handlePeriod}
+        />
+        <Divider />
+        <SearchCondition
+          title="引用数"
+          maxW={10}
+          defaultValue={"0"}
+          min={0}
+        />
+      </Box>
     </Box>
   )
 })

@@ -20,14 +20,15 @@ type Props = {
 export const SearchCondition: VFC<Props> = memo((props) => {
   const { title, maxW, value, defaultValue, min, max, bool=true, setBool, onChange } = props;
   return (
-    <Box mb="4">
-      <Heading as="h3" fontSize="md" fontWeight="normal">{title}</Heading>
+    <Box my="4">
+      <Heading as="h3" fontSize="sm" fontWeight="normal">{title}</Heading>
       {
         bool ? (
           <>
-            <Flex>
+            <Flex mx="1">
               <NumberInput
                 size="xs"
+                variant="flushed"
                 maxW={maxW}
                 value={value}
                 defaultValue={defaultValue}
@@ -37,8 +38,8 @@ export const SearchCondition: VFC<Props> = memo((props) => {
               >
                 <NumberInputField borderRadius="none" />
                 <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
+                  <NumberIncrementStepper border="none" />
+                  <NumberDecrementStepper border="none" />
                 </NumberInputStepper>
               </NumberInput>
               <Text ml="4">~</Text>
@@ -47,7 +48,8 @@ export const SearchCondition: VFC<Props> = memo((props) => {
               title === "期間" ? (
                 <Text
                   fontSize="xs"
-                  mt="2"
+                  mt="1"
+                  mx="1"
                   onClick={setBool?.toggle}
                   _hover={{cursor: "pointer", textDecoration: "underline"}}
                 >
