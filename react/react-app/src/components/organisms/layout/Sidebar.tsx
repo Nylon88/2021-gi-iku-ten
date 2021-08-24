@@ -17,14 +17,14 @@ export const Sidebar:VFC = memo(() => {
   const dispatch = useDispatch();
 
   return (
-    <Box w="25%" h="100vh" bg="gray.100">
+    <Box w="20%" h="100vh" bg="gray.100">
       <Link onClick={() => dispatch(push("/"))}>
         <Image
           src={`${process.env.PUBLIC_URL}/PaperPicks.png`}
           alt="PaperPicks Logo"
-          htmlWidth="250"
-          mt="5"
-          ml="20"
+          htmlWidth="200"
+          mt="8"
+          ml="14"
           _hover={{cursor: "pointer"}}
         />
       </Link>
