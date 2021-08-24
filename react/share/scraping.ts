@@ -14,7 +14,7 @@ import path from "path"
 // }
 
 
-const crowller = async (num:number, keyword:string, year:number):Promise<[{ [key: string]: string; }]> => {
+const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key: string]: string; }]> => {
 	// htmlの取得処理
 	const url:string = `https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=${num}&q=${keyword}&as_ylo=${year}&as_vis=1`;
 	// const DL = { waitUntil: ['domcontentloaded'] };
@@ -141,8 +141,8 @@ const main = async () => {
 	const num:number = 3;
 	const keyword:string = "block chain";
 	const year:number = 2021;
-	// const html_data:string = await crowller(num, keyword, year);
-	const paperArray = await crowller(num, keyword, year);
+	// const html_data:string = await crawler(num, keyword, year);
+	const paperArray = await crawler(num, keyword, year);
 
 	console.log(`paperArray -> ${paperArray}`);
 
