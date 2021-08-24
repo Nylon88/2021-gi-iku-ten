@@ -18,8 +18,8 @@ type Props = {
 export const Condition: VFC<Props> = memo((props) => {
   const { period, thisYear, periodBool, setPeriodBool, handlePeriod } = props;
   return (
-    <Box w="15%" h="100%" bg="gray.100">
-      <Box ml="10" my="10">
+    <Box w="12%" h="100%" bg="gray.100">
+      <Box ml="5" my="10">
         <Text fontSize="md">検索条件</Text>
         <SearchCondition
           title="期間"
