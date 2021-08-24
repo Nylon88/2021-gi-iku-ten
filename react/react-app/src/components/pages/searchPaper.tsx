@@ -15,20 +15,18 @@ export const searchPaper: VFC = memo(() => {
   const handlePeriod = (valueAsString: string) => setPeriod(valueAsString);
 
   return (
-    <Center mt={16}>
-      <Box w="60%" maxW="880px">
-        <SearchInput period={period} bool={periodBool} />
-        <Flex mt={8}>
-          <Condition
-            period={period}
-            thisYear={thisYear}
-            periodBool={periodBool}
-            setPeriodBool={setPeriodBool}
-            handlePeriod={handlePeriod}
-          />
-          <Result />
-        </Flex>
-      </Box>
-    </Center>
+    <Box w="75%">
+      <SearchInput period={period} bool={periodBool} />
+      <Flex mt={8}>
+        <Condition
+          period={period}
+          thisYear={thisYear}
+          periodBool={periodBool}
+          setPeriodBool={setPeriodBool}
+          handlePeriod={handlePeriod}
+        />
+        <Result />
+      </Flex>
+    </Box>
   )
 })
