@@ -1,4 +1,4 @@
-import { Box, Center, Flex, useBoolean } from "@chakra-ui/react";
+import { Box, Flex, useBoolean } from "@chakra-ui/react";
 import { useState } from "react";
 import { memo, VFC } from "react";
 
@@ -15,9 +15,9 @@ export const searchPaper: VFC = memo(() => {
   const handlePeriod = (valueAsString: string) => setPeriod(valueAsString);
 
   return (
-    <Box w="75%">
+    <Box w="80%">
       <SearchInput period={period} bool={periodBool} />
-      <Flex mt={8}>
+      <Flex mt={8} justify="center">
         <Condition
           period={period}
           thisYear={thisYear}

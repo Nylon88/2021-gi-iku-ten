@@ -16,10 +16,130 @@ export const Result: VFC = memo(() => {
   const skeletonSelector = useSelector((state: SkeletonSelector) => state.boolean.boolean);
   const skeleton = getSkeleton(skeletonSelector);
 
+  let testData = [{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },{
+    rank: 1,
+    title: "[書籍][B] ブロックチェーン革命",
+    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
+    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
+    year: "2017",
+    publisher: "jst.go.jp",
+    citations:" 12",
+    url: "https://www.ipa.go.jp/files/000062713.pdf"
+  },]
+
+
   return (
-    <Box w="80%">
-      {resultData.map((res, i) => (
-        <Box key={i}>
+    <Box w="65%" maxW="700px" bg="gray.100">
+      {testData.map((res, i) => (
+        <Box key={i} mx="5">
           <Skeleton isLoaded={skeleton}>
             <Link
               fontSize="lg"
