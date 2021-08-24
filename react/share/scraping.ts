@@ -16,7 +16,7 @@ import path from "path"
 
 const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key: string]: string; }]> => {
 	// htmlの取得処理
-	const url:string = `https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=${num}&q=${keyword}&as_ylo=${year}&as_vis=1`;
+	const url = `https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=${num}&q=${keyword}&as_ylo=${year}&as_vis=1`;
 	// const DL = { waitUntil: ['domcontentloaded'] };
 	const browser = await puppeteer.launch({
 		args: [
@@ -55,7 +55,7 @@ const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key:
 	let paperArray:[{ [key: string]: string; }] = [{}];
 	console.log("*****************************************************************************************************")
 	// 論文の数分回す
-	let i:number = 1;
+	let i = 1;
 	for (const page_object of page_objects) {
 		console.log(`${i}回目`);
 
@@ -65,30 +65,30 @@ const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key:
 		// 「タイトル」と「URl」を抽出
 		const title_object = await page_object.$('.gs_rt');
 		// 「タイトル」
-		const title_row:string = await (await (title_object)!.getProperty('textContent'))!.jsonValue();
-		const title:string = title_row.trim().replace(/\s{2,}/g, "");
+		const title_row: string = await (await (title_object)!.getProperty('textContent'))!.jsonValue();
+		const title = title_row.trim().replace(/\s{2,}/g, "");
 		console.log(`title -> ${title}`);
 		// 「URL」
 		const url_object = await (title_object)!.$('a');
-		const href_url_row:string = await (await (url_object)!.getProperty('href'))!.jsonValue();
-		const href_url:string = href_url_row.trim();
+		const href_url_row: string = await (await (url_object)!.getProperty('href'))!.jsonValue();
+		const href_url = href_url_row.trim();
 		console.log(`aタグurl -> ${href_url}`)
 
 		// 「著者」と「発行年」を抽出
 		const writer_issueYear_object = await page_object.$('.gs_a');
-		const writer_issueYear_row:string = await (await (writer_issueYear_object)!.getProperty('textContent'))!.jsonValue();
+		const writer_issueYear_row: string = await (await (writer_issueYear_object)!.getProperty('textContent'))!.jsonValue();
 		const writer_issueYear = writer_issueYear_row.trim();
 		const writer_issueYear_StrList:string[] = (writer_issueYear)!.split(/ /);
 		// 「発行年」
-		const issueYear:string = writer_issueYear_StrList.slice(-3)[0].trim();
+		const issueYear = writer_issueYear_StrList.slice(-3)[0].trim();
 		console.log(`issueYear -> ${issueYear}`);
 		// 「著者」
-		const writer:string = writer_issueYear_StrList.slice(0)[0].trim();
+		const writer = writer_issueYear_StrList.slice(0)[0].trim();
 		console.log(`write -> ${writer}`);
 
 		// 「概要」を抽出
 		const ele = await page.$(".gs_rs");
-		let abstract:string
+		let abstract: string
 		if (ele) {
 			const abstract_any = await page.evaluate(elm => elm.textContent, ele);
 			abstract = abstract_any.trim().replace(/\s{2,}/g, "").slice(4, -10);
@@ -99,10 +99,10 @@ const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key:
 
 		// 「引用数」を抽出
 		const citation_object = await page_object.$('.gs_fl');
-		const citation_str_row:string = await (await (citation_object)!.getProperty('textContent'))!.jsonValue();
-		const citation_str:string = citation_str_row.trim()
+		const citation_str_row: string = await (await (citation_object)!.getProperty('textContent'))!.jsonValue();
+		const citation_str = citation_str_row.trim()
 		const citationStrList:string[] = (citation_str)!.split(/ /);
-		const citation:string = citationStrList[1]
+		const citation = citationStrList[1]
 		console.log(`citation -> ${citation}`);
 
 		// // 「発行元」を抽出　※ない可能異性もある為その処理もいれるべし
@@ -138,9 +138,9 @@ const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key:
 // スクレイピングメイン関数
 const main = async () => {
 	// htmlを取得する
-	const num:number = 3;
-	const keyword:string = "block chain";
-	const year:number = 2021;
+	const num: number = 3;
+	const keyword: string = "block chain";
+	const year: number = 2021;
 	// const html_data:string = await crawler(num, keyword, year);
 	const paperArray = await crawler(num, keyword, year);
 
