@@ -8,7 +8,7 @@ import { GoogleButton } from "../atoms/googleButton";
 
 export const UserRegistration: VFC = () =>{
   return (
-    <Flex align="center" justify="center" h="calc(100vh - 134.109px)">
+    <Flex w="80%" align="center" justify="center">
       <Box w="600px" border="1px" borderColor="gray.200" p="4">
         <Center>
           <Heading as="h1" size="lg" my="4">新規登録</Heading>
