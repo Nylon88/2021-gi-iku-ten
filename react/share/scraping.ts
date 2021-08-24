@@ -13,8 +13,24 @@ import path from "path"
 //     // publisher: string,
 // }
 
+type Props = {
+	num: number,
+	keyword: string,
+	year: number
+}
 
-const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key: string]: string; }]> => {
+type PaperInfoList = {
+	title: string,
+	href_url: string,
+	writer: string,
+	issueYear: string,
+	citation: string,
+	abstract: string,
+	// publisher: string
+}
+
+const crawler = async (props: Props): Promise<Array<PaperInfoList>> => {
+	const { num, keyword, year } = props;
 	// htmlの取得処理
 	const url = `https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=${num}&q=${keyword}&as_ylo=${year}&as_vis=1`;
 	// const DL = { waitUntil: ['domcontentloaded'] };
@@ -48,43 +64,37 @@ const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key:
 	// fullPageのオプションを指定すると、フルページでスクリーンショットが撮れる
 	// await page.screenshot({path: 'example.png', fullPage: true});
 
-
-	// 各論文の情報を抽出
-	let paperInfoLists: { [key: string]: string };
-
-	let paperArray:[{ [key: string]: string; }] = [{}];
-	console.log("*****************************************************************************************************")
+	let paperArray: Array<PaperInfoList>;
 	// 論文の数分回す
 	let i = 1;
 	for (const page_object of page_objects) {
-		console.log(`${i}回目`);
 
 		// //インターフェース継承
 		// const paperInfoLists:paperInfoList[] = []
 
 		// 「タイトル」と「URl」を抽出
 		const title_object = await page_object.$('.gs_rt');
+
 		// 「タイトル」
 		const title_row: string = await (await (title_object)!.getProperty('textContent'))!.jsonValue();
 		const title = title_row.trim().replace(/\s{2,}/g, "");
-		console.log(`title -> ${title}`);
+
 		// 「URL」
 		const url_object = await (title_object)!.$('a');
 		const href_url_row: string = await (await (url_object)!.getProperty('href'))!.jsonValue();
 		const href_url = href_url_row.trim();
-		console.log(`aタグurl -> ${href_url}`)
 
 		// 「著者」と「発行年」を抽出
 		const writer_issueYear_object = await page_object.$('.gs_a');
 		const writer_issueYear_row: string = await (await (writer_issueYear_object)!.getProperty('textContent'))!.jsonValue();
 		const writer_issueYear = writer_issueYear_row.trim();
 		const writer_issueYear_StrList:string[] = (writer_issueYear)!.split(/ /);
+
 		// 「発行年」
 		const issueYear = writer_issueYear_StrList.slice(-3)[0].trim();
-		console.log(`issueYear -> ${issueYear}`);
+
 		// 「著者」
 		const writer = writer_issueYear_StrList.slice(0)[0].trim();
-		console.log(`write -> ${writer}`);
 
 		// 「概要」を抽出
 		const ele = await page.$(".gs_rs");
@@ -95,24 +105,22 @@ const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key:
 		} else {
 			abstract = "概要がありません";
 		}
-		console.log(`abstract -> ${abstract}`);
 
 		// 「引用数」を抽出
 		const citation_object = await page_object.$('.gs_fl');
 		const citation_str_row: string = await (await (citation_object)!.getProperty('textContent'))!.jsonValue();
 		const citation_str = citation_str_row.trim()
-		const citationStrList:string[] = (citation_str)!.split(/ /);
+		const citationStrList = (citation_str)!.split(/ /);
 		const citation = citationStrList[1]
-		console.log(`citation -> ${citation}`);
 
 		// // 「発行元」を抽出　※ない可能異性もある為その処理もいれるべし
 		// const publisher_object = await page_object.$('.gs_ggsd');
 		// const publisher = await (publisher_object)!.getProperty('textContent');
 		// console.log(`publisher -> ${publisher}`);
 
-		paperInfoLists = {
+		const paperInfoLists = {
 			title: title,
-			url: url,
+			href_url: url,
 			writer: writer,
 			issueYear: issueYear,
 			citation: citation,
@@ -123,8 +131,7 @@ const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key:
 		// 全ての論文を管理する配列に格納する
 		paperArray.push(paperInfoLists);
 
-		i ++;
-		console.log("*****************************************************************************************************")
+		i++;
 	}
 
 	browser.close();
@@ -138,11 +145,11 @@ const crawler = async (num:number, keyword:string, year:number):Promise<[{ [key:
 // スクレイピングメイン関数
 const main = async () => {
 	// htmlを取得する
-	const num: number = 3;
-	const keyword: string = "block chain";
-	const year: number = 2021;
+	const num = 3;
+	const keyword = "block chain";
+	const year = 2021;
 	// const html_data:string = await crawler(num, keyword, year);
-	const paperArray = await crawler(num, keyword, year);
+	const paperArray = await crawler({num, keyword, year});
 
 	console.log(`paperArray -> ${paperArray}`);
 
