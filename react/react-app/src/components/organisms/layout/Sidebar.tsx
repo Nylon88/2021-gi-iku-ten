@@ -1,5 +1,5 @@
 import { memo, VFC } from "react";
-import { Button, Flex, Image, Link, Spacer } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Link, Spacer } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
 
@@ -15,46 +15,19 @@ export const Sidebar:VFC = memo(() => {
   const LoginState = getUserState(selector)
 
   const dispatch = useDispatch();
-  const { showMessage } = useMessage();
 
   return (
-    <Flex mx={32} my={3} align="flex-end">
+    <Box w="25%" h="100vh" bg="gray.100">
       <Link onClick={() => dispatch(push("/"))}>
         <Image
           src={`${process.env.PUBLIC_URL}/PaperPicks.png`}
           alt="PaperPicks Logo"
           htmlWidth="250"
+          mt="5"
+          ml="20"
           _hover={{cursor: "pointer"}}
         />
       </Link>
-      <Spacer />
-      {LoginState ? (
-        <>
-          <Button
-            onClick={() => dispatch(signOut({showMessage}))}
-          >ログアウト</Button>
-          <h1>{userName}</h1>
-        </>
-      ) : (
-        <>
-          <Button
-            mb={3}
-            mx={5}
-            bg="white"
-            borderRadius="0"
-            _hover={{textDecoration: "underline"}}
-            onClick={() => dispatch(push("/sign_up"))}
-          >新規登録</Button>
-          <Button
-            mb={3}
-            bg="#406B15"
-            color="white"
-            borderRadius="0"
-            _hover={{opacity: 0.8}}
-            onClick={() => dispatch(push("/sign_in"))}
-          >ログイン</Button>
-        </>
-      )}
-    </Flex>
+    </Box>
   )
 })
