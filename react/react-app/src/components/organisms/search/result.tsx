@@ -137,9 +137,9 @@ export const Result: VFC = memo(() => {
 
 
   return (
-    <Box w="65%" maxW="700px" bg="gray.100">
+    <Box w="65%" maxW="700px">
       {testData.map((res, i) => (
-        <Box key={i} mx="5">
+        <Box key={i} px="5" py="3" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
           <Skeleton isLoaded={skeleton}>
             <Link
               fontSize="lg"
@@ -152,16 +152,16 @@ export const Result: VFC = memo(() => {
             </Link>
           </Skeleton>
           <SkeletonText isLoaded={skeleton}>
-            <Text fontSize="sm" mt="2" mw="100%">
+            <Text fontSize="sm" mt="1" mw="100%">
               {res.abstract}
             </Text>
           </SkeletonText>
           <Skeleton isLoaded={skeleton} height="14px">
-            <Flex align="center">
-              <Text fontSize="xs" mt={1} color="#406B15">
+            <Flex align="center" mt="1">
+              <Text fontSize="xs" color="#406B15">
                 {res.writer}
               </Text>
-              <Text fontSize="xs" mt={1} mx={3}>
+              <Text fontSize="xs" mx={3}>
                 <Flex align="center">
                   <LinkBox>
                     <Flex align="center">
@@ -182,7 +182,6 @@ export const Result: VFC = memo(() => {
               </Text>
             </Flex>
           </Skeleton>
-          <Divider my="4"/>
         </Box>
       ))}
     </Box>
