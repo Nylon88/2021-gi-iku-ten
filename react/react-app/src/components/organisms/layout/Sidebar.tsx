@@ -1,5 +1,5 @@
 import { memo, VFC } from "react";
-import { Box, Button, Flex, Image, Link, Spacer } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Link, Spacer, Text } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { push } from "connected-react-router";
 
@@ -15,6 +15,7 @@ export const Sidebar:VFC = memo(() => {
   const LoginState = getUserState(selector)
 
   const dispatch = useDispatch();
+  const showMessage = useMessage();
 
   return (
     <Box w="20%" h="100vh" bg="gray.100">
@@ -28,6 +29,28 @@ export const Sidebar:VFC = memo(() => {
           _hover={{cursor: "pointer"}}
         />
       </Link>
+      <Spacer />
+      {
+        LoginState ? (
+          <>
+            <Text>
+              プロフィール
+            </Text>
+            <Text onClick={() => dispatch(signOut(showMessage))}>
+              ログアウト
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text onClick={() => dispatch(push("/sign_up"))} textDecoration="underline">
+              新規登録
+            </Text>
+            <Text onClick={() => dispatch(push("/sign_in"))}>
+              ログイン
+            </Text>
+          </>
+        )
+      }
     </Box>
   )
 })
