@@ -64,7 +64,7 @@ const crawler = async (props: Props): Promise<Array<PaperInfoList>> => {
 	// fullPageのオプションを指定すると、フルページでスクリーンショットが撮れる
 	// await page.screenshot({path: 'example.png', fullPage: true});
 
-	let paperArray: Array<PaperInfoList>;
+	let paperArray: Array<PaperInfoList> = [];
 	// 論文の数分回す
 	let i = 1;
 	for (const page_object of page_objects) {
