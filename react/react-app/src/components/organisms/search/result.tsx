@@ -137,9 +137,9 @@ export const Result: VFC = memo(() => {
 
 
   return (
-    <Box w="65%" maxW="700px" bg="gray.100">
+    <Box w="65%" maxW="700px">
       {testData.map((res, i) => (
-        <Box key={i} mx="5">
+        <Box key={i} px="5" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
           <Skeleton isLoaded={skeleton}>
             <Link
               fontSize="lg"
@@ -182,7 +182,7 @@ export const Result: VFC = memo(() => {
               </Text>
             </Flex>
           </Skeleton>
-          <Divider my="4"/>
+          <Divider />
         </Box>
       ))}
     </Box>
