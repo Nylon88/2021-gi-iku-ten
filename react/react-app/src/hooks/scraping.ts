@@ -2,6 +2,11 @@ import puppeteer from 'puppeteer'
 import path from "path"
 
 
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 // // 論文情報格納用のインターフェース
 // interface paperInfoList {
 //     title: string,
@@ -53,7 +58,6 @@ const crawler = async (props: Props): Promise<Array<PaperInfoList>> => {
 	// await page.goto(url);
 	// テスト環境
 	console.log("HTMLを読み込みます");
-	// await page.goto(`file:${path.join(__dirname, '/test_html/test_schalor_src.html')}`);
 	await page.goto(`file:${path.join(__dirname, '/test_html/test_schalor_src.html')}`);
 	console.log("HTMLを読みました");
 
