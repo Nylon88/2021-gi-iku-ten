@@ -29,3 +29,9 @@ export type Message = {
   title: string,
   status: "info" | "warning" | "success" | "error",
 }
+
+export type Scraping = {
+  num: number,
+  keyword: string,
+  year: number
+}
