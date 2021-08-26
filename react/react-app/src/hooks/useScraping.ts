@@ -3,6 +3,8 @@ import path from "path"
 
 
 import { fileURLToPath } from 'url';
+import { useCallback } from 'react';
+import { Scraping } from '../redux/search/ActionType';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -147,22 +149,16 @@ const crawler = async (props: Props): Promise<Array<PaperInfoList>> => {
 
 
 // スクレイピングメイン関数
-const main = async () => {
-	// htmlを取得する
-	const num = 3;
-	const keyword = "block chain";
-	const year = 2021;
-	// const html_data:string = await crawler(num, keyword, year);
-	const paperArray = await crawler({num, keyword, year});
-
-	console.log(`paperArray -> ${paperArray}`);
-
-	return paperArray
+export const useScraping = () => {
+	const scraping = useCallback(async (props: Scraping) => {
+		const { num, keyword, year } = props;
+		// const html_data:string = await crawler(num, keyword, year);
+		const paperArray = await crawler({num, keyword, year});
+		console.log(`paperArray -> ${paperArray}`);
+		return paperArray
+	}, [])
+	return { scraping }
 }
-
-// 実行
-main();
-
 
 
 // やる事
