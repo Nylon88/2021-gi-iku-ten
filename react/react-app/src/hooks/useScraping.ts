@@ -1,9 +1,8 @@
 import puppeteer from 'puppeteer'
 import path from "path"
-
-
 import { fileURLToPath } from 'url';
 import { useCallback } from 'react';
+
 import { Scraping } from '../redux/search/ActionType';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,7 +25,7 @@ type Props = {
 	year: number
 }
 
-type PaperInfoList = {
+export type PaperInfoList = {
 	title: string,
 	href_url: string,
 	writer: string,
