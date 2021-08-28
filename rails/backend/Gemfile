@@ -46,3 +46,6 @@ gem 'rack-cors'
 # RESTful API
 gem 'grape'
 gem 'grape-entity'
+
+# To load .env file 
+gem "dotenv"
