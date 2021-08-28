@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { memo, ReactNode } from "react";
 import { VFC } from "react";
 

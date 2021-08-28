@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Link, LinkBox, LinkOverlay, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, LinkBox, LinkOverlay, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
 import { memo, VFC } from "react";
 import { FaRegBookmark } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -159,7 +159,7 @@ export const Result: VFC = memo(() => {
           <Skeleton isLoaded={skeleton} height="14px">
             <Flex align="center" mt="1">
               <Text fontSize="xs" color="#406B15">
-                {res.writer}
+                {res.writer}・{res.year}・{res.publisher}
               </Text>
               <Text fontSize="xs" mx={3}>
                 <Flex align="center">
