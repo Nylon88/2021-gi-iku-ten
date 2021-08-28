@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Link, LinkBox, LinkOverlay, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, LinkBox, LinkOverlay, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
 import { memo, VFC } from "react";
 import { FaRegBookmark } from "react-icons/fa";
 import { useSelector } from "react-redux";
