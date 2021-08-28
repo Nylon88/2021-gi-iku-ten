@@ -19,7 +19,7 @@ export const signUp = (signUpData: SignInAndUp) => {
         .then(async (result) => {
           await axios.post("http://localhost:8000/v1/users", {username})
             .then(async () => {
-              await result.user.updateProfile({displayName: username})
+              await result.user?.updateProfile({displayName: username})
                 .then(() => {
                   // ログインユーザー情報を取得
                   result.user?.providerData.forEach((profile) => {
@@ -27,7 +27,7 @@ export const signUp = (signUpData: SignInAndUp) => {
                     dispatch(signUpAction({
                       id: profile?.uid,
                       username: profile?.displayName,
-                      email: profile.email
+                      email: profile?.email
                     }))
                   })
                   // ルートパスに移動
@@ -69,11 +69,11 @@ export const signIn = (signInData: Omit<SignInAndUp, "username">) => {
       await auth.signInWithEmailAndPassword(email, password)
         .then((result) => {
           // ログインユーザー情報を取得
-          result.user.providerData.forEach((profile) => {
+          result.user?.providerData.forEach((profile) => {
           // storeにユーザー情報を保存
             dispatch(signInAction({
-              id: profile.uid,
-              username: profile.displayName,
+              id: profile?.uid,
+              username: profile?.displayName,
               email
             }))
           });
