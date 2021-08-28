@@ -2,14 +2,14 @@ import { LocationState } from 'history'
 
 export type Users = {
   isSignedIn: boolean;
-  id: string;
-  username: string;
-  email: string;
+  id: string | undefined;
+  username: string | null | undefined;
+  email: string | null | undefined;
   password: string;
 }
 
 export type SignInAndUp = {
-  username: string;
+  username: string | null | undefined;
   email: string;
   password: string;
   showMessage: (props: Message) => void
