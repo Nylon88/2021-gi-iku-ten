@@ -13,11 +13,13 @@ export type Action = {
 export type searchResult = {
   abstract: string;
   citations: string;
+  pick: number
   publisher: string;
   rank: number;
   title: string;
   url: string;
   writer: string;
+  year: string;
 }
 
 export type Selector = {
