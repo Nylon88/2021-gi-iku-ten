@@ -4,13 +4,13 @@ import { searchPaperAction } from "./Action";
 import { Message } from "./ActionType";
 import { skeleton } from "../boolean/Operations";
 
-type Props = {
+type searchPapersProps = {
   word: string,
   period: string | null,
   showMessage: (props: Message) => void
 }
 
-export const searchPapers = (props: Props) => {
+export const searchPapers = (props: searchPapersProps) => {
   return async (dispatch: Dispatch<any>) => {
     const { word, period, showMessage } = props;
     dispatch(skeleton());
