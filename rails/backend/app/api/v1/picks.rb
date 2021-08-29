@@ -16,7 +16,7 @@ module V1
           present [count, "既にこの論文はPickしています"]
         else
           Pick.create(paper_id: paper.id, user_id: user.id)
-          present [count, "正常にPickできました"]
+          present [1, "正常にPickできました"]
         end
       end
       get '/' do
