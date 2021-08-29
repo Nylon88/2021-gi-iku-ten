@@ -9,6 +9,10 @@ export const SearchPaperReducer = (state = initialState.searchPapers, action: Ac
         ...state,
         ...action.payload
       }
+    case Actions.PICK_PAPER:
+      return {
+        ...action.payload
+      }
     default:
       return state
   }
