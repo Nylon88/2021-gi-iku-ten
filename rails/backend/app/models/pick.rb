@@ -1,5 +1,4 @@
 class Pick < ApplicationRecord
-    belongs_to :users
-    belongs_to :papers
-    
+    belongs_to :user
+    belongs_to :paper
 end
