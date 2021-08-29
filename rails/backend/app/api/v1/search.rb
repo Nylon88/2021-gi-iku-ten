@@ -17,7 +17,7 @@ module V1
         parse_value = JSON.parse(return_value)
         # Pick数の検索
         parse_value.each do |value|
-          paper = Paper.find_by(url: value[:url])
+          paper = Paper.find_by(url: value["url"])
           pick = paper.present? ? Pick.where(paper_id: paper.id).count : 0
           value[:pick] = pick
         end
