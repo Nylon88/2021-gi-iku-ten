@@ -5,5 +5,6 @@ module V1
 
     mount V1::Users
     mount V1::Search
+    mount V1::Picks
   end
 end
