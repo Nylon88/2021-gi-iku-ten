@@ -19,13 +19,12 @@ ActiveRecord::Schema.define(version: 2021_08_26_150334) do
   end
 
   create_table "picks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "papers_id_id"
-    t.bigint "users_id_id"
-    t.integer "count"
+    t.bigint "paper_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["papers_id_id"], name: "index_picks_on_papers_id_id"
-    t.index ["users_id_id"], name: "index_picks_on_users_id_id"
+    t.index ["paper_id"], name: "index_picks_on_paper_id"
+    t.index ["user_id"], name: "index_picks_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
