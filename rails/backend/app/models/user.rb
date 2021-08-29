@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  validates :username, presence: true
+  validates :uid, presence: true
 
   has_many :picks
 end

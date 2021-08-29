@@ -12,13 +12,13 @@
 
 ActiveRecord::Schema.define(version: 2021_08_26_150334) do
 
-  create_table "papers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "papers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "picks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "picks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "papers_id_id"
     t.bigint "users_id_id"
     t.integer "count"
@@ -28,10 +28,8 @@ ActiveRecord::Schema.define(version: 2021_08_26_150334) do
     t.index ["users_id_id"], name: "index_picks_on_users_id_id"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
-    t.string "username", null: false
-    t.string "email", null: false
-    t.string "password", null: false
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "uid", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -3,10 +3,10 @@ module V1
     resources :users do
       desc '新規登録時のレスポンス'
       params do
-        requires :username, type: String
+        requires :uid, type: String
       end
       post '/' do
-        @user = User.create(username: params[:username])
+        @user = User.create(uid: params[:uid])
       end
     end
   end
