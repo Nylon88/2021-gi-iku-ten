@@ -1,4 +1,4 @@
-import { Box, Flex, Link, LinkBox, LinkOverlay, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, LinkBox, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
 import { memo, VFC } from "react";
 import { FaRegBookmark } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -8,13 +8,35 @@ import { Selector as SkeletonSelector } from "../../../redux/boolean/ActionType"
 
 import { searchResultSelector } from "../../../redux/search/selectors";
 import { getSkeleton } from "../../../redux/boolean/selectors";
+import axios from "axios";
+import auth from "../../../firebase";
+import { useMessage } from "../../../hooks/useMessage";
+import { useState } from "react";
 
 export const Result: VFC = memo(() => {
+  const [count, setCount] = useState(0)
   const searchSelector = useSelector((state: SearchSelector) => state);
   const resultData = searchResultSelector(searchSelector);
+  const currentUser = auth.currentUser
+  const uid = currentUser?.uid
 
   const skeletonSelector = useSelector((state: SkeletonSelector) => state.boolean.boolean);
   const skeleton = getSkeleton(skeletonSelector);
+
+  const { showMessage } = useMessage();
+
+  const handleClickPickCount = async (url: string) => {
+    await axios.post("http://localhost:8000/v1/picks", {url, uid})
+    .then((res) => {
+      setCount(res.data[0])
+      const title = res.data[1]
+      const status = title == "正常にPickできました" ? "success" : "error"
+      showMessage({title, status})
+    })
+    .catch(() => {
+      showMessage({title: "Pickできませんでした。", status: "error"})
+    })
+  }
 
   let testData = [{
     rank: 1,
@@ -166,7 +188,12 @@ export const Result: VFC = memo(() => {
                   <LinkBox>
                     <Flex align="center">
                       <FaRegBookmark />
-                      <LinkOverlay href="#" ml={0.5} _hover={{textDecoration: "underline"}}>Pick数: 10</LinkOverlay>
+                      <Text
+                        ml={0.5}
+                        onClick={() => handleClickPickCount(res.url)}
+                        _hover={{textDecoration: "underline", cursor: "pointer"}}>
+                        Pick数: {count}
+                      </Text>
                     </Flex>
                   </LinkBox>
                   <Text mx={2}>引用数: {res.citations}</Text>
