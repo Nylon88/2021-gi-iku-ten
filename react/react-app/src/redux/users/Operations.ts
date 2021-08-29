@@ -17,7 +17,8 @@ export const signUp = (signUpData: SignInAndUp) => {
       // firebaseにユーザーを作成する
       await auth.createUserWithEmailAndPassword(email, password)
         .then(async (result) => {
-          await axios.post("http://localhost:8000/v1/users", {username})
+          const uid = result.user?.uid
+          await axios.post("http://localhost:8000/v1/users", {uid})
             .then(async () => {
               await result.user?.updateProfile({displayName: username})
                 .then(() => {
