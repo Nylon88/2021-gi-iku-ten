@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_26_150334) do
+ActiveRecord::Schema.define(version: 2021_08_26_145417) do
 
   create_table "papers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "url"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2021_08_26_150334) do
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["paper_id", "user_id"], name: "index_picks_on_paper_id_and_user_id", unique: true
     t.index ["paper_id"], name: "index_picks_on_paper_id"
     t.index ["user_id"], name: "index_picks_on_user_id"
   end
