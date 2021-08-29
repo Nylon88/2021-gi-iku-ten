@@ -1,4 +1,10 @@
-import { searchPaper } from "./ActionType";
+import { searchPaper, searchResult } from "./ActionType";
+
+type PickPaperProps = {
+  pick: number,
+  index: number,
+  resultData: searchResult[]
+}
 
 export const SEARCH_PAPER = "SEARCH_PAPER";
 export const searchPaperAction = (searchState: searchPaper) => {
@@ -10,3 +16,14 @@ export const searchPaperAction = (searchState: searchPaper) => {
     }
   }
 };
+
+export const PICK_PAPER = "PICK_PAPER";
+export const pickPaperAction = (props: PickPaperProps) => {
+  const { pick, index, resultData } = props;
+  return {
+    type: "PICK_PAPER",
+    payload: {
+      result: [...resultData, resultData[index].pick = pick],
+    }
+  }
+}
