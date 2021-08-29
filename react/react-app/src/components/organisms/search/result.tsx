@@ -1,7 +1,7 @@
 import { Box, Flex, Link, LinkBox, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
 import { memo, VFC } from "react";
 import { FaRegBookmark } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Selector as SearchSelector } from "../../../redux/search/ActionType";
 import { Selector as SkeletonSelector } from "../../../redux/boolean/ActionType";
@@ -11,10 +11,9 @@ import { getSkeleton } from "../../../redux/boolean/selectors";
 import axios from "axios";
 import auth from "../../../firebase";
 import { useMessage } from "../../../hooks/useMessage";
-import { useState } from "react";
+import { pickPaper } from "../../../redux/search/Operations";
 
 export const Result: VFC = memo(() => {
-  const [count, setCount] = useState(0)
   const searchSelector = useSelector((state: SearchSelector) => state);
   const resultData = searchResultSelector(searchSelector);
   const currentUser = auth.currentUser
@@ -24,143 +23,27 @@ export const Result: VFC = memo(() => {
   const skeleton = getSkeleton(skeletonSelector);
 
   const { showMessage } = useMessage();
+  const dispatch = useDispatch();
 
-  const handleClickPickCount = async (url: string) => {
+  const handleClickPickCount = async (url: string, i: number) => {
     await axios.post("http://localhost:8000/v1/picks", {url, uid})
     .then((res) => {
-      setCount(res.data[0])
-      const title = res.data[1]
-      const status = title == "正常にPickできました" ? "success" : "error"
-      showMessage({title, status})
+      const props = {
+        result: res.data,
+        index: i,
+        resultData,
+        showMessage
+      }
+      dispatch((pickPaper(props)))
     })
     .catch(() => {
       showMessage({title: "Pickできませんでした。", status: "error"})
     })
   }
 
-  let testData = [{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },{
-    rank: 1,
-    title: "[書籍][B] ブロックチェーン革命",
-    abstract: "本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …",
-    writer: "野口悠紀雄， 牧野貴樹 -  - ipa.go.jp",
-    year: "2017",
-    publisher: "jst.go.jp",
-    citations:" 12",
-    url: "https://www.ipa.go.jp/files/000062713.pdf"
-  },]
-
-
   return (
     <Box w="65%" maxW="700px">
-      {testData.map((res, i) => (
+      {resultData.map((res, i) => (
         <Box key={i} px="5" py="3" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
           <Skeleton isLoaded={skeleton}>
             <Link
@@ -190,9 +73,9 @@ export const Result: VFC = memo(() => {
                       <FaRegBookmark />
                       <Text
                         ml={0.5}
-                        onClick={() => handleClickPickCount(res.url)}
+                        onClick={() => handleClickPickCount(res.url, i)}
                         _hover={{textDecoration: "underline", cursor: "pointer"}}>
-                        Pick数: {count}
+                        Pick数: {res.pick}
                       </Text>
                     </Flex>
                   </LinkBox>
