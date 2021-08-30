@@ -15,11 +15,11 @@ module V1
                           -k #{params[:word]} -n #{num} -y #{params[:period]}`
         # パース
         parse_value = JSON.parse(return_value)
-        # Pick数の検索
-        parse_value.each do |value|
-          paper = Paper.find_by(url: value["url"])
-          pick = paper.present? ? Pick.where(paper_id: paper.id).count : 0
-          value[:pick] = pick
+        # # Pick数の検索
+        # parse_value.each do |value|
+        #   paper = Paper.find_by(url: value["url"])
+        #   pick = paper.present? ? Pick.where(paper_id: paper.id).count : 0
+        #   value[:pick] = pick
         end
 
         # フロント側に返却
