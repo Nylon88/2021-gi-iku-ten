@@ -9,9 +9,10 @@ from argparse import ArgumentError
 from itertools import zip_longest
 
 from utils.log_file_by_level import logger
+from translate_api import *
 
 
-def get_search_results_df(keyword:str, number:int, year:str=None):
+def run_scraping(keyword:str, number:int, year:str=None, language:str=None):
     """
     Description：
         キーワードと欲しい論文本数を引数に論文の情報をjsonで返す。
@@ -34,6 +35,7 @@ def get_search_results_df(keyword:str, number:int, year:str=None):
 
     """
     try:
+        # print(f'language:{language}')
         columns = ["rank", "title", "abstract", "writer", "year", "publisher", "citations", "url"]
         df = pd.DataFrame(columns=columns) #表の作成
 
@@ -42,7 +44,9 @@ def get_search_results_df(keyword:str, number:int, year:str=None):
         # yearを指定する: (ex)as_ylo=2021　を使う
         # 引用情報を含んだ論文かどうか判定する：　as_vis=1含む
         
-        response = requests.get(f"https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num={str(number)}&q={keyword}&as_ylo={year}&as_vis=1") # + str(number) + "&q=" + keyword + "&as_ylo=" + year)
+        # response = requests.get(f"https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num={str(number)}&q={keyword}&as_ylo={year}&as_vis=1") # + str(number) + "&q=" + keyword + "&as_ylo=" + year)
+        response = requests.get(f"http://api.scraperapi.com?api_key=126c3cd5fa5a2415e9ecfde1f5c79e55&url=https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num={number}&q={keyword}&as_ylo={year}&as_vis=1")
+    
         
         # status codeをログファイルに出力
         response_statu_code = response.status_code
@@ -87,9 +91,20 @@ def get_search_results_df(keyword:str, number:int, year:str=None):
             if tag4 is None:
                 abstract = "なし"
             elif isinstance(tag4, str):
-                abstract = tag4
+                # 英語を日本語に翻訳する
+                if language == "English":
+                    abstract = translate(tag4)
+                    # print(f'abstract:{abstract}')
+
+                else:
+                    abstract = tag4
             else:
-                abstract = tag4.text
+                # 英語を日本語に翻訳する
+                if language == "English":
+                    abstract = translate(tag4.text)
+                    # print(f'abstract:{abstract}')
+                else:    
+                    abstract = tag4.text
             
             # 発行元
             if tag5 is None:
@@ -104,11 +119,11 @@ def get_search_results_df(keyword:str, number:int, year:str=None):
             df = df.append(se, columns)
             rank += 1
         
-        jsoned_df = df2json(df)
+        jsoned_data = df2json(df)
     except Exception as e:
         logger.error(f'in function:<get_search_results_df> : {e}')
 
-    return jsoned_df
+    return jsoned_data
 
 
 def df2json(df_data):
@@ -123,25 +138,26 @@ def extra_argments():
     parser.add_argument('-k', '--keyword')
     parser.add_argument('-n', '--number')
     parser.add_argument('-y', '--year')
+    parser.add_argument('-l', '--language')
     args = parser.parse_args()
 
     # if not args.year:
     #     args.year = None
 
-    if (not args.keyword) or (not args.number) or (not args.year):
+    if (not args.keyword) or (not args.number) or (not args.year) or (not args.language):
         logger.error(f'in function:<extra_argments> : 要素がありません')
         raise ArgumentError(None, '要素がありません')
     
-    logger.info(f'in function:<extra_argments> keyword:{args.keyword} | number:{args.number} | year:{args.year}')
+    logger.info(f'in function:<extra_argments> keyword:{args.keyword} | number:{args.number} | year:{args.year} | language:{args.language}')
     
-    return args.keyword, args.number, args.year
+    return args.keyword, args.number, args.year, args.language
 
 
 if __name__ == "__main__":
     # ファイル引数を受け取る
-    keyword, number, year = extra_argments()
+    keyword, number, year, language = extra_argments()
 
     # google schalorでスクレイピングを実行 -> jsonで返す
-    search_results_jsoned_df = get_search_results_df(keyword, number, year)
+    jsoned_data = run_scraping(keyword, number, year, language)
 
-    print(search_results_jsoned_df)
+    print(jsoned_data)

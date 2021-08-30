@@ -6,3 +6,4 @@ logs/
 
 # pycacheフォルダ
 utils/__pycache__
+__pycache__
