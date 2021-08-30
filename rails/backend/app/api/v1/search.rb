@@ -20,7 +20,7 @@ module V1
         #   paper = Paper.find_by(url: value["url"])
         #   pick = paper.present? ? Pick.where(paper_id: paper.id).count : 0
         #   value[:pick] = pick
-        end
+        # end
 
         # フロント側に返却
         present parse_value
