@@ -12,7 +12,7 @@ module V1
         num = 10
         # pythonファイルの実行
         return_value = `python3 #{Rails.root}/app/python-script/paper.py\
-                          -k #{params[:word]} -n #{num} -y #{params[:period]} -l Japanese`
+                          -k #{params[:word]} -n #{num} -y #{params[:period]}`
         # パース
         parse_value = JSON.parse(return_value)
 
