@@ -12,7 +12,7 @@ module V1
         num = 10
         # pythonファイルの実行
         return_value = `python3 #{Rails.root}/app/python-script/paper.py\
-                          -k #{params[:word]} -n #{num} -y #{params[:period]}`
+                          -k #{params[:word]} -n #{num} -y #{params[:period]} -l Japanese`
         # パース
         parse_value = JSON.parse(return_value)
 
@@ -32,13 +32,10 @@ module V1
           # データベース処理無視
           pick = 2
           paper_info["pick"] = pick
-
         end
-        
-        # フロントが扱いやすい様にJsonに変換する
-        json_data = parse_value.to_json
+
         # フロント側に返却
-        present json_data
+        present parse_value
       end
     end
   end
