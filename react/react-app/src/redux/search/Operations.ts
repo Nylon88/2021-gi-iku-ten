@@ -23,7 +23,6 @@ export const searchPapers = (props: searchPapersProps) => {
     dispatch(skeleton());
     await axios.post('http://localhost:8000/v1/search', {word, period})
       .then((result) => {
-        dispatch(skeleton());
         dispatch(searchPaperAction({
           word,
           result: result.data
@@ -31,7 +30,7 @@ export const searchPapers = (props: searchPapersProps) => {
       }).catch((error) => {
         // 要日本語対応
         showMessage({title: error.message, status: "error"})
-      })
+      }).finally(() => dispatch(skeleton()))
   }
 }
 

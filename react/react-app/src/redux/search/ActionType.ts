@@ -20,6 +20,7 @@ export type searchResult = {
   url: string;
   writer: string;
   year: string;
+  coefficient: number;
 }
 
 export type Selector = {
