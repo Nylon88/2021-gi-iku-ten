@@ -7,10 +7,12 @@ import { Selector } from "../../../redux/users/ActionType";
 import { getUserState } from "../../../redux/users/selectors";
 import { signOut } from "../../../redux/users/Operations";
 import { useMessage } from "../../../hooks/useMessage";
+import auth from "../../../firebase";
 
 export const Sidebar:VFC = memo(() => {
   const selector = useSelector((state: Selector) => state);
   const LoginState = getUserState(selector)
+  const userId = auth.currentUser?.uid
 
   const dispatch = useDispatch();
   const showMessage = useMessage();
@@ -36,6 +38,7 @@ export const Sidebar:VFC = memo(() => {
                 fontWeight="bold"
                 style={{cursor: "pointer"}}
                 _hover={{color: "#777"}}
+                onClick={() => dispatch(push(`/users/${userId}`))}
               >
                 プロフィール
               </Text>
