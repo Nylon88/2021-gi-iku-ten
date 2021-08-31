@@ -21,17 +21,12 @@ module V1
         coefficient = 5
         parse_value.each do |paper_info|
           # Pick数を検索
-          # paper = Paper.find_by(url: paper_info["url"])
-          # pick = paper.present? ? Pick.where(paper_id: paper.id).count : 0
-
-          # paper_info[:coefficient] = 5
-          # paper_info[:pick] = pick
+          paper = Paper.find_by(url: paper_info["url"])
+          pick = paper.present? ? Pick.where(paper_id: paper.id).count : 0
+          paper_info["pick"] = pick
 
           # 係数処理無視
           paper_info["coefficient"] = coefficient
-          # データベース処理無視
-          pick = 2
-          paper_info["pick"] = pick
         end
 
         # フロント側に返却
