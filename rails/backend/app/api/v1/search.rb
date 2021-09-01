@@ -33,6 +33,9 @@ module V1
           # 言語判定
           language = FunctionTools.new.jud_language abstract
           paper_info["abstract"] = GcpApi.new.translate abstract if language == "English"
+
+          # 引用数を引用数テーブルに保存する。
+          Citation.create(count: paper_info["citations"].to_i)
         end
 
         # フロント側に返却
