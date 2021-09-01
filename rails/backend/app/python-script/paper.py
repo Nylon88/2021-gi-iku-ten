@@ -9,19 +9,18 @@ from argparse import ArgumentError
 from itertools import zip_longest
 
 from utils.log_file_by_level import logger
-from translate_api import *
 
 
-def run_scraping(keyword:str, number:int, year:str=None, language:str=None):
+def run_scraping(keyword:str, number:int, year:str=None):
     """
     Description：
         キーワードと欲しい論文本数を引数に論文の情報をjsonで返す。
-    
+
     Argments:
         keyword : 論文タイトル
         number  : 取得したい論文数
         year    : 絞り込みたい発行年　※　もし絞り込みたい年が無ければnullを引数に入れてください。
-    
+
     Return:
         jsonでデータを返す。
         データは一つの論文情報毎に以下の順で返す。
@@ -43,15 +42,15 @@ def run_scraping(keyword:str, number:int, year:str=None, language:str=None):
         # 判定式を使って、リクエストを投げる。
         # yearを指定する: (ex)as_ylo=2021　を使う
         # 引用情報を含んだ論文かどうか判定する：　as_vis=1含む
-        
+
         # response = requests.get(f"https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num={str(number)}&q={keyword}&as_ylo={year}&as_vis=1") # + str(number) + "&q=" + keyword + "&as_ylo=" + year)
         response = requests.get(f"http://api.scraperapi.com?api_key=126c3cd5fa5a2415e9ecfde1f5c79e55&url=https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num={number}&q={keyword}&as_ylo={year}&as_vis=1")
-    
-        
+
+
         # status codeをログファイルに出力
         response_statu_code = response.status_code
         logger.debug(f'in function:<get_search_results_df> / Status Code:{response_statu_code}')
-        
+
         html_doc = response.text
         soup = BeautifulSoup(html_doc, "html.parser") # BeautifulSoupの初期化
         tags1 = soup.find_all("h3", {"class": "gs_rt"})  # title&url
@@ -70,7 +69,7 @@ def run_scraping(keyword:str, number:int, year:str=None, language:str=None):
                 title = tag1.text.replace("[HTML]","")
             # URL
             url = tag1.select("a")[0].get("href")
-            
+
             # 著者
             if isinstance(tag2, str):
                 writer = re.sub(r'\d', '', tag2)
@@ -85,27 +84,16 @@ def run_scraping(keyword:str, number:int, year:str=None, language:str=None):
                 year = re.sub(r'\D', '', year)
 
             # 引用された数
-            citations = tag3.replace("引用元","")            
-            
-            # 概要の抽出            
+            citations = tag3.replace("引用元","")
+
+            # 概要の抽出
             if tag4 is None:
                 abstract = "なし"
             elif isinstance(tag4, str):
-                # 英語を日本語に翻訳する
-                if language == "English":
-                    abstract = translate(tag4)
-                    # print(f'abstract:{abstract}')
-
-                else:
-                    abstract = tag4
+                abstract = tag4
             else:
-                # 英語を日本語に翻訳する
-                if language == "English":
-                    abstract = translate(tag4.text)
-                    # print(f'abstract:{abstract}')
-                else:    
-                    abstract = tag4.text
-            
+                abstract = tag4.text
+
             # 発行元
             if tag5 is None:
                 publisher = "なし"
@@ -118,7 +106,7 @@ def run_scraping(keyword:str, number:int, year:str=None, language:str=None):
             se = pd.Series([rank, title, abstract, writer, year, publisher, citations, url], columns)
             df = df.append(se, columns)
             rank += 1
-        
+
         jsoned_data = df2json(df)
     except Exception as e:
         logger.error(f'in function:<get_search_results_df> : {e}')
@@ -138,26 +126,22 @@ def extra_argments():
     parser.add_argument('-k', '--keyword')
     parser.add_argument('-n', '--number')
     parser.add_argument('-y', '--year')
-    parser.add_argument('-l', '--language')
     args = parser.parse_args()
 
-    # if not args.year:
-    #     args.year = None
-
-    if (not args.keyword) or (not args.number) or (not args.year) or (not args.language):
+    if (not args.keyword) or (not args.number) or (not args.year):
         logger.error(f'in function:<extra_argments> : 要素がありません')
         raise ArgumentError(None, '要素がありません')
-    
-    logger.info(f'in function:<extra_argments> keyword:{args.keyword} | number:{args.number} | year:{args.year} | language:{args.language}')
-    
-    return args.keyword, args.number, args.year, args.language
+
+    logger.info(f'in function:<extra_argments> keyword:{args.keyword} | number:{args.number} | year:{args.year}')
+
+    return args.keyword, args.number, args.year
 
 
 if __name__ == "__main__":
     # ファイル引数を受け取る
-    keyword, number, year, language = extra_argments()
+    keyword, number, year = extra_argments()
 
     # google schalorでスクレイピングを実行 -> jsonで返す
-    jsoned_data = run_scraping(keyword, number, year, language)
+    jsoned_data = run_scraping(keyword, number, year)
 
     print(jsoned_data)

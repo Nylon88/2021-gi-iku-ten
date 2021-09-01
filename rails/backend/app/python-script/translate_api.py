@@ -25,7 +25,7 @@ def translate(q:str) -> str:
     request = url + "?" + "key=" + APIKEY + "&" + "target=" + target + "&" + "source=" + source + "&" + "q=" + q;
     response = requests.get(request)
     text = json.loads(response.text)["data"]["translations"][0]["translatedText"]
-    
+
     return text
 
 
@@ -36,7 +36,7 @@ def extra_argments():
     parser.add_argument('-q', '--queue')
     args = parser.parse_args()
 
-    if (not args.id):
+    if (not args.queue):
         raise ArgumentError(None, '要素がありません')
 
     return args.queue

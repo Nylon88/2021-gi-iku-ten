@@ -7,7 +7,7 @@ class TestWorkSpace
     # pythonファイルの実行
     # 最大20件までしかでてこない
     return_value = `python3 /backend/app/python-script/paper.py\
-                      -k Learnig -n 3 -y 2021 -l English`
+                      -k Learnig -n 3 -y 2021`
     # hashにパース
     parse_value = JSON.parse(return_value)
     # puts parse_value
@@ -31,18 +31,13 @@ class TestWorkSpace
       if language == "English"
         paper_info["abstract"] = GcpApi.new.translate abstract
       end
-
     end
 
     # 論文のランキングを行う
     # puts parse_value
-    puts parse_value.to_json
+    return parse_value.to_json
   end
 
-  def test_tool_call
-    # test_rb
-    FunctionTools.new.jud_language 'こんにちは'
-  end
 end
 
 # やる事

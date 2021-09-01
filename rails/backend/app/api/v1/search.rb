@@ -12,7 +12,7 @@ module V1
         num = 10
         # pythonファイルの実行
         return_value = `python3 #{Rails.root}/app/python-script/paper.py\
-                          -k #{params[:word]} -n #{num} -y #{params[:period]} -l Japanese`
+                          -k #{params[:word]} -n #{num} -y #{params[:period]}`
         # パース
         parse_value = JSON.parse(return_value)
 
@@ -27,6 +27,12 @@ module V1
 
           # 係数処理無視
           paper_info["coefficient"] = coefficient
+
+          # 翻訳判定
+          abstract = paper_info["abstract"]
+          # 言語判定
+          language = FunctionTools.new.jud_language abstract
+          paper_info["abstract"] = GcpApi.new.translate abstract if language == "English"
         end
 
         # フロント側に返却
