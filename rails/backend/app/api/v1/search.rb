@@ -17,8 +17,8 @@ module V1
         parse_value = JSON.parse(return_value)
 
 
-        # 係数
-        coefficient = 5
+        # 論文評価係数を取得
+        coefficient = Paperevaluation.select(:factor).last[:factor]
         parse_value.each do |paper_info|
           # Pick数を検索
           paper = Paper.find_by(url: paper_info["url"])
