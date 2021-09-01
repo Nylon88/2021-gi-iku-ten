@@ -38,10 +38,17 @@ class TestWorkSpace
     return parse_value.to_json
   end
 
-  def create
+  def create_citation_data
     Citation.create(count: 10)
   end
 
+  def create_paperevaluation_data
+    Paperevaluation.create(factor: 5)
+  end
+
+  def get
+    p Paperevaluation.select(:factor).last[:factor]
+  end
 end
 
 # やる事
