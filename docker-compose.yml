@@ -55,7 +55,7 @@ services:
       resources:
         limits:
           cpus: '0.2'
-          memory: 200M
+          memory: 400M
 
 volumes:
   pumasocket: # 共通ボリュームを作成  
