@@ -32,10 +32,7 @@ module V1
           abstract = paper_info["abstract"]
           # 言語判定
           language = FunctionTools.new.jud_language abstract
-          # もし英語なら翻訳する
-          if language == "English"
-            paper_info["abstract"] = GcpApi.new.translate abstract
-          end
+          paper_info["abstract"] = GcpApi.new.translate abstract if language == "English"
         end
 
         # フロント側に返却
