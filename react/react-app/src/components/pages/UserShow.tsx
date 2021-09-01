@@ -3,6 +3,7 @@ import { memo, VFC } from "react";
 import { FaRegBookmark } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
+import Avatar, { genConfig } from "react-nice-avatar"
 
 import auth from "../../firebase";
 import { Selector } from "../../redux/users/ActionType";
@@ -15,6 +16,8 @@ export const UserShow: VFC = memo(() => {
   const userName = getUserName(selector);
   const currentUserId = auth.currentUser?.uid;
   const location = useLocation();
+
+  const config = genConfig({sex: "man", earSize: "small", faceColor: ""})
 
   // useEffect(() => {
   //   axios.post("http://localhost:8000/v1/picks", {uid: currentUserId})
@@ -33,11 +36,15 @@ export const UserShow: VFC = memo(() => {
     <Flex w="80%" align="center" justify="center">
       {userStatus && location.pathname === `/users/${currentUserId}` && (
         <Flex w="80%" align="center">
-          <Box w="30%">
-            <Heading as="h1" fontSize="lg">{userName}</Heading>
+          <Box w="30%" position="fixed">
+            <Avatar
+              style={{width: "12rem", height: "12rem", ...config}}
+              shape="rounded"
+            />
+            <Heading as="h1" fontSize="lg" mt="2">{userName}</Heading>
             <Text color="gray.500">ID：{currentUserId}</Text>
           </Box>
-          <Box w="70%" my="12">
+          <Box ml="30%" my="12">
             <Heading as="h1" fontSize="2xl">Pickした論文一覧</Heading>
             <Box mt="8" w="100%">
               {result.map((res, i) => (
