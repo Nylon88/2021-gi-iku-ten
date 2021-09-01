@@ -38,6 +38,10 @@ class TestWorkSpace
     return parse_value.to_json
   end
 
+  def create
+    Citation.create(count: 10)
+  end
+
 end
 
 # やる事
