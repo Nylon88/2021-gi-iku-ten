@@ -1,4 +1,4 @@
-import { VFC, memo } from "react";
+import { VFC, memo, useEffect, useState } from "react";
 import { Box, Flex, Heading, Link, LinkBox, Text } from "@chakra-ui/react";
 import { FaRegBookmark } from "react-icons/fa";
 import Avatar, { genConfig } from "react-nice-avatar"
@@ -7,12 +7,21 @@ import { useSelector } from "react-redux";
 import { Selector } from "../../../redux/users/ActionType";
 import { getUserName } from "../../../redux/users/selectors";
 import auth from "../../../firebase";
+import { avatarConfig } from "../../../template/niceAvatar";
 
 export const PickedPaper: VFC = memo(() => {
+  const [getNumber, setGetNumber] = useState(0)
   const selector = useSelector((state: Selector) => state);
   const userName = getUserName(selector);
   const currentUserId = auth.currentUser?.uid;
-  const config = genConfig({sex: "man", earSize: "small", faceColor: ""})
+
+  // ユーザー名の長さによってアバターを決定
+  useEffect(() => {
+    const number = userName?.length ? userName.length % 6 : 0
+    setGetNumber(number)
+  }, [userName])
+
+  const config = genConfig({...avatarConfig[getNumber]});
 
   // useEffect(() => {
   //   axios.post("http://localhost:8000/v1/picks", {uid: currentUserId})
@@ -31,7 +40,8 @@ export const PickedPaper: VFC = memo(() => {
     <Flex w="80%" align="center">
       <Box w="30%" position="fixed">
         <Avatar
-          style={{width: "12rem", height: "12rem", ...config}}
+          {...config}
+          style={{width: "12rem", height: "12rem"}}
           shape="rounded"
         />
         <Heading as="h1" fontSize="lg" mt="2">{userName}</Heading>
