@@ -19,9 +19,19 @@ module V1
           present [count + 1, "正常にPickできました"]
         end
       end
-      get '/' do
-        present Pick.all
-      end
+
+      # desc 'ユーザーのPickした論文を取得'
+      # params do
+      #   requires :uid, type: String
+      # end
+      # post '/users' do
+      #   user = User.find_by(uid: params[:uid])
+      #   papers = Pick.where(user_id: user.uid)
+      #   return_value = []
+      #   papers.each do |paper|
+      #     return_value << 
+      #   end
+      # end
     end
   end
 end
