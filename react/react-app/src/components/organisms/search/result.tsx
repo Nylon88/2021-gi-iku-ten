@@ -2,16 +2,18 @@ import { Box, Flex, Link, LinkBox, Skeleton, SkeletonText, Text } from "@chakra-
 import { memo, VFC } from "react";
 import { FaRegBookmark } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 import { Selector as SearchSelector } from "../../../redux/search/ActionType";
 import { Selector as SkeletonSelector } from "../../../redux/boolean/ActionType";
+import { Selector as UserSelector } from "../../../redux/users/ActionType";
 
 import { searchResultSelector } from "../../../redux/search/selectors";
 import { getSkeleton } from "../../../redux/boolean/selectors";
-import axios from "axios";
 import auth from "../../../firebase";
 import { useMessage } from "../../../hooks/useMessage";
 import { pickPaper } from "../../../redux/search/Operations";
+import { getUserState } from "../../../redux/users/selectors";
 
 export const Result: VFC = memo(() => {
   const searchSelector = useSelector((state: SearchSelector) => state);
@@ -21,6 +23,9 @@ export const Result: VFC = memo(() => {
 
   const skeletonSelector = useSelector((state: SkeletonSelector) => state.boolean.boolean);
   const skeleton = getSkeleton(skeletonSelector);
+
+  const userSelector = useSelector((state: UserSelector) => state)
+  const userStatus = getUserState(userSelector)
 
   const { showMessage } = useMessage();
   const dispatch = useDispatch();
@@ -39,6 +44,12 @@ export const Result: VFC = memo(() => {
     .catch(() => {
       showMessage({title: "Pickできませんでした。", status: "error"})
     })
+  }
+
+  const pickFunction = (url: string, i: number) => {
+    userStatus ?
+      handleClickPickCount(url, i) :
+      showMessage({title: "ログインユーザーのみこの機能を使えます", status: "error"})
   }
 
   return (
@@ -73,7 +84,7 @@ export const Result: VFC = memo(() => {
                       <FaRegBookmark />
                       <Text
                         ml={0.5}
-                        onClick={() => handleClickPickCount(res.url, i)}
+                        onClick={() => pickFunction(res.url, i)}
                         _hover={{textDecoration: "underline", cursor: "pointer"}}>
                         Pick数: {res.pick}
                       </Text>
