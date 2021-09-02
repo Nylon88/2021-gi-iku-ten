@@ -3,3 +3,4 @@ pandas
 beautifulsoup4
 requests
 
+urllib3==1.25.8
