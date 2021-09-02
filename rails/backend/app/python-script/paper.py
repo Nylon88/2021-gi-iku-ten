@@ -2,11 +2,15 @@ import logging
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
+from dotenv import load_dotenv
+import random
 
 import re
 import argparse
 from argparse import ArgumentError
 from itertools import zip_longest
+import os
+from os.path import join, dirname
 
 from utils.log_file_by_level import logger
 
@@ -42,10 +46,34 @@ def run_scraping(keyword:str, number:int, year:str=None):
         # 判定式を使って、リクエストを投げる。
         # yearを指定する: (ex)as_ylo=2021　を使う
         # 引用情報を含んだ論文かどうか判定する：　as_vis=1含む
+        url = f"https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num={str(number)}&q={keyword}&as_ylo={year}&as_vis=1"
 
-        # response = requests.get(f"https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num={str(number)}&q={keyword}&as_ylo={year}&as_vis=1") # + str(number) + "&q=" + keyword + "&as_ylo=" + year)
-        response = requests.get(f"http://api.scraperapi.com?api_key=126c3cd5fa5a2415e9ecfde1f5c79e55&url=https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num={number}&q={keyword}&as_ylo={year}&as_vis=1")
+        # 環境変数からプロキシサーバをロードする
+        dotenv_path = join(dirname(__file__), '.proxies.env')
+        load_dotenv(verbose=True, dotenv_path=dotenv_path)
+        proxies = []
+        # proxies.append(os.getenv("PROXIE_1"))
+        # proxies.append(os.getenv("PROXIE_2"))
+        # proxies.append(os.getenv("PROXIE_3"))
+        proxies.append(os.getenv("PROXIE_4"))
+        proxies.append(os.getenv("PROXIE_5"))
 
+        # プロキシサーバをランダムに一つ選択
+        proxy =random.choice(proxies)
+        # print(proxy)
+
+        proxies = {
+        "http": proxy,
+        "https": proxy
+        }
+        # proxies = {
+        # "http": "https://601f4e5dc5:YV3EwPeK@104.144.201.5:4444",
+        # "https": "https://601f4e5dc5:YV3EwPeK@104.144.201.5:4444"
+        # }
+
+        # リクエスト処理
+        response = requests.get(url, proxies=proxies)
+        response.encoding = 'utf8'
 
         # status codeをログファイルに出力
         response_statu_code = response.status_code
