@@ -1,5 +1,7 @@
 # 環境変数系ファイル
 .api.env
+.proxies.env
+.miss.env
 
 # logファイル
 logs/
