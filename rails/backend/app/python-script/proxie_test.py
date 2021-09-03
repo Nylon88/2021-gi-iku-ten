@@ -8,8 +8,8 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 
 
-url = "https://expressvpn.com/what-is-my-ip"
-# url = "https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=1&q=learning&as_ylo=2021&as_vis=1"
+# url = "https://expressvpn.com/what-is-my-ip"
+url = "https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=1&q=learning&as_ylo=2021&as_vis=1"
 
 
 def my_ip_access():
@@ -23,8 +23,8 @@ def my_ip_access():
 
 def proxie_access():
     proxies = {
-	"http": "https://601f4e5dc5:YV3EwPeK@104.144.201.5:4444",
-	"https": "https://601f4e5dc5:YV3EwPeK@104.144.201.5:4444"
+	"http": "https://601f4e5dc5:YV3EwPeK@104.144.15.162:4444",
+	"https": "https://601f4e5dc5:YV3EwPeK@104.144.15.162:4444"
     }
 
     res = requests.get(url, proxies=proxies)
@@ -74,9 +74,9 @@ proxies.append(os.getenv("PROXIE_4"))
 proxies.append(os.getenv("PROXIE_5"))
 
 # ランダムに一つ選択
-proxy =random.choice(proxies)
-print(proxy)
+# proxy =random.choice(proxies)
+# print(proxy)
 
 # my_ip_access()
-# proxie_access()
-random_proxie_access()
+proxie_access()
+# random_proxie_access()
