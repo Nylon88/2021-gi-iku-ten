@@ -52,9 +52,9 @@ def run_scraping(keyword:str, number:int, year:str=None):
         dotenv_path = join(dirname(__file__), '.proxies.env')
         load_dotenv(verbose=True, dotenv_path=dotenv_path)
         proxies = []
-        # proxies.append(os.getenv("PROXIE_1"))
-        # proxies.append(os.getenv("PROXIE_2"))
-        # proxies.append(os.getenv("PROXIE_3"))
+        proxies.append(os.getenv("PROXIE_1"))
+        proxies.append(os.getenv("PROXIE_2"))
+        proxies.append(os.getenv("PROXIE_3"))
         proxies.append(os.getenv("PROXIE_4"))
         proxies.append(os.getenv("PROXIE_5"))
 
@@ -66,10 +66,6 @@ def run_scraping(keyword:str, number:int, year:str=None):
         "http": proxy,
         "https": proxy
         }
-        # proxies = {
-        # "http": "https://601f4e5dc5:YV3EwPeK@104.144.201.5:4444",
-        # "https": "https://601f4e5dc5:YV3EwPeK@104.144.201.5:4444"
-        # }
 
         # リクエスト処理
         response = requests.get(url, proxies=proxies)
