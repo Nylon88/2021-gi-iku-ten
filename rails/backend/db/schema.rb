@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2021_09_01_131113) do
   end
 
   create_table "papers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "url"
+    t.text "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

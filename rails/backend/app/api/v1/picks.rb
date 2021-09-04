@@ -10,10 +10,11 @@ module V1
         paper = Paper.find_by(url: params[:url])
         paper = Paper.create(url: params[:url]) unless paper.present?
         user = User.find_by(uid: params[:uid])
-        pick = Pick.find_by(paper_id: paper.id, user_id: user.id)
-        count = Pick.where(paper_id: paper.id).count
+        pick = paper.picks.present? && user.picks.present?
+        count = paper.picks.count
         if pick.present?
-          present [count, "既にこの論文はPickしています"]
+          result = count.present? ? [count, "既にこの論文はPickしています"] : [0, "既にこの論文はPickしています"]
+          present result
         else
           Pick.create(paper_id: paper.id, user_id: user.id)
           present [count + 1, "正常にPickできました"]
@@ -29,7 +30,7 @@ module V1
       #   papers = Pick.where(user_id: user.uid)
       #   return_value = []
       #   papers.each do |paper|
-      #     return_value << 
+      #     return_value <<
       #   end
       # end
     end
