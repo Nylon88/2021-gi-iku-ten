@@ -18,7 +18,9 @@ module V1
 
 
         # 論文評価係数を取得
-        coefficient = Paperevaluation.select(:factor).last[:factor]
+        coefficient = Paperevaluation.last
+        coefficient = coefficient.present? ? coefficient.factor : 0
+
         parse_value.each do |paper_info|
           # Pick数を検索
           paper = Paper.find_by(url: paper_info["url"])
