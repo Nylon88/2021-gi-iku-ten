@@ -12,7 +12,7 @@ export type Action = {
 
 export type searchResult = {
   abstract: string;
-  citations: string;
+  citations: number;
   pick: number
   publisher: string;
   rank: number;
@@ -21,6 +21,7 @@ export type searchResult = {
   writer: string;
   year: string;
   coefficient: number;
+  point: number;
 }
 
 export type Selector = {
