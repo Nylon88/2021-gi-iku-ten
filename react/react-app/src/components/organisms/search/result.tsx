@@ -1,5 +1,5 @@
 import { Box, Flex, Link, LinkBox, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
-import { memo, useEffect, VFC } from "react";
+import { memo, useCallback, VFC } from "react";
 import { FaRegBookmark } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -31,7 +31,7 @@ export const Result: VFC = memo(() => {
   const dispatch = useDispatch();
 
   // resultDataが更新されたらPoint計算をし、ソートする
-  useEffect(() => {
+  useCallback(() => {
     resultData.map((data) => {
       data.point = data.citations * 100 + data.pick * data.coefficient
     })
