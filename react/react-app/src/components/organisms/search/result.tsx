@@ -1,5 +1,5 @@
 import { Box, Flex, Link, LinkBox, Skeleton, SkeletonText, Text } from "@chakra-ui/react";
-import { memo, VFC } from "react";
+import { memo, useEffect, VFC } from "react";
 import { FaRegBookmark } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -29,6 +29,19 @@ export const Result: VFC = memo(() => {
 
   const { showMessage } = useMessage();
   const dispatch = useDispatch();
+
+  // resultDataが更新されたらPoint計算をし、ソートする
+  useEffect(() => {
+    resultData.map((data) => {
+      data.point = data.citations * 100 + data.pick * data.coefficient
+    })
+    resultData.sort((a,b) => {
+      if (a.point > b.point) return -1
+      if (a.point < b.point) return 1
+      return 0
+    })
+    console.table(resultData)
+  }, [resultData])
 
   const handleClickPickCount = async (url: string, i: number) => {
     await axios.post("http://localhost:8000/v1/picks", {url, uid})
