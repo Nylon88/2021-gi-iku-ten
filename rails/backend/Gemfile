@@ -49,3 +49,6 @@ gem 'grape-entity'
 
 # To load .env file 
 gem "dotenv"
+
+# debug
+gem 'pry-byebug'
