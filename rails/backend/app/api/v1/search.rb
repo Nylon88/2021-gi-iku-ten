@@ -18,7 +18,9 @@ module V1
 
 
         # 論文評価係数を取得
-        coefficient = Paperevaluation.select(:factor).last[:factor]
+        coefficient = Paperevaluation.last
+        coefficient = coefficient.present? ? coefficient.factor : 0
+
         parse_value.each do |paper_info|
           # Pick数を検索
           paper = Paper.find_by(url: paper_info["url"])
@@ -33,8 +35,8 @@ module V1
           # 言語判定
           language = FunctionTools.new.jud_language abstract
           paper_info["abstract"] = GcpApi.new.translate abstract if language == "English"
-
           # 引用数を引用数テーブルに保存する。
+          paper_info["citations"] = "0" if paper_info["citations"] == "なし"
           Citation.create(count: paper_info["citations"].to_i)
         end
 
