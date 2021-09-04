@@ -69,7 +69,6 @@ def run_scraping(keyword:str, number:int, year:str=None):
 
         # リクエスト処理
         response = requests.get(url, proxies=proxies)
-        response.encoding = 'utf8'
 
         # status codeをログファイルに出力
         response_statu_code = response.status_code
