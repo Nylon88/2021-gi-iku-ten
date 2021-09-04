@@ -68,7 +68,6 @@ dotenv_path = join(dirname(__file__), '.proxies.env')
 load_dotenv(verbose=True, dotenv_path=dotenv_path)
 proxies = []
 proxies.append(os.getenv("PROXIE_1"))
-proxies.append(os.getenv("PROXIE_2"))
 proxies.append(os.getenv("PROXIE_3"))
 proxies.append(os.getenv("PROXIE_4"))
 proxies.append(os.getenv("PROXIE_5"))
