@@ -35,18 +35,19 @@ module V1
         end
       end
 
-      # desc 'ユーザーのPickした論文を取得'
-      # params do
-      #   requires :uid, type: String
-      # end
-      # post '/users' do
-      #   user = User.find_by(uid: params[:uid])
-      #   papers = Pick.where(user_id: user.uid)
-      #   return_value = []
-      #   papers.each do |paper|
-      #     return_value <<
-      #   end
-      # end
+      desc 'ユーザーのPickした論文を取得'
+      params do
+        requires :uid, type: String
+      end
+      post '/users' do
+        user = User.find_by(uid: params[:uid])
+        lists = []
+        papers = user.picks
+        papers.each do |paper|
+          lists << Paper.find(paper.paper_id)
+        end
+        present lists, with: V1::Entities::PickEntity
+      end
     end
   end
 end
