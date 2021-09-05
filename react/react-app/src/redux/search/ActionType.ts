@@ -33,3 +33,13 @@ export type Message = {
   title: string,
   status: "info" | "warning" | "success" | "error",
 }
+
+export type SendPickData = {
+  abstract: string;
+  citations: number;
+  publisher: string;
+  title: string;
+  url: string;
+  writer: string;
+  year: string;
+}
