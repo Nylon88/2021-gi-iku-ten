@@ -95,35 +95,32 @@ export const Result: VFC = memo(() => {
               <Text fontSize="sm" mt="1" mw="100%">
                 {res.abstract}
               </Text>
-              <Flex align="center" mt="1">
-                <Text fontSize="xs" color="#406B15">
-                  {res.writer}・{res.year}・{res.publisher}
-                </Text>
-                <Text fontSize="xs" mx={3}>
-                  <Flex align="center">
-                    <LinkBox>
-                      <Flex align="center">
-                        <FaRegBookmark />
-                        <Text
-                          ml={0.5}
-                          onClick={() => pickFunction(res.url, i)}
-                          _hover={{textDecoration: "underline", cursor: "pointer"}}>
-                          Pick数: {res.pick}
-                        </Text>
-                      </Flex>
-                    </LinkBox>
-                    <Text mx={2}>引用数: {res.citations}</Text>
-                    <Link
-                      href="//twitter.com/share"
-                      className="twitter-share-button"
-                      data-text={res.title}
-                      data-hashtags="PaperPicks"
-                      data-url={res.url}
-                      data-lang="ja"
-                    >ツイート</Link>
-                  </Flex>
-                </Text>
-              </Flex>
+              <Text fontSize="xs" color="#406B15">
+                {res.writer}・{res.year}・{res.publisher}
+              </Text>
+              <Text fontSize="xs" mt="1">
+                <Flex align="center">
+                  <LinkBox>
+                    <Flex align="center">
+                      <FaRegBookmark />
+                      <Text
+                        onClick={() => pickFunction(res.url, i)}
+                        _hover={{textDecoration: "underline", cursor: "pointer"}}>
+                        Pick数: {res.pick}
+                      </Text>
+                    </Flex>
+                  </LinkBox>
+                  <Text mx={2}>引用数: {res.citations}</Text>
+                  <Link
+                    href="//twitter.com/share"
+                    className="twitter-share-button"
+                    data-text={res.title}
+                    data-hashtags="PaperPicks"
+                    data-url={res.url}
+                    data-lang="ja"
+                  >ツイート</Link>
+                </Flex>
+              </Text>
             </Box>
           ))}
         </>
