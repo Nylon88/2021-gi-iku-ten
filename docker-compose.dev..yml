@@ -1,0 +1,62 @@
+version: '3'
+services:
+
+  backend:
+    build: rails
+    container_name: 2021-gi-iku-ten_backend
+    env_file:
+      - ./.rails.env
+    environment:
+      TZ: Asia/Tokyo
+    depends_on:
+      - db
+    tty: true
+    volumes:
+      - ./rails/backend:/backend
+      # pumaソケットファイルディレクトリを共有
+      - pumasocket:/backend/tmp/sockets
+    # command: bundle install
+    deploy:
+      resources:
+        limits:
+          cpus: '0.35'
+          memory: 500M
+
+  db:
+    build: mysql
+    container_name: 2021-gi-iku-ten_db
+    env_file:
+      - ./.db.env
+    # データの永続化
+    volumes:
+      - mysql_data:/var/lib/mysql
+    tty: true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 450M
+  
+  web:
+    build: nginx
+    container_name: 2021-gi-iku-ten_web
+    ports:
+      - 80:80
+      - 8000:8000
+    volumes:
+      - ./react/react-app/build:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/log:/var/log/nginx
+      - pumasocket:/backend/tmp/sockets
+    depends_on:
+      - backend
+    tty: true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 500M
+
+volumes:
+  pumasocket: # 共通ボリュームを作成  
+  mysql_data:
