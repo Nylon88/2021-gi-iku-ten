@@ -66,7 +66,7 @@ export const Result: VFC = memo(() => {
   }
 
   return (
-    <Box w="65%" maxW="700px">
+    <Box w="65%" maxW="700px" mb="16">
       {!skeleton ? (
         <>
           {[...Array(10)].map((_, i) => (
