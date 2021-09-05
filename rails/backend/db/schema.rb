@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_01_131113) do
+ActiveRecord::Schema.define(version: 2021_09_05_054325) do
 
   create_table "citations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "count"
@@ -28,6 +28,12 @@ ActiveRecord::Schema.define(version: 2021_09_01_131113) do
     t.text "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "title", null: false
+    t.text "abstract", null: false
+    t.string "writer", null: false
+    t.string "year", null: false
+    t.string "publisher", null: false
+    t.integer "citations", null: false
   end
 
   create_table "picks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
