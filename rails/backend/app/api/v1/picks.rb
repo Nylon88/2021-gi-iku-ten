@@ -3,12 +3,26 @@ module V1
     resources :picks do
       desc 'pickボタンクリック時のレスポンス'
       params do
+        requires :title, type: String
+        requires :abstract, type: String
+        requires :writer, type: String
+        requires :year, type: String
+        requires :publisher, type: String
+        requires :citations, type: Integer
         requires :url, type: String
         requires :uid, type: String
       end
       post '/' do
         paper = Paper.find_by(url: params[:url])
-        paper = Paper.create(url: params[:url]) unless paper.present?
+        paper = Paper.create(
+          title: params[:title],
+          abstract: params[:abstract],
+          writer: params[:writer],
+          year: params[:year],
+          publisher: params[:publisher],
+          citations: params[:citations],
+          url: params[:url]
+        ) unless paper.present?
         user = User.find_by(uid: params[:uid])
         pick = paper.picks.present? && user.picks.present?
         count = paper.picks.count
