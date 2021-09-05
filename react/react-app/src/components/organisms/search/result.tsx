@@ -4,7 +4,7 @@ import { FaRegBookmark } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
-import { Selector as SearchSelector } from "../../../redux/search/ActionType";
+import { Selector as SearchSelector, SendPickData } from "../../../redux/search/ActionType";
 import { Selector as SkeletonSelector } from "../../../redux/boolean/ActionType";
 import { Selector as UserSelector } from "../../../redux/users/ActionType";
 
@@ -43,8 +43,18 @@ export const Result: VFC = memo(() => {
     console.table(resultData)
   }, [resultData])
 
-  const handleClickPickCount = async (url: string, i: number) => {
-    await axios.post("http://localhost:8000/v1/picks", {url, uid})
+  const handleClickPickCount = async (result: SendPickData, i: number) => {
+    const {title, abstract, writer, year, publisher, citations, url} = result
+    await axios.post("http://localhost:8000/v1/picks", {
+      title,
+      abstract,
+      writer,
+      year,
+      publisher,
+      citations,
+      url,
+      uid
+    })
     .then((res) => {
       const props = {
         result: res.data,
@@ -59,9 +69,9 @@ export const Result: VFC = memo(() => {
     })
   }
 
-  const pickFunction = (url: string, i: number) => {
+  const pickFunction = (result: SendPickData, i: number) => {
     userStatus ?
-      handleClickPickCount(url, i) :
+      handleClickPickCount(result, i) :
       showMessage({title: "ログインユーザーのみこの機能を使えます", status: "error"})
   }
 
@@ -104,7 +114,7 @@ export const Result: VFC = memo(() => {
                     <Flex align="center">
                       <FaRegBookmark />
                       <Text
-                        onClick={() => pickFunction(res.url, i)}
+                        onClick={() => pickFunction(res, i)}
                         _hover={{textDecoration: "underline", cursor: "pointer"}}>
                         Pick数: {res.pick}
                       </Text>
