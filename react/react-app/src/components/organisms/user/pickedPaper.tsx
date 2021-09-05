@@ -9,9 +9,11 @@ import { Selector } from "../../../redux/users/ActionType";
 import { getUserName } from "../../../redux/users/selectors";
 import auth from "../../../firebase";
 import { avatarConfig } from "../../../template/niceAvatar";
+import { SendPickData } from "../../../redux/search/ActionType";
 
 export const PickedPaper: VFC = memo(() => {
   const [getNumber, setGetNumber] = useState(0)
+  const [pickedData, setPickedData] = useState<any>([])
   const selector = useSelector((state: Selector) => state);
   const userName = getUserName(selector);
   const currentUserId = auth.currentUser?.uid;
@@ -27,7 +29,7 @@ export const PickedPaper: VFC = memo(() => {
   useEffect(() => {
     axios.post("http://localhost:8000/v1/picks/users", {uid: currentUserId})
     .then((res) => {
-      console.log(res)
+      setPickedData(res.data)
     })
     .catch((err) => {
       console.log(err)
@@ -51,7 +53,7 @@ export const PickedPaper: VFC = memo(() => {
       <Box ml="30%" my="12">
         <Heading as="h1" fontSize="2xl">Pickした論文一覧</Heading>
         <Box mt="8" w="100%">
-          {result.map((res, i) => (
+          {pickedData.map((res: SendPickData, i: number) => (
             <Box key={i} px="5" py="3" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
               <Link
                 fontSize="lg"
@@ -65,34 +67,23 @@ export const PickedPaper: VFC = memo(() => {
               <Text fontSize="sm" mt="1" mw="100%">
                 {res.abstract}
               </Text>
-              <Flex align="center" mt="1">
-                <Text fontSize="xs" color="#406B15">
-                  {res.writer}・{res.year}・{res.publisher}
-                </Text>
-                <Text fontSize="xs" mx={3}>
-                  <Flex align="center">
-                    <LinkBox>
-                      <Flex align="center">
-                        <FaRegBookmark />
-                        <Text
-                          ml={0.5}
-                        >
-                          Pick数: {res.pick}
-                        </Text>
-                      </Flex>
-                    </LinkBox>
-                    <Text mx={2}>引用数: {res.citations}</Text>
-                    <Link
-                      href="//twitter.com/share"
-                      className="twitter-share-button"
-                      data-text={res.title}
-                      data-hashtags="PaperPicks"
-                      data-url={res.url}
-                      data-lang="ja"
-                    >ツイート</Link>
-                  </Flex>
-                </Text>
-              </Flex>
+              <Text fontSize="xs" color="#406B15">
+                {res.writer}・{res.year}・{res.publisher}
+              </Text>
+              <Text fontSize="xs" mt={1}>
+                <Flex align="center">
+                  <Text>引用数: {res.citations}</Text>
+                  <Link
+                    href="//twitter.com/share"
+                    className="twitter-share-button"
+                    data-text={res.title}
+                    data-hashtags="PaperPicks"
+                    data-url={res.url}
+                    data-lang="ja"
+                    mx={3}
+                  >ツイート</Link>
+                </Flex>
+              </Text>
             </Box>
           ))}
         </Box>
