@@ -3,6 +3,7 @@ import { Box, Flex, Heading, Link, LinkBox, Text } from "@chakra-ui/react";
 import { FaRegBookmark } from "react-icons/fa";
 import Avatar, { genConfig } from "react-nice-avatar"
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 import { Selector } from "../../../redux/users/ActionType";
 import { getUserName } from "../../../redux/users/selectors";
@@ -23,15 +24,15 @@ export const PickedPaper: VFC = memo(() => {
 
   const config = genConfig({...avatarConfig[getNumber]});
 
-  // useEffect(() => {
-  //   axios.post("http://localhost:8000/v1/picks", {uid: currentUserId})
-  //   .then((res) => {
-  //     console.log(res)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //   })
-  // }, [])
+  useEffect(() => {
+    axios.post("http://localhost:8000/v1/picks/users", {uid: currentUserId})
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }, [])
 
   let result = [{"rank":1,"title":"[書籍][B] ブロックチェーン革命","abstract":"本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …","writer":"野口悠紀雄， 牧野貴樹 -  - ipa.go.jp","year":"2017","publisher":"なし","citations":" 12","url":"https://www.ipa.go.jp/files/000062713.pdf","pick":2,"coefficient":5}]
   result = [...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result]
