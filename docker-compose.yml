@@ -3,7 +3,7 @@ services:
 
   backend:
     build: rails
-    container_name: 2021-gi-iku-ten_backend
+    container_name: Product_2021-gi-iku-ten_backend
     env_file:
       - ./.rails.env
     environment:
@@ -19,12 +19,12 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.35'
-          memory: 400M
+          cpus: '0.25'
+          memory: 500M
 
   db:
     build: mysql
-    container_name: 2021-gi-iku-ten_db
+    container_name: Product_2021-gi-iku-ten_db
     env_file:
       - ./.db.env
     # データの永続化
@@ -34,12 +34,12 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.2'
-          memory: 350M
+          cpus: '0.15'
+          memory: 400M
   
   web:
     build: nginx
-    container_name: 2021-gi-iku-ten_web
+    container_name: Product_2021-gi-iku-ten_web
     ports:
       - 80:80
       - 8000:8000
@@ -54,8 +54,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.2'
-          memory: 400M
+          cpus: '0.15'
+          memory: 500M
 
 volumes:
   pumasocket: # 共通ボリュームを作成  
