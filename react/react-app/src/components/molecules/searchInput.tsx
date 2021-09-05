@@ -43,6 +43,8 @@ export const SearchInput: VFC<Props> = memo((props) => {
         <InputLeftElement
           children={<FaSearch color="#EAEAEA"/>}
           onClick={handleClickSearch}
+          _hover={{cursor: "pointer"}}
+          _active={{top: "2px"}}
         />
         <Input
           borderRadius="0"
@@ -55,6 +57,8 @@ export const SearchInput: VFC<Props> = memo((props) => {
             <InputRightElement
               children={<FaTimes color="#EAEAEA" />}
               onClick={handleDeleteWord}
+              _hover={{cursor: "pointer"}}
+              _active={{top: "2px"}}
             />
           ) : null
         }
