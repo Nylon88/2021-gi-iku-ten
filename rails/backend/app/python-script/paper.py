@@ -140,16 +140,21 @@ def run_scraping(keyword:str, number:int, year:str=None):
             proxy_list.remove(proxy)
             proxies, proxy = set_proxy(proxy_list=proxy_list)
 
-        # スクレピング本体
-        tags1 = soup.find_all("h3", {"class": "gs_rt"})  # title&url
-        tags2 = soup.find_all("div", {"class": "gs_a"})  # writer&year
-        tags3 = soup.find_all(text=re.compile("引用元"))  # citation
-        tags4 = soup.find_all("div", {"class": "gs_rs"})   # 簡単なアブストラクト
-        tags5 = soup.find_all("div", {"class": "gs_or_ggsm"})   # 発行元
-
+        """
+            # スクレピング本体
+        """
+        # 論文ごと要素を取得する
+        papers_list = soup.find_all(class_="gs_r gs_or gs_scl")
         rank = 1
-        # for tag1, tag2, tag3, tag4, tags5 in zip(tags1, tags2, tags3, tags4, tags5):
-        for tag1, tag2, tag3, tag4, tag5 in zip_longest(tags1, tags2, tags3, tags4, tags5, fillvalue='なし'):
+        for paper_object in papers_list:
+
+            # 各論文の情報を大まかに抽出する
+            tag1 = paper_object.find("h3", {"class": "gs_rt"})  # title&url
+            tag2 = paper_object.find("div", {"class": "gs_a"})  # writer&year
+            tag3 = paper_object.find(text=re.compile("引用元"))  # citation
+            tag4 = paper_object.find("div", {"class": "gs_rs"})   # 簡単なアブストラクト
+            tag5 = paper_object.find("div", {"class": "gs_or_ggsm"})   # 発行元
+
             # タイトル
             if isinstance(tag1, str):
                 title = tag1.replace("[HTML]","")
@@ -190,12 +195,14 @@ def run_scraping(keyword:str, number:int, year:str=None):
             else:
                 publisher = tag5.text.replace("[PDF]","").replace(" ","")
 
+            print(f'publisher:{publisher}')
+
             # 列を構成
             se = pd.Series([rank, title, abstract, writer, year, publisher, citations, url], columns)
             df = df.append(se, columns)
             rank += 1
 
-        jsoned_data = df2json(df)
+        jsoned_data = df2json(df)                
     except Exception as e:
         logger.error(f'in function:<get_search_results_df> : {e}')
 
