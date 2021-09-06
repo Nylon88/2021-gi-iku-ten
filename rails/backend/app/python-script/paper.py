@@ -195,14 +195,12 @@ def run_scraping(keyword:str, number:int, year:str=None):
             else:
                 publisher = tag5.text.replace("[PDF]","").replace(" ","")
 
-            print(f'publisher:{publisher}')
-
             # 列を構成
             se = pd.Series([rank, title, abstract, writer, year, publisher, citations, url], columns)
             df = df.append(se, columns)
             rank += 1
 
-        jsoned_data = df2json(df)                
+        jsoned_data = df2json(df)
     except Exception as e:
         logger.error(f'in function:<get_search_results_df> : {e}')
 
