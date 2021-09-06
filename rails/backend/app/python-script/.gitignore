@@ -2,6 +2,7 @@
 .api.env
 .proxies.env
 .miss.env
+.developer.env
 
 # logファイル
 logs/

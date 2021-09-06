@@ -7,7 +7,13 @@ import os
 from os.path import join, dirname
 from dotenv import load_dotenv
 
+import smtplib, ssl
+from email.mime.text import MIMEText
 
+# 403用
+# url = "https://httpbin.org/status/403"
+# 200用
+# url = "https://yamitzky.hatenablog.com/entry/2016/05/13/204107"
 # url = "https://expressvpn.com/what-is-my-ip"
 url = "https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num=1&q=learning&as_ylo=2021&as_vis=1"
 
@@ -63,19 +69,10 @@ def random_proxie_access():
         print(element.get_text())
 
 
-# 環境変数からプロキシサーバをロードする
-dotenv_path = join(dirname(__file__), '.proxies.env')
-load_dotenv(verbose=True, dotenv_path=dotenv_path)
-proxies = []
-proxies.append(os.getenv("PROXIE_1"))
-proxies.append(os.getenv("PROXIE_3"))
-proxies.append(os.getenv("PROXIE_4"))
-proxies.append(os.getenv("PROXIE_5"))
-
 # ランダムに一つ選択
 # proxy =random.choice(proxies)
 # print(proxy)
 
 # my_ip_access()
-proxie_access()
+# proxie_access()
 # random_proxie_access()

@@ -11,8 +11,53 @@ from argparse import ArgumentError
 from itertools import zip_longest
 import os
 from os.path import join, dirname
+import smtplib, ssl
+from email.mime.text import MIMEText
 
 from utils.log_file_by_level import logger
+
+
+# リクエスト処理
+def run_request(url, proxies):
+    response = requests.get(url, proxies=proxies)
+
+    # status codeをログファイルに出力
+    response_statu_code = response.status_code
+    logger.debug(f'in function:<get_search_results_df> / Status Code:{response_statu_code}')
+    return response
+
+
+# 使うプロキシサーバをセット
+def set_proxy(proxy_list):
+    # プロキシサーバをランダムに一つ選択
+    proxy =random.choice(proxy_list)
+
+    proxies = {
+    "http": proxy,
+    "https": proxy
+    }
+    return proxies, proxy
+
+
+# 開発者にメールを送る
+def send_email(username, password, to_address, proxy_ip, status_code):
+
+    smtp_host = 'smtp.gmail.com'
+    smtp_port = 587
+    from_address = username
+
+    subject = 'Detect Proxiy Server!!'
+    body = f'proxy ip:{proxy_ip} \nstatus_code:{status_code}'
+
+    smtpobj = smtplib.SMTP(smtp_host, smtp_port)
+    smtpobj.starttls()
+    smtpobj.login(username, password)
+    msg = MIMEText(body)
+    msg['Subject'] = subject
+    msg['From'] = from_address
+    msg['To'] = to_address
+    smtpobj.send_message(msg)
+    smtpobj.close()
 
 
 def run_scraping(keyword:str, number:int, year:str=None):
@@ -46,36 +91,56 @@ def run_scraping(keyword:str, number:int, year:str=None):
         # 判定式を使って、リクエストを投げる。
         # yearを指定する: (ex)as_ylo=2021　を使う
         # 引用情報を含んだ論文かどうか判定する：　as_vis=1含む
+        # url = "https://yamitzky.hatenablog.com/entry/2016/05/13/204107"
+        # url = "https://httpbin.org/status/403"
         url = f"https://scholar.google.co.jp/scholar?hl=ja&as_sdt=0%2C5&num={str(number)}&q={keyword}&as_ylo={year}&as_vis=1"
 
         # 環境変数からプロキシサーバをロードする
         dotenv_path = join(dirname(__file__), '.proxies.env')
         load_dotenv(verbose=True, dotenv_path=dotenv_path)
-        proxies = []
-        proxies.append(os.getenv("PROXIE_1"))
-        proxies.append(os.getenv("PROXIE_2"))
-        proxies.append(os.getenv("PROXIE_3"))
-        proxies.append(os.getenv("PROXIE_4"))
-        proxies.append(os.getenv("PROXIE_5"))
+        proxy_list = []
+        proxy_list.append(os.getenv("PROXIE_1"))
+        proxy_list.append(os.getenv("PROXIE_2"))
+        proxy_list.append(os.getenv("PROXIE_3"))
+        proxy_list.append(os.getenv("PROXIE_4"))
+        proxy_list.append(os.getenv("PROXIE_5"))
 
-        # プロキシサーバをランダムに一つ選択
-        proxy =random.choice(proxies)
-        # print(proxy)
+        proxies, proxy = set_proxy(proxy_list=proxy_list)
 
-        proxies = {
-        "http": proxy,
-        "https": proxy
-        }
+        """
+            ➀status codeが200番じゃない限りリクエストをする
+            ➁又、その時使用した「ip」「status code」「レスポンスデータ」を開発者のメールに送信する
+            ➂その時使用した「ip」はプロキシサーバリストから外す
+            ⓸ 論文の情報を含んだページを返しているか判定
+        """
+        while True:
+            # ➀
+            response = run_request(url=url, proxies=proxies)
+            status_code = response.status_code
+            if status_code == 200:
+                # ⓸
+                html_doc = response.text
+                soup = BeautifulSoup(html_doc, "html.parser") # soupの初期化
+                class_paper = soup.find(class_="gs_r gs_or gs_scl")
+                # print(f'class_paper:{class_paper}')
+                if class_paper != None:
+                    break
 
-        # リクエスト処理
-        response = requests.get(url, proxies=proxies)
+            # 環境変数から開発者のメールアドレスをロードする
+            dotenv_path = join(dirname(__file__), '.developer.env')
+            load_dotenv(verbose=True, dotenv_path=dotenv_path)
+            # DEVELOPEREMAILADRESS = os.getenv("DEVELOPEREMAILADRESS")
+            USERNAME = os.getenv("USERNAME")
+            PASSWORD = os.getenv("PASSWORD")
+            TOADDRESS = os.getenv("TOADDRESS")
+            # ➁　※出来ればスレッド処理したい
+            send_email(username=USERNAME, password=PASSWORD, to_address=TOADDRESS, proxy_ip=proxy, status_code=status_code)
 
-        # status codeをログファイルに出力
-        response_statu_code = response.status_code
-        logger.debug(f'in function:<get_search_results_df> / Status Code:{response_statu_code}')
+            # ➂
+            proxy_list.remove(proxy)
+            proxies, proxy = set_proxy(proxy_list=proxy_list)
 
-        html_doc = response.text
-        soup = BeautifulSoup(html_doc, "html.parser") # BeautifulSoupの初期化
+        # スクレピング本体
         tags1 = soup.find_all("h3", {"class": "gs_rt"})  # title&url
         tags2 = soup.find_all("div", {"class": "gs_a"})  # writer&year
         tags3 = soup.find_all(text=re.compile("引用元"))  # citation
