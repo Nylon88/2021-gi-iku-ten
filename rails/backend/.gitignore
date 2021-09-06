@@ -29,3 +29,5 @@
 
 # .env file
 .env
+
+.history
