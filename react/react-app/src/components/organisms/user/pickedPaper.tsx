@@ -10,6 +10,7 @@ import { getUserName } from "../../../redux/users/selectors";
 import auth from "../../../firebase";
 import { avatarConfig } from "../../../template/niceAvatar";
 import { SendPickData } from "../../../redux/search/ActionType";
+import { API_ENDPOINT } from "../../../template/apiEndpoint";
 
 export const PickedPaper: VFC = memo(() => {
   const [getNumber, setGetNumber] = useState(0)
@@ -27,7 +28,7 @@ export const PickedPaper: VFC = memo(() => {
   const config = genConfig({...avatarConfig[getNumber]});
 
   useEffect(() => {
-    axios.post("http://localhost:8000/v1/picks/users", {uid: currentUserId})
+    axios.post(`${API_ENDPOINT}/picks/users`, {uid: currentUserId})
     .then((res) => {
       setPickedData(res.data)
     })

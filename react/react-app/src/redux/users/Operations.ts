@@ -5,6 +5,7 @@ import axios from "axios";
 import auth from "../../firebase";
 import { signInAction, signOutAction, signUpAction } from "./Action";
 import { SignInAndUp } from "./ActionType";
+import { API_ENDPOINT } from "../../template/apiEndpoint";
 
 
 export const signUp = (signUpData: SignInAndUp) => {
@@ -18,7 +19,7 @@ export const signUp = (signUpData: SignInAndUp) => {
       await auth.createUserWithEmailAndPassword(email, password)
         .then(async (result) => {
           const uid = result.user?.uid
-          await axios.post("http://localhost:8000/v1/users", {uid})
+          await axios.post(`${API_ENDPOINT}/users`, {uid})
             .then(async () => {
               await result.user?.updateProfile({displayName: username})
                 .then(() => {

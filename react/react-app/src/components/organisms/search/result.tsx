@@ -14,6 +14,7 @@ import auth from "../../../firebase";
 import { useMessage } from "../../../hooks/useMessage";
 import { pickPaper } from "../../../redux/search/Operations";
 import { getUserState } from "../../../redux/users/selectors";
+import { API_ENDPOINT } from "../../../template/apiEndpoint";
 
 export const Result: VFC = memo(() => {
   const searchSelector = useSelector((state: SearchSelector) => state);
@@ -45,7 +46,7 @@ export const Result: VFC = memo(() => {
 
   const handleClickPickCount = async (result: SendPickData, i: number) => {
     const {title, abstract, writer, year, publisher, citations, url} = result
-    await axios.post("http://localhost:8000/v1/picks", {
+    await axios.post(`${API_ENDPOINT}/picks`, {
       title,
       abstract,
       writer,

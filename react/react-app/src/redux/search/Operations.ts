@@ -3,6 +3,7 @@ import axios from 'axios';
 import { pickPaperAction, searchPaperAction } from "./Action";
 import { Message, searchResult } from "./ActionType";
 import { skeleton } from "../boolean/Operations";
+import { API_ENDPOINT } from "../../template/apiEndpoint";
 
 type searchPapersProps = {
   word: string,
@@ -21,7 +22,7 @@ export const searchPapers = (props: searchPapersProps) => {
   return async (dispatch: Dispatch<any>) => {
     const { word, period, showMessage } = props;
     dispatch(skeleton());
-    await axios.post('http://localhost:8000/v1/search', {word, period})
+    await axios.post(`${API_ENDPOINT}/search`, {word, period})
       .then((result) => {
         dispatch(searchPaperAction({
           word,
