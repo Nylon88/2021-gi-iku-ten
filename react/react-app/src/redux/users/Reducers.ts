@@ -5,15 +5,6 @@ import { Action } from "./ActionType"
 export const UsersReducer = (state = initialState.users, action: Action) => {
   switch (action.type) {
     case Actions.SIGN_UP:
-      return {
-        ...state,
-        ...action.payload
-      }
-    case Actions.SIGN_IN:
-      return {
-        ...state,
-        ...action.payload
-      }
     case Actions.SIGN_OUT:
       return {
         ...state,

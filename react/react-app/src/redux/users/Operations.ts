@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import axios from "axios";
 
 import auth from "../../firebase";
-import { signInAction, signOutAction, signUpAction } from "./Action";
+import { signOutAction, signUpAction } from "./Action";
 import { SignInAndUp } from "./ActionType";
 import { API_ENDPOINT } from "../../template/apiEndpoint";
 import { avatarConfig } from "../../template/niceAvatar";
@@ -78,7 +78,7 @@ export const signIn = (signInData: Omit<SignInAndUp, "username">) => {
         result.user?.providerData.forEach((profile) => {
           const number = profile?.displayName?.length ? profile?.displayName?.length % 6 : 0
         // storeにユーザー情報を保存
-          dispatch(signInAction({
+          dispatch(signUpAction({
             id: profile?.uid,
             username: profile?.displayName,
             email,

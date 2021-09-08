@@ -4,7 +4,8 @@ export const initialState = {
     id: "",
     username: "",
     email: "",
-    password: ""
+    password: "",
+    avatar: []
   },
   searchPapers: {
     word: "",
