@@ -23,15 +23,17 @@ export const searchPapers = (props: searchPapersProps) => {
     const { word, period, showMessage } = props;
     dispatch(skeleton());
     await axios.post(`${API_ENDPOINT}/search`, {word, period})
-      .then((result) => {
-        dispatch(searchPaperAction({
-          word,
-          result: result.data
-        }))
-      }).catch((error) => {
-        // 要日本語対応
-        showMessage({title: error.message, status: "error"})
-      }).finally(() => dispatch(skeleton()))
+    .then((result) => {
+      dispatch(searchPaperAction({
+        word,
+        result: result.data
+      }))
+    })
+    .catch((error) => {
+      // 要日本語対応
+      showMessage({title: error.message, status: "error"})
+    })
+    .finally(() => dispatch(skeleton()))
   }
 }
 
