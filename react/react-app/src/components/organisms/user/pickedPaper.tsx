@@ -1,7 +1,6 @@
 import { VFC, memo, useEffect, useState } from "react";
 import { Box, Flex, Heading, Link, LinkBox, Text } from "@chakra-ui/react";
-import { FaRegBookmark } from "react-icons/fa";
-import Avatar, { genConfig } from "react-nice-avatar"
+import Avatar from "react-nice-avatar"
 import { useSelector } from "react-redux";
 import axios from "axios";
 
