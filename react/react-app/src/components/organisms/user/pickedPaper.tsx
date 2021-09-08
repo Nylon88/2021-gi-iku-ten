@@ -37,9 +37,6 @@ export const PickedPaper: VFC = memo(() => {
     })
   }, [])
 
-  let result = [{"rank":1,"title":"[書籍][B] ブロックチェーン革命","abstract":"本書は、 「超整理法」 「超文章法」などで有名な一橋大学名誉教授 野口 悠紀雄氏の著作である。 \n「ブロックチェーン技術」を、著者の言葉を借りてひと言で説明する と以下のようになる。 \n“私は、『仮想通貨革命』の「はじめに」で、「これは反乱ではありませぬ …","writer":"野口悠紀雄， 牧野貴樹 -  - ipa.go.jp","year":"2017","publisher":"なし","citations":" 12","url":"https://www.ipa.go.jp/files/000062713.pdf","pick":2,"coefficient":5}]
-  result = [...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result, ...result]
-
   return (
     <Flex w="80%" align="center">
       <Box w="30%" position="fixed">
