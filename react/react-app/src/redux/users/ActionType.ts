@@ -1,4 +1,5 @@
 import { LocationState } from 'history'
+import { AvatarFullConfig } from 'react-nice-avatar'
 
 export type Users = {
   isSignedIn: boolean;
@@ -6,6 +7,7 @@ export type Users = {
   username: string | null | undefined;
   email: string | null | undefined;
   password: string;
+  avatar?: Required<AvatarFullConfig>;
 }
 
 export type SignInAndUp = {

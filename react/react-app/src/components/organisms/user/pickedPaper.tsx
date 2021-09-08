@@ -1,31 +1,21 @@
 import { VFC, memo, useEffect, useState } from "react";
 import { Box, Flex, Heading, Link, LinkBox, Text } from "@chakra-ui/react";
-import { FaRegBookmark } from "react-icons/fa";
-import Avatar, { genConfig } from "react-nice-avatar"
+import Avatar from "react-nice-avatar"
 import { useSelector } from "react-redux";
 import axios from "axios";
 
 import { Selector } from "../../../redux/users/ActionType";
-import { getUserName } from "../../../redux/users/selectors";
+import { getAvatar, getUserName } from "../../../redux/users/selectors";
 import auth from "../../../firebase";
-import { avatarConfig } from "../../../template/niceAvatar";
 import { SendPickData } from "../../../redux/search/ActionType";
 import { API_ENDPOINT } from "../../../template/apiEndpoint";
 
 export const PickedPaper: VFC = memo(() => {
-  const [getNumber, setGetNumber] = useState(0)
   const [pickedData, setPickedData] = useState<any>([])
   const selector = useSelector((state: Selector) => state);
   const userName = getUserName(selector);
+  const avatar = getAvatar(selector)
   const currentUserId = auth.currentUser?.uid;
-
-  // ユーザー名の長さによってアバターを決定
-  useEffect(() => {
-    const number = userName?.length ? userName.length % 6 : 0
-    setGetNumber(number)
-  }, [userName])
-
-  const config = genConfig({...avatarConfig[getNumber]});
 
   useEffect(() => {
     axios.post(`${API_ENDPOINT}/picks/users`, {uid: currentUserId})
@@ -41,7 +31,7 @@ export const PickedPaper: VFC = memo(() => {
     <Flex w="80%" align="center">
       <Box w="30%" position="fixed">
         <Avatar
-          {...config}
+          {...avatar}
           style={{width: "12rem", height: "12rem"}}
           shape="rounded"
         />

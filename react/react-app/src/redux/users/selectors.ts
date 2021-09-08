@@ -13,3 +13,8 @@ export const getUserState = createSelector(
   [usersSelector],
   (state: Users) => state.isSignedIn
 )
+
+export const getAvatar = createSelector(
+  [usersSelector],
+  (state: Users) => state.avatar
+)

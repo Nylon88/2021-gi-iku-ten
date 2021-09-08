@@ -6,6 +6,8 @@ import auth from "../../firebase";
 import { signInAction, signOutAction, signUpAction } from "./Action";
 import { SignInAndUp } from "./ActionType";
 import { API_ENDPOINT } from "../../template/apiEndpoint";
+import { avatarConfig } from "../../template/niceAvatar";
+import { genConfig } from "react-nice-avatar";
 
 
 export const signUp = (signUpData: SignInAndUp) => {
@@ -25,11 +27,13 @@ export const signUp = (signUpData: SignInAndUp) => {
           .then(() => {
             // ログインユーザー情報を取得
             result.user?.providerData.forEach((profile) => {
+              const number = profile?.displayName?.length ? profile?.displayName?.length % 6 : 0
               // storeにユーザー情報を保存
               dispatch(signUpAction({
                 id: profile?.uid,
                 username: profile?.displayName,
-                email: profile?.email
+                email: profile?.email,
+                avatar: genConfig(avatarConfig[number])
               }))
             })
             // ルートパスに移動
@@ -72,11 +76,13 @@ export const signIn = (signInData: Omit<SignInAndUp, "username">) => {
       .then((result) => {
         // ログインユーザー情報を取得
         result.user?.providerData.forEach((profile) => {
+          const number = profile?.displayName?.length ? profile?.displayName?.length % 6 : 0
         // storeにユーザー情報を保存
           dispatch(signInAction({
             id: profile?.uid,
             username: profile?.displayName,
-            email
+            email,
+            avatar: genConfig(avatarConfig[number])
           }))
         });
         // ルートパスに移動

@@ -8,7 +8,8 @@ export const signUpAction = (userState: Omit<Users, "isSignedIn" | "password">) 
       isSignedIn: true,
       id: userState.id,
       username: userState.username,
-      email: userState.email
+      email: userState.email,
+      avatar: userState.avatar
     }
   }
 };
@@ -21,7 +22,8 @@ export const signInAction = (userState: Omit<Users, "isSignedIn" | "password">) 
       isSignedIn: true,
       id: userState.id,
       username: userState.username,
-      email: userState.email
+      email: userState.email,
+      avatar: userState.avatar
     }
   }
 };
