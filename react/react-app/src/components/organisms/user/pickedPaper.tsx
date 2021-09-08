@@ -53,41 +53,47 @@ export const PickedPaper: VFC = memo(() => {
       </Box>
       <Box ml="30%" my="12">
         <Heading as="h1" fontSize="2xl">Pickした論文一覧</Heading>
-        <Box mt="8" w="100%">
-          {pickedData.map((res: SendPickData, i: number) => (
-            <Box key={i} px="5" py="3" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
-              <Link
-                fontSize="lg"
-                fontWeight="bold"
-                color="#0055AA"
-                href={res.url}
-                isExternal
-              >
-                {res.title}
-              </Link>
-              <Text fontSize="sm" mt="1" mw="100%">
-                {res.abstract}
-              </Text>
-              <Text fontSize="xs" color="#406B15">
-                {res.writer}・{res.year}・{res.publisher}
-              </Text>
-              <Text fontSize="xs" mt={1}>
-                <Flex align="center">
-                  <Text>引用数: {res.citations}</Text>
-                  <Link
-                    href="//twitter.com/share"
-                    className="twitter-share-button"
-                    data-text={res.title}
-                    data-hashtags="PaperPicks"
-                    data-url={res.url}
-                    data-lang="ja"
-                    mx={3}
-                  >ツイート</Link>
-                </Flex>
-              </Text>
-            </Box>
-          ))}
-        </Box>
+        {pickedData.length ? (
+          <Box mt="8" w="100%">
+            {pickedData.map((res: SendPickData, i: number) => (
+              <Box key={i} px="5" py="3" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
+                <Link
+                  fontSize="lg"
+                  fontWeight="bold"
+                  color="#0055AA"
+                  href={res.url}
+                  isExternal
+                >
+                  {res.title}
+                </Link>
+                <Text fontSize="sm" mt="1" mw="100%">
+                  {res.abstract}
+                </Text>
+                <Text fontSize="xs" color="#406B15">
+                  {res.writer}・{res.year}・{res.publisher}
+                </Text>
+                <Text fontSize="xs" mt={1}>
+                  <Flex align="center">
+                    <Text>引用数: {res.citations}</Text>
+                    <Link
+                      href="//twitter.com/share"
+                      className="twitter-share-button"
+                      data-text={res.title}
+                      data-hashtags="PaperPicks"
+                      data-url={res.url}
+                      data-lang="ja"
+                      mx={3}
+                    >ツイート</Link>
+                  </Flex>
+                </Text>
+              </Box>
+            ))}
+          </Box>
+        ) : (
+          <Box mt="8" w="100%">
+            <Text fontWeight="bold">Pickした論文がありません</Text>
+          </Box>
+        )}
       </Box>
     </Flex>
   )
