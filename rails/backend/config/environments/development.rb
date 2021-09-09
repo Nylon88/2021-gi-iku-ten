@@ -51,5 +51,5 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # hostをホワイトリストに追加
-  config.hosts << "paperpicks.jp"
+  config.hosts << "api.paperpicks.jp"
 end
