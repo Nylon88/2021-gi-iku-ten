@@ -41,10 +41,9 @@ export const SearchInput: VFC<Props> = memo((props) => {
     <Flex justify="center" mt="12">
       <InputGroup w="60%" maxW="880px">
         <InputLeftElement
-          children={<FaSearch color="#EAEAEA"/>}
+          children={<FaSearch color="#EAEAEA" />}
           onClick={handleClickSearch}
           _hover={{cursor: "pointer"}}
-          _active={{top: "2px"}}
         />
         <Input
           borderRadius="0"
