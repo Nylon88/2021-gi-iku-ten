@@ -43,6 +43,32 @@ module V1
         # フロント側に返却
         present parse_value
       end
+
+
+      desc '検索前に表示'
+      get '/' do
+        # 最近Pickされた論文10件
+        recent_pick = Paper.last(10)
+
+        # 人気の論文10件
+        paper_id = Pick.pluck(:paper_id)
+        sort_favorite = paper_id.group_by { |e| e }.sort_by { |e, v| -v.size }.map(&:first)
+        favorite_paper = []
+        favorite_paper_picks = []
+        sort_favorite[0, 10].each do |favorite|
+          paper = Paper.find(favorite)
+          favorite_paper << paper
+          favorite_paper_picks << paper.picks.count
+        end
+
+        return_value = [] << {
+          recent: recent_pick,
+          favorite: favorite_paper,
+          favorite_picks: favorite_paper_picks
+        }
+
+        present return_value
+      end
     end
   end
 end
