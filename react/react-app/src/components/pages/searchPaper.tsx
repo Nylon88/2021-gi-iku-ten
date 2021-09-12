@@ -7,6 +7,7 @@ import { searchResultSelector } from "../../redux/search/selectors";
 
 import { SearchInput } from "../molecules/searchInput";
 import { Condition } from "../organisms/search/condition";
+import { DefaultView } from "../organisms/search/defautView";
 import { Result } from "../organisms/search/result";
 
 export const searchPaper: VFC = memo(() => {
@@ -31,9 +32,13 @@ export const searchPaper: VFC = memo(() => {
           setPeriodBool={setPeriodBool}
           handlePeriod={handlePeriod}
         />
-        <Result
-          resultData={resultData}
-        />
+        {resultData.length ? (
+          <Result
+            resultData={resultData}
+          />
+        ) : (
+          <DefaultView />
+        )}
       </Flex>
     </Box>
   )
