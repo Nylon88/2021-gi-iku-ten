@@ -4,11 +4,10 @@ import { FaRegBookmark } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
-import { Selector as SearchSelector, SendPickData } from "../../../redux/search/ActionType";
+import { searchResult, SendPickData } from "../../../redux/search/ActionType";
 import { Selector as SkeletonSelector } from "../../../redux/boolean/ActionType";
 import { Selector as UserSelector } from "../../../redux/users/ActionType";
 
-import { searchResultSelector } from "../../../redux/search/selectors";
 import { getSkeleton } from "../../../redux/boolean/selectors";
 import auth from "../../../firebase";
 import { useMessage } from "../../../hooks/useMessage";
@@ -16,9 +15,12 @@ import { pickPaper } from "../../../redux/search/Operations";
 import { getUserState } from "../../../redux/users/selectors";
 import { API_ENDPOINT } from "../../../template/apiEndpoint";
 
-export const Result: VFC = memo(() => {
-  const searchSelector = useSelector((state: SearchSelector) => state);
-  const resultData = searchResultSelector(searchSelector);
+type Props = {
+  resultData: searchResult[]
+}
+
+export const Result: VFC<Props> = memo((props) => {
+  const { resultData } = props;
   const currentUser = auth.currentUser
   const uid = currentUser?.uid
 

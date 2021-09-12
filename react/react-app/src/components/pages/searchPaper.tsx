@@ -1,6 +1,9 @@
 import { Box, Flex, useBoolean } from "@chakra-ui/react";
 import { useState } from "react";
 import { memo, VFC } from "react";
+import { useSelector } from "react-redux";
+import { Selector } from "../../redux/search/ActionType";
+import { searchResultSelector } from "../../redux/search/selectors";
 
 import { SearchInput } from "../molecules/searchInput";
 import { Condition } from "../organisms/search/condition";
@@ -11,6 +14,9 @@ export const searchPaper: VFC = memo(() => {
   const tenYearsAgo = `${thisYear - 10}`
   const [period, setPeriod] = useState(tenYearsAgo);
   const [periodBool, setPeriodBool] = useBoolean();
+
+  const searchSelector = useSelector((state: Selector) => state);
+  const resultData = searchResultSelector(searchSelector);
 
   const handlePeriod = (valueAsString: string) => setPeriod(valueAsString);
 
@@ -25,7 +31,9 @@ export const searchPaper: VFC = memo(() => {
           setPeriodBool={setPeriodBool}
           handlePeriod={handlePeriod}
         />
-        <Result />
+        <Result
+          resultData={resultData}
+        />
       </Flex>
     </Box>
   )
