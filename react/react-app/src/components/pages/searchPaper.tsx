@@ -1,14 +1,16 @@
-import { Box, Flex, useBoolean } from "@chakra-ui/react";
+import { Box, Flex, Skeleton, useBoolean } from "@chakra-ui/react";
 import { useState } from "react";
 import { memo, VFC } from "react";
 import { useSelector } from "react-redux";
 import { Selector } from "../../redux/search/ActionType";
+import { Selector as SkeletonSelector } from "../../redux/boolean/ActionType";
 import { searchResultSelector } from "../../redux/search/selectors";
 
 import { SearchInput } from "../molecules/searchInput";
 import { Condition } from "../organisms/search/condition";
 import { DefaultView } from "../organisms/search/defautView";
 import { Result } from "../organisms/search/result";
+import { getSkeleton } from "../../redux/boolean/selectors";
 
 export const searchPaper: VFC = memo(() => {
   const thisYear = new Date().getFullYear();
@@ -18,6 +20,9 @@ export const searchPaper: VFC = memo(() => {
 
   const searchSelector = useSelector((state: Selector) => state);
   const resultData = searchResultSelector(searchSelector);
+
+  const skeletonSelector = useSelector((state: SkeletonSelector) => state.boolean.boolean);
+  const skeleton = getSkeleton(skeletonSelector);
 
   const handlePeriod = (valueAsString: string) => setPeriod(valueAsString);
 
@@ -32,12 +37,28 @@ export const searchPaper: VFC = memo(() => {
           setPeriodBool={setPeriodBool}
           handlePeriod={handlePeriod}
         />
-        {resultData.length ? (
-          <Result
-            resultData={resultData}
-          />
+        {!skeleton ? (
+          <Box w="65%" maxW="700px" mb="16">
+            {[...Array(10)].map((_, i) => (
+              <Box key={i} px="5" py="3" mb="5" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
+                <Skeleton height="25px" />
+                <Skeleton height="13px" mt="6px" />
+                <Skeleton height="13px" mt="7px" />
+                <Skeleton height="13px" mt="7px" />
+                <Skeleton height="8px" mt="10px" />
+              </Box>
+            ))}
+          </Box>
         ) : (
-          <DefaultView />
+          <>
+            {resultData.length ? (
+              <Result
+                resultData={resultData}
+              />
+            ) : (
+              <DefaultView />
+            )}
+          </>
         )}
       </Flex>
     </Box>
