@@ -55,11 +55,13 @@ export const searchFavoritePapers = (props: searchFavoritePapersProps) => {
   return async (dispatch: Dispatch<any>) => {
     const { showMessage } = props;
     dispatch(skeleton());
-    console.log("searchFavoritePapers")
     await axios.get(`${API_ENDPOINT}/search`)
     .then((result) => {
       dispatch(searchFavoritePaperAction({
-        favoriteResult: result.data.favorite
+        recentResult: result.data.recent,
+        recentPicks: result.data.recent_pick,
+        favoriteResult: result.data.favorite,
+        favoritePicks: result.data.favorite_picks
       }))
     })
     .catch((error) => {
