@@ -1,5 +1,4 @@
 import { LocationState } from "history"
-import { favoriteData } from "../../components/organisms/search/favoriteData"
 
 export type searchPaper = {
   word: string;
@@ -8,7 +7,10 @@ export type searchPaper = {
 }
 
 export type SearchFavoritePaper = {
-  favoriteResult: Array<SendPickData>
+  recentResult: Array<favoriteData>
+  recentPicks: Array<Number>
+  favoriteResult: Array<favoriteData>
+  favoritePicks: Array<Number>
 }
 
 export type Action = {
@@ -48,4 +50,17 @@ export type SendPickData = {
   url: string;
   writer: string;
   year: string;
+}
+
+export type favoriteData = {
+  id: number
+  url: string
+  created_at: string
+  updated_at: string
+  title: string
+  abstract: string
+  writer: string
+  year: string
+  publisher: string
+  citations: string
 }
