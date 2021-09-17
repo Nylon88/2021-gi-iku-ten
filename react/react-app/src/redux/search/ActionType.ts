@@ -3,7 +3,6 @@ import { LocationState } from "history"
 export type searchPaper = {
   word: string;
   result: Array<searchResult>
-  favoriteResult?: Array<favoriteData>
 }
 
 export type SearchFavoritePaper = {
@@ -34,7 +33,16 @@ export type searchResult = {
 
 export type Selector = {
   router: LocationState ;
-  search: searchPaper;
+  search: SearchSelector;
+}
+
+export type SearchSelector = {
+  word: string
+  result: Array<searchResult>
+  recentResult: Array<favoriteData>
+  recentPicks: Array<Number>
+  favoriteResult: Array<favoriteData>
+  favoritePicks: Array<Number>
 }
 
 export type Message = {
