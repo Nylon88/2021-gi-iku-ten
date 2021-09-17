@@ -1,5 +1,5 @@
 import { VFC, memo, useEffect, useState } from "react";
-import { Box, Flex, Heading, Link, LinkBox, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import Avatar from "react-nice-avatar"
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -25,7 +25,7 @@ export const PickedPaper: VFC = memo(() => {
     .catch((err) => {
       console.log(err)
     })
-  }, [])
+  }, [currentUserId])
 
   return (
     <Flex w="80%" align="center">
