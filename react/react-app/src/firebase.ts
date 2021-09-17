@@ -20,3 +20,4 @@ firebase.initializeApp(firebaseConfig);
 // Authサービスを作ってエクスポート。各画面でこれを利用する
 const auth = firebase.auth();
 export default auth;
+export const twitterProvider = new firebase.auth.TwitterAuthProvider();
