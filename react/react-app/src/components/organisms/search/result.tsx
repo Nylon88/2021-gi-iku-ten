@@ -1,4 +1,4 @@
-import { Box, Flex, Link, LinkBox, Skeleton, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, LinkBox, Text } from "@chakra-ui/react";
 import { memo, useCallback, VFC } from "react";
 import { FaRegBookmark } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,9 +30,9 @@ export const Result: VFC<Props> = memo((props) => {
 
   // resultDataが更新されたらPoint計算をし、ソートする
   useCallback(() => {
-    resultData.map((data) => {
+    resultData.map((data) => (
       data.point = data.citations * 100 + data.pick * data.coefficient
-    })
+    ))
     resultData.sort((a,b) => {
       if (a.point > b.point) return -1
       if (a.point < b.point) return 1
@@ -76,7 +76,7 @@ export const Result: VFC<Props> = memo((props) => {
   return (
     <Box w="65%" maxW="700px" mb="16">
       {resultData.map((res, i) => (
-        <Box key={i} px="5" py="3" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
+        <Box key={i} px="5" py="3" style={(i % 2 === 0) ? {backgroundColor: "#FAFAFA"} : {background: "#EAEAEA"}}>
           <Link
             fontSize="lg"
             fontWeight="bold"

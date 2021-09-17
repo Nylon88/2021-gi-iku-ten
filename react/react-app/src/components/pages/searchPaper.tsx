@@ -40,7 +40,7 @@ export const searchPaper: VFC = memo(() => {
         {!skeleton ? (
           <Box w="65%" maxW="700px" mb="16">
             {[...Array(10)].map((_, i) => (
-              <Box key={i} px="5" py="3" mb="5" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
+              <Box key={i} px="5" py="3" style={(i % 2 === 0) ? {backgroundColor: "#FAFAFA"} : {background: "#EAEAEA"}}>
                 <Skeleton height="25px" />
                 <Skeleton height="13px" mt="6px" />
                 <Skeleton height="13px" mt="7px" />

@@ -1,5 +1,5 @@
 import { VFC, memo, useEffect, useState } from "react";
-import { Box, Flex, Heading, Link, LinkBox, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import Avatar from "react-nice-avatar"
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -25,7 +25,7 @@ export const PickedPaper: VFC = memo(() => {
     .catch((err) => {
       console.log(err)
     })
-  }, [])
+  }, [currentUserId])
 
   return (
     <Flex w="80%" align="center">
@@ -43,7 +43,7 @@ export const PickedPaper: VFC = memo(() => {
         {pickedData.length ? (
           <Box mt="8" w="100%">
             {pickedData.map((res: SendPickData, i: number) => (
-              <Box key={i} px="5" py="3" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
+              <Box key={i} px="5" py="3" style={(i % 2 === 0) ? {backgroundColor: "#FAFAFA"} : {background: "#EAEAEA"}}>
                 <Link
                   fontSize="lg"
                   fontWeight="bold"

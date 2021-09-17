@@ -18,7 +18,7 @@ export const Sidebar:VFC = memo(() => {
   const showMessage = useMessage();
 
   return (
-    <Box w="20%" minW="300px" minH="100vh" maxH="100%" bg="gray.100">
+    <Box w="20%" minW="300px" minH="100vh" maxH="100%" bg="#B5C99A">
       <Link onClick={() => dispatch(push("/"))} position="fixed">
         <Image
           src={`${process.env.PUBLIC_URL}/PaperPicks.png`}
