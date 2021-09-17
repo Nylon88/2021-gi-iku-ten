@@ -5,6 +5,7 @@ import { Action } from "./ActionType"
 export const SearchPaperReducer = (state = initialState.searchPapers, action: Action) => {
   switch (action.type) {
     case Actions.SEARCH_PAPER:
+    case Actions.SEARCH_FAVORITE_PAPER:
       return {
         ...state,
         ...action.payload

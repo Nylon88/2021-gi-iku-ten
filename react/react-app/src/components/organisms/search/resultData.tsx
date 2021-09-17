@@ -7,7 +7,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FaRegBookmark } from "react-icons/fa";
-import { favoriteData } from "./favoriteData";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+
+import { useMessage } from "../../../hooks/useMessage";
+import { favoriteData, SendPickData } from "../../../redux/search/ActionType";
+import { getUserState } from "../../../redux/users/selectors";
+import { API_ENDPOINT } from "../../../template/apiEndpoint";
+import { Selector } from "../../../redux/users/ActionType";
 
 type Props = {
   data: favoriteData
@@ -17,6 +24,34 @@ type Props = {
 
 export const ResultData: VFC<Props> = memo((props) => {
   const { data, i, pickData } = props;
+  const selector = useSelector((state: Selector) => state)
+  const userStatus = getUserState(selector)
+  const { showMessage } = useMessage();
+  const dispatch = useDispatch();
+
+  const handleClickPickCount = (result: favoriteData, i: number) => {
+    const {title, abstract, writer, year, publisher, citations, url} = result
+    axios.post<SendPickData[]>(`${API_ENDPOINT}/picks`, {
+      title,
+      abstract,
+      writer,
+      year,
+      publisher,
+      citations,
+      url
+    })
+    .then((res) => {
+    })
+    .catch(() => {
+      showMessage({title: "Pickできませんでした。", status: "error"})
+    })
+  }
+
+  const pickFunction = (result: favoriteData, i: number) => {
+    userStatus ?
+      handleClickPickCount(result, i) :
+      showMessage({title: "ログインユーザーのみこの機能を使えます", status: "error"})
+  }
 
   return (
     <Box key={i} px="2" py="3" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
@@ -40,7 +75,10 @@ export const ResultData: VFC<Props> = memo((props) => {
           <LinkBox>
             <Flex align="center">
               <FaRegBookmark />
-              <Text>
+              <Text
+                onClick={() => pickFunction(data, i)}
+                _hover={{textDecoration: "underline", cursor: "pointer"}}
+              >
                 Pick数: {pickData[i]}
               </Text>
             </Flex>

@@ -5,6 +5,13 @@ export type searchPaper = {
   result: Array<searchResult>
 }
 
+export type SearchFavoritePaper = {
+  recentResult: Array<favoriteData>
+  recentPicks: Array<Number>
+  favoriteResult: Array<favoriteData>
+  favoritePicks: Array<Number>
+}
+
 export type Action = {
   type: string;
   payload: searchPaper;
@@ -26,7 +33,16 @@ export type searchResult = {
 
 export type Selector = {
   router: LocationState ;
-  search: searchPaper;
+  search: SearchSelector;
+}
+
+export type SearchSelector = {
+  word: string
+  result: Array<searchResult>
+  recentResult: Array<favoriteData>
+  recentPicks: Array<Number>
+  favoriteResult: Array<favoriteData>
+  favoritePicks: Array<Number>
 }
 
 export type Message = {
@@ -42,4 +58,17 @@ export type SendPickData = {
   url: string;
   writer: string;
   year: string;
+}
+
+export type favoriteData = {
+  id: number
+  url: string
+  created_at: string
+  updated_at: string
+  title: string
+  abstract: string
+  writer: string
+  year: string
+  publisher: string
+  citations: string
 }

@@ -6,28 +6,32 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import axios from "axios";
-import { memo, useEffect, useState, VFC } from "react";
+import { memo, useEffect, VFC } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { API_ENDPOINT } from "../../../template/apiEndpoint";
-import { favoriteData } from "./favoriteData";
+import { useMessage } from "../../../hooks/useMessage";
+import { searchFavoritePapers } from "../../../redux/search/Operations";
+import {
+  favoritePicksSelector,
+  favoriteResultSelector,
+  recentPicksSelector,
+  recentResultSelector
+} from "../../../redux/search/selectors";
+import { Selector } from "../../../redux/search/ActionType";
 import { ResultData } from "./resultData";
 
 export const DefaultView: VFC = memo(() => {
-  const [favoriteData, setFavoriteData] = useState<favoriteData[]>([]);
-  const [pickData, setPickData] = useState<Number[]>([]);
-  const [recentData, setRecentData] = useState<favoriteData[]>([]);
+  const dispatch = useDispatch();
+  const { showMessage } = useMessage()
+  const selector = useSelector((state: Selector) => state)
+  const favoritePicks = favoritePicksSelector(selector)
+  const favoriteData = favoriteResultSelector(selector)
+  const recentPicks = recentPicksSelector(selector)
+  const recentData = recentResultSelector(selector)
 
   useEffect(() => {
-    axios.get(`${API_ENDPOINT}/search`)
-    .then((res) => {
-      setFavoriteData(res.data[0].favorite);
-      setPickData(res.data[0].favorite_picks);
-      setRecentData(res.data[0].recent);
-    })
-    .catch((err) => console.log(err) )
-  },[])
-  console.log(favoriteData)
+    dispatch(searchFavoritePapers({showMessage}))
+  }, [dispatch, showMessage])
 
   return (
     <Box w="65%" maxW="700px" mb="16">
@@ -42,7 +46,7 @@ export const DefaultView: VFC = memo(() => {
               <ResultData
                 data={data}
                 i={i}
-                pickData={pickData}
+                pickData={favoritePicks}
               />
             ))}
           </TabPanel>
@@ -51,7 +55,7 @@ export const DefaultView: VFC = memo(() => {
               <ResultData
                 data={data}
                 i={i}
-                pickData={pickData}
+                pickData={recentPicks}
               />
             ))}
           </TabPanel>

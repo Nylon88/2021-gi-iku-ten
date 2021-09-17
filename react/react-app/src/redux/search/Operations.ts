@@ -1,6 +1,6 @@
 import { Dispatch } from "redux"
 import axios from 'axios';
-import { pickPaperAction, searchPaperAction } from "./Action";
+import { pickPaperAction, searchFavoritePaperAction, searchPaperAction } from "./Action";
 import { Message, searchResult } from "./ActionType";
 import { skeleton } from "../boolean/Operations";
 import { API_ENDPOINT } from "../../template/apiEndpoint";
@@ -8,6 +8,10 @@ import { API_ENDPOINT } from "../../template/apiEndpoint";
 type searchPapersProps = {
   word: string,
   period: string | null,
+  showMessage: (props: Message) => void
+}
+
+type searchFavoritePapersProps = {
   showMessage: (props: Message) => void
 }
 
@@ -44,5 +48,23 @@ export const pickPaper = (props: pickPaperProps) => {
     const status = title === "正常にPickできました" ? "success" : "error";
     dispatch(pickPaperAction({pick, index, resultData}));
     showMessage({title, status});
+  }
+}
+
+export const searchFavoritePapers = (props: searchFavoritePapersProps) => {
+  return (dispatch: Dispatch<any>) => {
+    const { showMessage } = props;
+    axios.get(`${API_ENDPOINT}/search`)
+    .then((result) => {
+      dispatch(searchFavoritePaperAction({
+        recentResult: result.data.recent,
+        recentPicks: result.data.recent_pick,
+        favoriteResult: result.data.favorite,
+        favoritePicks: result.data.favorite_picks
+      }))
+    })
+    .catch((error) => {
+      showMessage({title: error.message, status: "error"})
+    })
   }
 }

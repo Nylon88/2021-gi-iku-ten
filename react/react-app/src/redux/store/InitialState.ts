@@ -9,7 +9,11 @@ export const initialState = {
   },
   searchPapers: {
     word: "",
-    result: []
+    result: [],
+    recentResult: [],
+    recentPicks: [],
+    favoriteResult: [],
+    favoritePicks: []
   },
   boolean: {
     boolean: true
