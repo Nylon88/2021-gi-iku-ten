@@ -48,7 +48,11 @@ module V1
       desc '検索前に表示'
       get '/' do
         # 最近Pickされた論文10件
-        recent_pick = Paper.last(10)
+        recent_paper = Paper.last(10)
+        recent_pick = []
+        recent_paper.each do |paper|
+          recent_pick << paper.picks.count
+        end
 
         # 人気の論文10件
         paper_id = Pick.pluck(:paper_id)
@@ -61,8 +65,9 @@ module V1
           favorite_paper_picks << paper.picks.count
         end
 
-        return_value = [] << {
-          recent: recent_pick,
+        return_value = {
+          recent: recent_paper,
+          recent_pick: recent_pick,
           favorite: favorite_paper,
           favorite_picks: favorite_paper_picks
         }
