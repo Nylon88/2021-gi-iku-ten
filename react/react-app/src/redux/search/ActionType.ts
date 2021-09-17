@@ -1,8 +1,14 @@
 import { LocationState } from "history"
+import { favoriteData } from "../../components/organisms/search/favoriteData"
 
 export type searchPaper = {
   word: string;
   result: Array<searchResult>
+  favoriteResult?: Array<favoriteData>
+}
+
+export type SearchFavoritePaper = {
+  favoriteResult: Array<SendPickData>
 }
 
 export type Action = {

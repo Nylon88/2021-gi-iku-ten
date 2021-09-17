@@ -7,26 +7,33 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { memo, useEffect, useState, VFC } from "react";
+import { memo, useState, VFC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useMessage } from "../../../hooks/useMessage";
+import { searchFavoritePapers } from "../../../redux/search/Operations";
+import { favoriteResultSelector } from "../../../redux/search/selectors";
+import { Selector } from "../../../redux/search/ActionType";
 
 import { API_ENDPOINT } from "../../../template/apiEndpoint";
 import { favoriteData } from "./favoriteData";
 import { ResultData } from "./resultData";
 
 export const DefaultView: VFC = memo(() => {
-  const [favoriteData, setFavoriteData] = useState<favoriteData[]>([]);
   const [pickData, setPickData] = useState<Number[]>([]);
   const [recentData, setRecentData] = useState<favoriteData[]>([]);
+  const dispatch = useDispatch();
+  const { showMessage } = useMessage()
+  const selector = useSelector((state: Selector) => state)
+  const favoriteData = favoriteResultSelector(selector)
 
-  useEffect(() => {
-    axios.get(`${API_ENDPOINT}/search`)
-    .then((res) => {
-      setFavoriteData(res.data[0].favorite);
-      setPickData(res.data[0].favorite_picks);
-      setRecentData(res.data[0].recent);
-    })
-    .catch((err) => console.log(err) )
-  },[])
+    // axios.get(`${API_ENDPOINT}/search`)
+    // .then((res) => {
+      false && dispatch(searchFavoritePapers({showMessage}))
+      console.log("err")
+    //   setPickData(res.data[0].favorite_picks);
+    //   setRecentData(res.data[0].recent);
+    // })
+    // .catch((err) => console.log(`error: ${err}`) )
   console.log(favoriteData)
 
   return (
@@ -38,7 +45,7 @@ export const DefaultView: VFC = memo(() => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            {favoriteData.map((data, i) => (
+            {favoriteData?.map((data, i) => (
               <ResultData
                 data={data}
                 i={i}
