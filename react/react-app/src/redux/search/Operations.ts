@@ -1,7 +1,7 @@
 import { Dispatch } from "redux"
 import axios from 'axios';
 import { pickPaperAction, searchFavoritePaperAction, searchPaperAction } from "./Action";
-import { Message, SearchFavoritePaper, searchResult, SendPickData } from "./ActionType";
+import { Message, searchResult } from "./ActionType";
 import { skeleton } from "../boolean/Operations";
 import { API_ENDPOINT } from "../../template/apiEndpoint";
 
