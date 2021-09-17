@@ -18,7 +18,7 @@ type Props = {
 export const Condition: VFC<Props> = memo((props) => {
   const { period, thisYear, periodBool, setPeriodBool, handlePeriod } = props;
   return (
-    <Box w="12%" h="100%" bg="gray.100">
+    <Box w="12%" h="100%">
       <Box ml="5" my="10">
         <Text fontSize="md">検索条件</Text>
         <SearchCondition
@@ -31,10 +31,9 @@ export const Condition: VFC<Props> = memo((props) => {
           setBool={setPeriodBool}
           onChange={handlePeriod}
         />
-        <Divider />
         <SearchCondition
           title="引用数"
-          maxW={10}
+          maxW={14}
           defaultValue={"0"}
           min={0}
         />
