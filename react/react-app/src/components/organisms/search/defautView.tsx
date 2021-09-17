@@ -6,11 +6,17 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { memo, VFC } from "react";
+import { memo, useEffect, VFC } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { useMessage } from "../../../hooks/useMessage";
 import { searchFavoritePapers } from "../../../redux/search/Operations";
-import { favoriteResultSelector } from "../../../redux/search/selectors";
+import {
+  favoritePicksSelector,
+  favoriteResultSelector,
+  recentPicksSelector,
+  recentResultSelector
+} from "../../../redux/search/selectors";
 import { Selector } from "../../../redux/search/ActionType";
 import { ResultData } from "./resultData";
 
@@ -18,10 +24,14 @@ export const DefaultView: VFC = memo(() => {
   const dispatch = useDispatch();
   const { showMessage } = useMessage()
   const selector = useSelector((state: Selector) => state)
+  const favoritePicks = favoritePicksSelector(selector)
   const favoriteData = favoriteResultSelector(selector)
+  const recentPicks = recentPicksSelector(selector)
+  const recentData = recentResultSelector(selector)
 
-  false && dispatch(searchFavoritePapers({showMessage}))
-  console.log(favoriteData)
+  useEffect(() => {
+    dispatch(searchFavoritePapers({showMessage}))
+  }, [dispatch, showMessage])
 
   return (
     <Box w="65%" maxW="700px" mb="16">
@@ -32,11 +42,11 @@ export const DefaultView: VFC = memo(() => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            {favoriteData?.map((data, i) => (
+            {favoriteData.map((data, i) => (
               <ResultData
                 data={data}
                 i={i}
-                pickData={pickData}
+                pickData={favoritePicks}
               />
             ))}
           </TabPanel>
@@ -45,7 +55,7 @@ export const DefaultView: VFC = memo(() => {
               <ResultData
                 data={data}
                 i={i}
-                pickData={pickData}
+                pickData={recentPicks}
               />
             ))}
           </TabPanel>

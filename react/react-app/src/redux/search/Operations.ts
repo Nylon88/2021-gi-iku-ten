@@ -52,10 +52,9 @@ export const pickPaper = (props: pickPaperProps) => {
 }
 
 export const searchFavoritePapers = (props: searchFavoritePapersProps) => {
-  return async (dispatch: Dispatch<any>) => {
+  return (dispatch: Dispatch<any>) => {
     const { showMessage } = props;
-    dispatch(skeleton());
-    await axios.get(`${API_ENDPOINT}/search`)
+    axios.get(`${API_ENDPOINT}/search`)
     .then((result) => {
       dispatch(searchFavoritePaperAction({
         recentResult: result.data.recent,
@@ -67,6 +66,5 @@ export const searchFavoritePapers = (props: searchFavoritePapersProps) => {
     .catch((error) => {
       showMessage({title: error.message, status: "error"})
     })
-    .finally(() => dispatch(skeleton()))
   }
 }
