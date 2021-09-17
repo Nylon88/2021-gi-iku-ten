@@ -33,7 +33,10 @@ export const searchFavoritePaperAction = (searchState: SearchFavoritePaper) => {
   return {
     type: "SEARCH_FAVORITE_PAPER",
     payload: {
-      favoriteResult: searchState.favoriteResult
+      recentResult: searchState.recentResult,
+      recentPicks: searchState.recentPicks,
+      favoriteResult: searchState.favoriteResult,
+      favoritePicks: searchState.favoritePicks
     }
   }
 }
