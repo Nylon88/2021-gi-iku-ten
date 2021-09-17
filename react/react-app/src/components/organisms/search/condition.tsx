@@ -1,4 +1,4 @@
-import { Box, Divider, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { memo, VFC } from "react";
 
 import { SearchCondition } from "../../molecules/searchCondition";
