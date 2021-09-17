@@ -43,7 +43,7 @@ export const PickedPaper: VFC = memo(() => {
         {pickedData.length ? (
           <Box mt="8" w="100%">
             {pickedData.map((res: SendPickData, i: number) => (
-              <Box key={i} px="5" py="3" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
+              <Box key={i} px="5" py="3" style={(i % 2 === 0) ? {backgroundColor: "#FAFAFA"} : {background: "#EAEAEA"}}>
                 <Link
                   fontSize="lg"
                   fontWeight="bold"

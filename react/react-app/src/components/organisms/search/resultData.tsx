@@ -20,7 +20,7 @@ export const ResultData: VFC<Props> = memo((props) => {
   const { data, i, pickData } = props;
 
   return (
-    <Box key={i} px="2" py="3" style={(i % 2 === 0) ? undefined : {backgroundColor: "#FAFAFA"}}>
+    <Box key={i} px="5" py="3" style={(i % 2 === 0) ? {backgroundColor: "#FAFAFA"} : {background: "#EAEAEA"}}>
       <Link
         fontSize="lg"
         fontWeight="bold"
